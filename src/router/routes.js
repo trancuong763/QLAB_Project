@@ -15,6 +15,12 @@ import TotalChemiscal from "@/pages/TotalChemiscal"
 import Statistics from "@/pages/Statistics"
 import ChemiscalImport from "@/pages/ChemiscalImport"
 import ChemiscalExport from "@/pages/ChemiscalExport"
+import MemberList from "@/pages/MemberList.vue";
+import Machine from "@/pages/Machine.vue";
+import Supplies from "@/pages/Supplies.vue";
+import Supplier from "@/pages/Supplier.vue";
+import Profile from "@/pages/Profile.vue";
+
 const routes = [
   {
     path: "/",
@@ -37,7 +43,7 @@ const routes = [
         component: Notifications
       },
       {
-        path: "icons",
+        path: "don-vi",
         name: "icons",
         component: Icons
       },
@@ -80,6 +86,32 @@ const routes = [
         path: "chemiscal-export",
         name: "chemiscal-export",
         component: ChemiscalExport
+
+      },
+      {
+        path: "danh-sach-thanh-vien",
+        name: "MemberList",
+        component: MemberList
+      },
+      {
+        path: "kho-may",
+        name: "Machine",
+        component: Machine
+      },
+      {
+        path: "vat-tu",
+        name: "Supplies",
+        component: Supplies
+      },
+      {
+        path: "nha-cung-cap",
+        name: "Supplier",
+        component: Supplier
+      },
+      {
+        path: "thong-tin-ca-nhan",
+        name: "Profile",
+        component: Profile
       }
     ]
   },

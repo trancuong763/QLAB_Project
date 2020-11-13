@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="margin: 30px 0">
+    <div style="margin: 0 0 30px 0">
       <button
         class="btn btn-success"
         style="
@@ -30,7 +30,7 @@
     <v-card>
       <v-tabs
         v-model="tab"
-        background-color="dark accent-4"
+        background-color="success accent-4"
         centered
         dark
         icons-and-text

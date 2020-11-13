@@ -5,11 +5,11 @@
         <sidebar-link to="/dashboard"
           ><i class="fa fa-home"></i>Bảng điều khiển</sidebar-link
         >
-        <sidebar-link to="/stats"><i class="fa fa-briefcase"></i>Danh sách thành viên</sidebar-link>
-        <sidebar-link to="/table-list"><i class="fa fa-briefcase"></i>Vật tư</sidebar-link>
-        <sidebar-link to="/typography"><i class="fa fa-home"></i>Kho / máy</sidebar-link>
-        <sidebar-link to="/icons"><i class="fas fa-gem"></i>Đơn vị</sidebar-link>
-        <sidebar-link to="/maps"><i class="fas fa-building"></i>Nhà cung cấp</sidebar-link>
+        <sidebar-link to="/danh-sach-thanh-vien"><i class="fa fa-briefcase"></i>Danh sách thành viên</sidebar-link>
+        <sidebar-link to="/vat-tu"><i class="fa fa-briefcase"></i>Vật tư</sidebar-link>
+        <sidebar-link to="/kho-may"><i class="fa fa-home"></i>Kho / máy</sidebar-link>
+        <sidebar-link to="/don-vi"><i class="fas fa-gem"></i>Đơn vị</sidebar-link>
+        <sidebar-link to="/nha-cung-cap"><i class="fas fa-building"></i>Nhà cung cấp</sidebar-link>
         <sidebar-link to="/chemiscal-import"><i class="fas fa-sign-in-alt"></i>Hóa chất nhập kho</sidebar-link>
         <sidebar-link to="/chemiscal-export"><i class="fas fa-external-link-alt"></i>Hóa chất xuất kho</sidebar-link>
         <sidebar-link to="/expired"><i class="fas fa-exclamation-triangle"></i>Hóa chất hết hạn</sidebar-link>

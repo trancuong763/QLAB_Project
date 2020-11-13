@@ -5,33 +5,33 @@
         <h4>1</h4>
         <span class="title">Tồn kho và dự trù hóa chất</span>
         <span class="icon"><i class="fas fa-cubes"></i></span>
-        <span class="detail"
+        <router-link tag="span" to="/statistics" class="detail"
           >Chi tiết <i class="fa fa-arrow-circle-right"></i
-        ></span>
+        ></router-link>
       </div>
       <div class="col-md-6 col-xl-3 stats" style="background: #00a65a">
         <h4>0</h4>
         <span class="title">Hóa chất đã hết</span>
         <span class="icon"><i class="fas fa-cube"></i></span>
-        <span class="detail"
+        <router-link tag="span" to="/total-chemiscal" class="detail"
           >Chi tiết <i class="fa fa-arrow-circle-right"></i
-        ></span>
+        ></router-link>
       </div>
       <div class="col-md-6 col-xl-3 stats" style="background: #ff851b">
         <h4>0</h4>
         <span class="title">Hóa chất sắp hết hạn</span>
         <span class="icon"><i class="fas fa-stopwatch"></i></span>
-        <span class="detail"
+        <router-link tag="span" to="/expired" class="detail"
           >Chi tiết <i class="fa fa-arrow-circle-right"></i
-        ></span>
+        ></router-link>
       </div>
       <div class="col-md-6 col-xl-3 stats" style="background: #dd4b39">
         <h4>0</h4>
         <span class="title">Hóa chất đã hết hạn</span>
         <span class="icon"><i class="fas fa-exclamation-triangle"></i></span>
-        <span class="detail"
+        <router-link tag="span" to="/expired" class="detail"
           >Chi tiết <i class="fa fa-arrow-circle-right"></i
-        ></span>
+        ></router-link>
       </div>
     </div>
     <div class="row">

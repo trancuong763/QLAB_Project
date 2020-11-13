@@ -11,6 +11,8 @@
     "dev": "npm run serve"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^23.1.0",
+    "@ckeditor/ckeditor5-vue": "^1.0.3",
     "@fortawesome/fontawesome-free": "^5.15.1",
     "bootstrap": "^4.0.0",
     "bootstrap-vue": "^2.19.0",
