@@ -17,14 +17,19 @@ import Vue from "vue";
 import App from "./App";
 import router from "./router/index";
 import '@fortawesome/fontawesome-free/css/all.min.css'
-
 import PaperDashboard from "./plugins/paperDashboard";
 import "vue-notifyjs/themes/default.css";
-
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap";
+import Vuetify from "vuetify";
+import "vuetify/dist/vuetify.min.css";
+import 'vuetify/dist/vuetify';
+Vue.use(Vuetify);
 Vue.use(PaperDashboard);
 
 /* eslint-disable no-new */
 new Vue({
   router,
+  vuetify: new Vuetify(),
   render: h => h(App)
 }).$mount("#app");

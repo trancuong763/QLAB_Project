@@ -1079,3 +1079,26 @@
 .ti-rss-alt:before {
 	content: "\e75f";
 }
+.modal-backdrop.show {
+	display: none;
+}
+.v-card a {
+	text-decoration: none!important;
+	color: #fff!important;
+}
+.v-card .primary {
+	background-color: #1867c0 !important;
+    border-color: #1867c0 !important;
+}
+.v-card .deep-purple.accent-4 {
+	background-color: #6200ea!important;
+    border-color: #6200ea!important;
+}
+.v-card .success {
+	background-color: #218838!important;
+    border-color: #1e7e34!important;
+}
+.flex {
+	display: flex;
+	align-items: center;
+}

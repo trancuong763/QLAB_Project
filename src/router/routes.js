@@ -10,7 +10,11 @@ import Icons from "@/pages/Icons.vue";
 import Maps from "@/pages/Maps.vue";
 import Typography from "@/pages/Typography.vue";
 import TableList from "@/pages/TableList.vue";
-
+import Expired from "@/pages/Expired"
+import TotalChemiscal from "@/pages/TotalChemiscal"
+import Statistics from "@/pages/Statistics"
+import ChemiscalImport from "@/pages/ChemiscalImport"
+import ChemiscalExport from "@/pages/ChemiscalExport"
 const routes = [
   {
     path: "/",
@@ -51,6 +55,31 @@ const routes = [
         path: "table-list",
         name: "table-list",
         component: TableList
+      },
+      {
+        path: "expired",
+        name: "expired",
+        component: Expired
+      },
+      {
+        path: "total-chemiscal",
+        name: "total-chemiscal",
+        component: TotalChemiscal
+      },
+      {
+        path: "statistics",
+        name: "statistics",
+        component: Statistics
+      },
+      {
+        path: "chemiscal-import",
+        name: "chemiscal-import",
+        component: ChemiscalImport
+      },
+      {
+        path: "chemiscal-export",
+        name: "chemiscal-export",
+        component: ChemiscalExport
       }
     ]
   },
