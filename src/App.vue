@@ -46,4 +46,7 @@ export default {};
   font-weight: 600;
   color: #333;
 }
+.moving-arrow{
+  display: none !important;
+}
 </style>

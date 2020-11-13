@@ -13,8 +13,8 @@
         <sidebar-link to="/chemiscal-import"><i class="fas fa-sign-in-alt"></i>Hóa chất nhập kho</sidebar-link>
         <sidebar-link to="/chemiscal-export"><i class="fas fa-external-link-alt"></i>Hóa chất xuất kho</sidebar-link>
         <sidebar-link to="/expired"><i class="fas fa-exclamation-triangle"></i>Hóa chất hết hạn</sidebar-link>
-        <sidebar-link to="/total-chemiscal"><i class="fas fa-bong"></i>Tổng hợp vật tư, hóa chất</sidebar-link>
-        <sidebar-link to="/statistics"><i class="fas fa-trash-alt"></i>Thống kê tồn kho và dự trù hóa chất</sidebar-link>
+        <sidebar-link to="/total-chemiscal"><i class="fas fa-bong"></i>Vật tư, hóa chất</sidebar-link>
+        <sidebar-link to="/statistics"><i class="fas fa-trash-alt"></i>Thống kê tồn kho</sidebar-link>
       </template>
       <mobile-menu>
         <li class="nav-item">
