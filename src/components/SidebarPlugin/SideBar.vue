@@ -11,9 +11,9 @@
       <div class="logo">
         <a href="#" class="simple-text">
             <div class="logo-img">
-                <img src="@/assets/img/vue-logo.png" alt="">
+                <img src="http://157.245.203.143/images/icon_new.png" alt="">
             </div>
-          {{title}}
+          QLAB
         </a>
       </div>
       <slot>

@@ -10,6 +10,11 @@ import Icons from "@/pages/Icons.vue";
 import Maps from "@/pages/Maps.vue";
 import Typography from "@/pages/Typography.vue";
 import TableList from "@/pages/TableList.vue";
+import MemberList from "@/pages/MemberList.vue";
+import Machine from "@/pages/Machine.vue";
+import Supplies from "@/pages/Supplies.vue";
+import Supplier from "@/pages/Supplier.vue";
+import Profile from "@/pages/Profile.vue";
 
 const routes = [
   {
@@ -51,6 +56,31 @@ const routes = [
         path: "table-list",
         name: "table-list",
         component: TableList
+      },
+      {
+        path: "danh-sach-thanh-vien",
+        name: "MemberList",
+        component: MemberList
+      },
+      {
+        path: "kho-may",
+        name: "Machine",
+        component: Machine
+      },
+      {
+        path: "vat-tu",
+        name: "Supplies",
+        component: Supplies
+      },
+      {
+        path: "nha-cung-cap",
+        name: "Supplier",
+        component: Supplier
+      },
+      {
+        path: "thong-tin-ca-nhan",
+        name: "Profile",
+        component: Profile
       }
     ]
   },

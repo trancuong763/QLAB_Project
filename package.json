@@ -11,6 +11,8 @@
     "dev": "npm run serve"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^23.1.0",
+    "@ckeditor/ckeditor5-vue": "^1.0.3",
     "@fortawesome/fontawesome-free": "^5.15.1",
     "bootstrap": "^4.0.0",
     "chartist": "^0.11.0",
@@ -18,7 +20,8 @@
     "vue": "^2.6.10",
     "vue-clickaway": "^2.1.0",
     "vue-notifyjs": "^0.3.0",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vuetify": "^2.3.17"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.10.0",
