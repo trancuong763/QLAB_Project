@@ -16,7 +16,7 @@ import Machine from "@/pages/Machine.vue";
 import Supplies from "@/pages/Supplies.vue";
 import Supplier from "@/pages/Supplier.vue";
 import Profile from "@/pages/Profile.vue";
-
+import System from "@/pages/Login-Register/System"
 const routes = [
   {
     path: "/",
@@ -88,8 +88,13 @@ const routes = [
         path: "thong-tin-ca-nhan",
         name: "Profile",
         component: Profile
-      }
+      },
     ]
+  },
+  {
+    path: "/dang-nhap-he-thong",
+    name: "system",
+    component: System
   },
   { path: "*", component: NotFound }
 ];
