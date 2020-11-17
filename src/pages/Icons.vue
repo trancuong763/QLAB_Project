@@ -2,31 +2,27 @@
   <v-data-table
     :headers="headers"
     :items="desserts"
+    :search="search"
     sort-by="calories"
     class="elevation-1"
   >
     <template v-slot:top>
       <v-toolbar flat>
-        <v-toolbar-title>Danh sách đơn vị</v-toolbar-title>
+        <v-toolbar-title>Kho / máy</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
+        <div style="margin-right: 20px">
+          <v-text-field
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Tìm kiếm"
+            single-line
+            hide-details
+          ></v-text-field>
+        </div>
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on, attrs }">
             <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-              <svg
-                width="1em"
-                height="1em"
-                viewBox="0 0 16 16"
-                class="bi bi-plus-square-fill"
-                fill="currentColor"
-                style="margin-right: 5px;"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"
-                />
-              </svg>
               Thêm mới
             </v-btn>
           </template>
@@ -38,35 +34,18 @@
             <v-card-text>
               <v-container>
                 <v-row>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12">
                     <v-text-field
                       v-model="editedItem.name"
-                      label="Dessert name"
+                      label="Tên đơn vị"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
+                  <v-col cols="12">
+                    <v-textarea
+                      name="input-7-1"
+                      label="Miêu tả"
                       v-model="editedItem.calories"
-                      label="Calories"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.fat"
-                      label="Fat (g)"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.carbs"
-                      label="Carbs (g)"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.protein"
-                      label="Protein (g)"
-                    ></v-text-field>
+                    ></v-textarea>
                   </v-col>
                 </v-row>
               </v-container>
@@ -74,21 +53,17 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-              <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
+              <v-btn color="blue darken-1" text @click="close"> Hủy </v-btn>
+              <v-btn color="blue darken-1" text @click="save"> Lưu </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
         <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card>
-            <v-card-title class="headline"
-              >Are you sure you want to delete this item?</v-card-title
-            >
+            <v-card-title class="headline">Chắc chắn xóa?</v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete"
-                >Cancel</v-btn
-              >
+              <v-btn color="blue darken-1" text @click="closeDelete">Hủy</v-btn>
               <v-btn color="blue darken-1" text @click="deleteItemConfirm"
                 >OK</v-btn
               >
@@ -111,6 +86,7 @@
 export default {
   data() {
     return {
+      search: "",
       dialog: false,
       dialogDelete: false,
       headers: [
@@ -119,18 +95,18 @@ export default {
           align: "start",
           value: "name",
         },
-        { text: "Miêu tả", value: "calories" ,sortable: false},
-        { text: 'Hành động', value: 'actions', sortable: false },
+        { text: "Miêu tả", value: "calories", sortable: false },
+        { text: "Hành động", value: "actions", sortable: false },
       ],
       desserts: [],
       editedIndex: -1,
       editedItem: {
         name: "",
-        calories: 0,
+        calories: "",
       },
       defaultItem: {
         name: "",
-        calories: 0,
+        calories: "",
       },
     };
   },

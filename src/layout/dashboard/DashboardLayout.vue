@@ -10,11 +10,11 @@
         <sidebar-link to="/kho-may"><i class="fa fa-home"></i>Kho / máy</sidebar-link>
         <sidebar-link to="/don-vi"><i class="fas fa-gem"></i>Đơn vị</sidebar-link>
         <sidebar-link to="/nha-cung-cap"><i class="fas fa-building"></i>Nhà cung cấp</sidebar-link>
-        <sidebar-link to="/chemiscal-import"><i class="fas fa-sign-in-alt"></i>Hóa chất nhập kho</sidebar-link>
-        <sidebar-link to="/chemiscal-export"><i class="fas fa-external-link-alt"></i>Hóa chất xuất kho</sidebar-link>
-        <sidebar-link to="/expired"><i class="fas fa-exclamation-triangle"></i>Hóa chất hết hạn</sidebar-link>
-        <sidebar-link to="/total-chemiscal"><i class="fas fa-bong"></i>Vật tư, hóa chất</sidebar-link>
-        <sidebar-link to="/statistics"><i class="fas fa-trash-alt"></i>Thống kê tồn kho</sidebar-link>
+        <sidebar-link to="/hoa-chat-nhap-kho"><i class="fas fa-sign-in-alt"></i>Hóa chất nhập kho</sidebar-link>
+        <sidebar-link to="/hoa-chat-xuat-kho"><i class="fas fa-external-link-alt"></i>Hóa chất xuất kho</sidebar-link>
+        <sidebar-link to="/hoa-chat-het-han"><i class="fas fa-exclamation-triangle"></i>Hóa chất hết hạn</sidebar-link>
+        <sidebar-link to="/vat-tu-hoa-chat"><i class="fas fa-bong"></i>Vật tư, hóa chất</sidebar-link>
+        <sidebar-link to="/thong-ke-ton-kho"><i class="fas fa-trash-alt"></i>Thống kê tồn kho</sidebar-link>
       </template>
       <mobile-menu>
         <li class="nav-item">

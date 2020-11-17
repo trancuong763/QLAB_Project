@@ -37,31 +37,67 @@
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
                       v-model="editedItem.name"
-                      label="Họ tên"
+                      label="Người tạo"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
                       v-model="editedItem.calories"
-                      label="Email"
+                      label="Mã hàng"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
                       v-model="editedItem.fat"
-                      label="SĐT"
+                      label="Tên hàng"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
                       v-model="editedItem.carbs"
-                      label="Ngày tạo"
+                      label="Đơn vị tính"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
                       v-model="editedItem.protein"
-                      label="Trạng thái"
+                      label="Định mức"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="editedItem.protein"
+                      label="Mức báo dự trù"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="editedItem.protein"
+                      label="Vị trí"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="editedItem.protein"
+                      label="Kho/ Máy"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="editedItem.protein"
+                      label="Số lượng"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="editedItem.protein"
+                      label="Đơn giá"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="editedItem.protein"
+                      label="Thành tiền"
                     ></v-text-field>
                   </v-col>
                 </v-row>

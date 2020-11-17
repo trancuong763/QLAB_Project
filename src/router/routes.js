@@ -25,7 +25,7 @@ const routes = [
     children: [
       {
         path: "dashboard",
-        name: "dashboard",
+        name: "trang-chu",
         component: Dashboard
       },
       {
@@ -35,64 +35,64 @@ const routes = [
       },
       {
         path: "don-vi",
-        name: "icons",
+        name: "don-vi",
         component: Icons
       },
       {
-        path: "expired",
-        name: "expired",
+        path: "hoa-chat-het-han",
+        name: "hoa-chat-het-han",
         component: Expired
       },
       {
-        path: "total-chemiscal",
-        name: "total-chemiscal",
+        path: "vat-tu-hoa-chat",
+        name: "vat-tu-hoa-chat",
         component: TotalChemiscal
       },
       {
-        path: "statistics",
-        name: "statistics",
+        path: "thong-ke-ton-kho",
+        name: "thong-ke-ton-kho",
         component: Statistics
       },
       {
-        path: "chemiscal-import",
-        name: "chemiscal-import",
+        path: "hoa-chat-nhap-kho",
+        name: "hoa-chat-nhap-kho",
         component: ChemiscalImport
       },
       {
-        path: "chemiscal-export",
-        name: "chemiscal-export",
+        path: "hoa-chat-xuat-kho",
+        name: "hoa-chat-xuat-kho",
         component: ChemiscalExport
 
       },
       {
         path: "danh-sach-thanh-vien",
-        name: "MemberList",
+        name: "danh-sach-thanh-vien",
         component: MemberList
       },
       {
         path: "kho-may",
-        name: "Machine",
+        name: "kho-may",
         component: Machine
       },
       {
         path: "vat-tu",
-        name: "Supplies",
+        name: "vat-tu",
         component: Supplies
       },
       {
         path: "nha-cung-cap",
-        name: "Supplier",
+        name: "nha-cung-cap",
         component: Supplier
       },
       {
         path: "thong-tin-ca-nhan",
-        name: "Profile",
+        name: "thong-tin-ca-nhan",
         component: Profile
       },
     ]
   },
   {
-    path: "/dang-nhap-he-thong",
+    path: "/login",
     name: "system",
     component: System
   },

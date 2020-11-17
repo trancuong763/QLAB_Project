@@ -51,7 +51,14 @@
                           >
                           </v-text-field>
                         </v-form>
-                        <div class="alert alert-danger" role="alert" v-for="item in errors" :key="item">{{item}}</div>
+                        <div
+                          class="alert alert-danger"
+                          role="alert"
+                          v-for="item in errors"
+                          :key="item"
+                        >
+                          {{ item }}
+                        </div>
                         <h4 class="text-center mlt-4">Quên mật khẩu ?</h4>
                         <div class="text-center mt-5">
                           <v-btn
@@ -72,7 +79,11 @@
                         </h5>
                       </v-card-text>
                       <div class="text-center">
-                        <v-btn rounded outlined="" dark @click="change_step(step++)"
+                        <v-btn
+                          rounded
+                          outlined=""
+                          dark
+                          @click="change_step(step++)"
                           >Đăng ký</v-btn
                         >
                       </div>
@@ -83,13 +94,17 @@
                   <v-row class="fill-height">
                     <v-col cols="12" md="4" class="teal accent-3">
                       <v-card-text class="white--text mt-12">
-                        <h1 class="text-center display-1">Wellcome con vợ !</h1>
+                        <h1 class="text-center display-1">Wellcome !</h1>
                         <h5 class="text-center">
                           Vui lòng đăng nhập để kết nối với chúng tôi
                         </h5>
                       </v-card-text>
                       <div class="text-center">
-                        <v-btn rounded outlined dark @click="change_step(step--)"
+                        <v-btn
+                          rounded
+                          outlined
+                          dark
+                          @click="change_step(step--)"
                           >Đăng nhập</v-btn
                         >
                       </div>
@@ -154,7 +169,14 @@
                           ></v-text-field>
                         </v-form>
                       </v-card-text>
-                      <div class="alert alert-danger" role="alert" v-for="item in errors" :key="item">{{item}}</div>
+                      <div
+                        class="alert alert-danger"
+                        role="alert"
+                        v-for="item in errors"
+                        :key="item"
+                      >
+                        {{ item }}
+                      </div>
                       <div class="text-center mt-5">
                         <v-btn
                           rounded
@@ -199,8 +221,8 @@ export default {
   },
   methods: {
     change_step(step) {
-        this.errors = [];
-        return step;
+      this.errors = [];
+      return step;
     },
     btn_login(e) {
       this.errors = [];

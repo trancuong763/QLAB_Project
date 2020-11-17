@@ -24,23 +24,7 @@ import "vuetify/dist/vuetify.min.css";
 import CKEditor from '@ckeditor/ckeditor5-vue';
 Vue.use( CKEditor );
 Vue.use(PaperDashboard);
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { faVuejs } from "@fortawesome/free-brands-svg-icons";
-
-Vue.component("font-awesome-icon", FontAwesomeIcon); // Register component globally
-library.add(faVuejs); // Include needed icons.
-
-Vue.use(Vuetify, {
-  icons: {
-    vue: {
-      component: FontAwesomeIcon,
-      props: {
-        icon: ["fab", "vuejs"]
-      }
-    }
-  }
-});
+Vue.use(Vuetify);
 new Vue({
   vuetify: new Vuetify(),
   router,

@@ -8,7 +8,7 @@
   >
     <template v-slot:top>
       <v-toolbar flat>
-        <v-toolbar-title>Nhà chung cấp</v-toolbar-title>
+        <v-toolbar-title>Nhà cung cấp</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
         <div style="margin-right: 20px">
@@ -37,7 +37,7 @@
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
                       v-model="editedItem.name"
-                      label="Họ tên"
+                      label="Tên NCC"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
@@ -52,16 +52,10 @@
                       label="SĐT"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12">
                     <v-text-field
                       v-model="editedItem.carbs"
-                      label="Ngày tạo"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.protein"
-                      label="Trạng thái"
+                      label="Địa chỉ"
                     ></v-text-field>
                   </v-col>
                 </v-row>

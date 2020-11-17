@@ -34,35 +34,17 @@
             <v-card-text>
               <v-container>
                 <v-row>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12">
                     <v-text-field
                       v-model="editedItem.name"
-                      label="Họ tên"
+                      label="Tên Kho/ Máy"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
+                  <v-col cols="12">
+                    <v-textarea
                       v-model="editedItem.calories"
-                      label="Email"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.fat"
-                      label="SĐT"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.carbs"
-                      label="Ngày tạo"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.protein"
-                      label="Trạng thái"
-                    ></v-text-field>
+                      label="Mô tả"
+                    ></v-textarea>
                   </v-col>
                 </v-row>
               </v-container>
