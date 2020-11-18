@@ -36,7 +36,7 @@
     </nav>
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i> Trang chủ</a></li>
+        <li class="breadcrumb-item"><router-link to="/" tag="a" style="cursor: pointer;"><i class="fas fa-home"></i> Trang chủ</router-link></li>
         <li class="breadcrumb-item active" aria-current="page">
           {{ routeName }}
         </li>

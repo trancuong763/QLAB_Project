@@ -5,7 +5,7 @@
         <h4>1</h4>
         <span class="title">Tồn kho và dự trù hóa chất</span>
         <span class="icon"><i class="fas fa-cubes"></i></span>
-        <router-link tag="span" to="/statistics" class="detail"
+        <router-link tag="span" to="/thong-ke-ton-kho" class="detail"
           >Chi tiết <i class="fa fa-arrow-circle-right"></i
         ></router-link>
       </div>
@@ -13,7 +13,7 @@
         <h4>0</h4>
         <span class="title">Hóa chất đã hết</span>
         <span class="icon"><i class="fas fa-cube"></i></span>
-        <router-link tag="span" to="/total-chemiscal" class="detail"
+        <router-link tag="span" to="/vat-tu-hoa-chat" class="detail"
           >Chi tiết <i class="fa fa-arrow-circle-right"></i
         ></router-link>
       </div>
@@ -21,7 +21,7 @@
         <h4>0</h4>
         <span class="title">Hóa chất sắp hết hạn</span>
         <span class="icon"><i class="fas fa-stopwatch"></i></span>
-        <router-link tag="span" to="/expired" class="detail"
+        <router-link tag="span" to="/hoa-chat-het-han" class="detail"
           >Chi tiết <i class="fa fa-arrow-circle-right"></i
         ></router-link>
       </div>
@@ -29,7 +29,7 @@
         <h4>0</h4>
         <span class="title">Hóa chất đã hết hạn</span>
         <span class="icon"><i class="fas fa-exclamation-triangle"></i></span>
-        <router-link tag="span" to="/expired" class="detail"
+        <router-link tag="span" to="/hoa-chat-het-han" class="detail"
           >Chi tiết <i class="fa fa-arrow-circle-right"></i
         ></router-link>
       </div>

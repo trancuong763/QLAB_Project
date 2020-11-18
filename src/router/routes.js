@@ -24,8 +24,8 @@ const routes = [
     redirect: "/dashboard",
     children: [
       {
-        path: "dashboard",
-        name: "trang-chu",
+        path: "trang-chu",
+        name: "trang chủ",
         component: Dashboard
       },
       {
@@ -35,65 +35,65 @@ const routes = [
       },
       {
         path: "don-vi",
-        name: "don-vi",
+        name: "Đơn vị",
         component: Icons
       },
       {
         path: "hoa-chat-het-han",
-        name: "hoa-chat-het-han",
+        name: "Hóa chất hết hạn",
         component: Expired
       },
       {
         path: "vat-tu-hoa-chat",
-        name: "vat-tu-hoa-chat",
+        name: "Vật tư hóa chất",
         component: TotalChemiscal
       },
       {
         path: "thong-ke-ton-kho",
-        name: "thong-ke-ton-kho",
+        name: "thống kê tồn kho",
         component: Statistics
       },
       {
         path: "hoa-chat-nhap-kho",
-        name: "hoa-chat-nhap-kho",
+        name: "hóa chất nhập kho",
         component: ChemiscalImport
       },
       {
         path: "hoa-chat-xuat-kho",
-        name: "hoa-chat-xuat-kho",
+        name: "hóa chất xuất kho",
         component: ChemiscalExport
 
       },
       {
         path: "danh-sach-thanh-vien",
-        name: "danh-sach-thanh-vien",
+        name: "danh sách thành viên",
         component: MemberList
       },
       {
         path: "kho-may",
-        name: "kho-may",
+        name: "kho máy",
         component: Machine
       },
       {
         path: "vat-tu",
-        name: "vat-tu",
+        name: "vật tư",
         component: Supplies
       },
       {
         path: "nha-cung-cap",
-        name: "nha-cung-cap",
+        name: "nhà cung cấp",
         component: Supplier
       },
       {
         path: "thong-tin-ca-nhan",
-        name: "thong-tin-ca-nhan",
+        name: "thông tin cá nhân",
         component: Profile
       },
     ]
   },
   {
     path: "/login",
-    name: "system",
+    name: "Đăng nhập",
     component: System
   },
   { path: "*", component: NotFound }
