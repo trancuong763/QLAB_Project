@@ -25,7 +25,7 @@ const routes = [
     children: [
       {
         path: "/",
-        name: "trang chủ",
+        name: "Bảng điều khiển",
         component: Dashboard
       },
       {
