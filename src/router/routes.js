@@ -21,11 +21,11 @@ const routes = [
   {
     path: "/",
     component: DashboardLayout,
-    redirect: "/trang-chu",
+    redirect: "/",
     children: [
       {
-        path: "trang-chu",
-        name: "trang chủ",
+        path: "/",
+        name: "Bảng điều khiển",
         component: Dashboard
       },
       {

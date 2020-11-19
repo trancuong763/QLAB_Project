@@ -2,7 +2,7 @@
   <div class="wrapper">
     <side-bar>
       <template slot="links">
-        <sidebar-link to="/trang-chu"
+        <sidebar-link to="/"
           ><i class="fa fa-home"></i>Bảng điều khiển</sidebar-link
         >
         <sidebar-link to="/danh-sach-thanh-vien"><i class="fa fa-briefcase"></i>Danh sách thành viên</sidebar-link>

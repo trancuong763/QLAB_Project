@@ -36,7 +36,7 @@
     </div>
     <div class="row">
       <div class="col-md-12">
-        <img src="http://157.245.203.143/images/bg.png" style="width: 100%; margin-top: 20px" />
+        <img src="6e7ad4c6b7a346fd1fb2.jpg" style="width: 100%; margin-top: 20px" />
       </div>
     </div>
   </div>
