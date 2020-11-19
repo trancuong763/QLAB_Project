@@ -16,7 +16,7 @@
     <v-card >
       <v-tabs
         v-model="tab"
-        background-color=" accent-4"
+        background-color="accent-3 success"
         centered
         dark
         icons-and-text

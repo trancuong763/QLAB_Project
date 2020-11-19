@@ -22,6 +22,7 @@ import "vue-notifyjs/themes/default.css";
 import Vuetify from "vuetify";
 import "vuetify/dist/vuetify.min.css";
 import CKEditor from '@ckeditor/ckeditor5-vue';
+import '../src/assets/css/style.css'
 Vue.use( CKEditor );
 Vue.use(PaperDashboard);
 Vue.use(Vuetify);

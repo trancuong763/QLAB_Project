@@ -21,7 +21,7 @@ const routes = [
   {
     path: "/",
     component: DashboardLayout,
-    redirect: "/dashboard",
+    redirect: "/trang-chu",
     children: [
       {
         path: "trang-chu",
