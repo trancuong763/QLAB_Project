@@ -36,32 +36,32 @@
                 <v-row>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
+                      v-model="editedItem.id"
+                      label="Mã thành viên"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
                       v-model="editedItem.name"
                       label="Họ tên"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
-                      v-model="editedItem.calories"
+                      v-model="editedItem.email"
                       label="Email"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
-                      v-model="editedItem.fat"
+                      v-model="editedItem.phone"
                       label="SĐT"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
-                      v-model="editedItem.carbs"
-                      label="Ngày tạo"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.protein"
-                      label="Trạng thái"
+                      v-model="editedItem.roles"
+                      label="Quyền"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -112,36 +112,50 @@ export default {
       dialogDelete: false,
       headers: [
         {
-          text: "Tên thành viên",
+          text: "Mã thành viên",
           align: "start",
           sortable: false,
-          value: "name",
+          value: "id",
         },
-        { text: "Email", value: "calories" },
-        { text: "Số điện thoại", value: "fat" },
-        { text: "Ngày tạo", value: "carbs" },
-        { text: "Trạng thái", value: "protein" },
+        { text: "Tên thành viên", value: "name" },
+        { text: "Email", value: "email" },
+        { text: "Số điện thoại", value: "phone" },
+        { text: "Ngày tạo", value: "date" },
+        { text: "Quyền", value: "roles" },
         { text: "Hành động", value: "actions", sortable: false },
       ],
       desserts: [],
       editedIndex: -1,
       editedItem: {
+        id: "",
         name: "",
-        calories: "",
-        fat: "",
-        carbs: "",
-        protein: "",
+        email: "",
+        phone: "",
+        date: "",
+        roles: "",
       },
       defaultItem: {
+        id: "",
         name: "",
-        calories: "",
-        fat: "",
-        carbs: "",
-        protein: "",
+        email: "",
+        phone: "",
+        date: "",
+        roles: "",
       },
+      memberList: [],
     };
   },
-
+  mounted(){
+    this.CallAPI(
+      "get",
+      "user/list?page=2&limit=1&order_by=created_at&order_direction=asc",
+      {},
+      (response) => {
+        this.memberList = response.data.data.data;
+        this.desserts = this.memberList;
+      }
+    );
+  },
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? "Thêm mới" : "Sửa";
@@ -163,22 +177,7 @@ export default {
 
   methods: {
     initialize() {
-      this.desserts = [
-        {
-          name: "Nguyễn Xuân Sơn",
-          calories: "nguyensonn124@gmail.com",
-          fat: "0839575644",
-          carbs: "13/11/2020",
-          protein: "Hoạt động",
-        },
-        {
-          name: "Nguyễn Xuân Sơn",
-          calories: "nguyensonn124@gmail.com",
-          fat: "0839575644",
-          carbs: "13/11/2020",
-          protein: "Hoạt động",
-        },
-      ];
+      this.desserts = this.memberList;
     },
 
     editItem(item) {

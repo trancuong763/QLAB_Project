@@ -24,21 +24,25 @@
               <div class="v-data-table__wrapper">
                 <table>
                   <tr>
+                    <td>Họ và tên:</td>
+                    <td>{{name}}</td>
+                  </tr>
+                  <tr>
                     <td width="130px">Số điện thoại:</td>
-                    <td>0839575644</td>
+                    <td>{{phone}}</td>
                   </tr>
                   <tr>
                     <td>Email:</td>
-                    <td>nguyensonn124@gmail.com</td>
+                    <td>{{email}}</td>
                   </tr>
-                  <tr>
+                  <!-- <tr>
                     <td>Địa chỉ:</td>
                     <td>Chưa câp nhật</td>
                   </tr>
                   <tr>
                     <td>Hạn sử dụng:</td>
                     <td>03:09:14 13-12-2020</td>
-                  </tr>
+                  </tr> -->
                 </table>
               </div>
             </v-card-text>
@@ -80,14 +84,14 @@
                 <label for="">Email</label>
                 <input type="email" class="form-control" v-model="email" />
               </div>
-              <div class="form-group">
+              <!-- <div class="form-group">
                 <label for="">Địa chỉ</label>
                 <input type="text" class="form-control" v-model="address" />
               </div>
               <div class="form-group">
                 <label for="">Mô tả</label>
                 <ckeditor :editor="editor" v-model="description"></ckeditor>
-              </div>
+              </div> -->
               <p v-if="errors" class="alert alert-danger">{{errors}}</p>
               <div class="form-group">
                 <button
@@ -111,13 +115,35 @@ export default {
   data() {
     return {
       editor: ClassicEditor,
+      id: localStorage.getItem("id"),
       name: "",
       email: "",
       phone: "",
       address: "",
       description: "",
+      roles: [],
       errors: "",
+      allRoles: [],
     };
+  },
+  mounted(){
+    this.CallAPI("get", "user/detail/" + this.id, {}, (response) => {
+      const profile = response.data.data;
+      this.name = profile.name;
+      this.phone = profile.phone;
+      this.email = profile.email;
+    })
+    this.CallAPI("get", "role/full", {}, (response) => {
+      this.allRoles = response.data.data
+      for(let item of this.allRoles){
+        for(let role of item.permissions){
+          this.roles.push(role.key)
+        }
+      }
+    })
+    this.CallAPI("get", "user/list?page=2&limit=1&order_by=created_at&order_direction=asc", {}, (response) => {
+      console.log(response);
+    })
   },
   methods: {
     updateProfile() {
@@ -138,7 +164,7 @@ export default {
         name: this.name,
         email: this.email,
         phone: this.phone,
-        roles: "[]",
+        roles: this.roles,
       };
       this.CallAPI(
         "put",

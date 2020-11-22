@@ -44,7 +44,7 @@
                     <button class="btn" @click="infoHandle">
                       Đổi mật khẩu
                     </button>
-                    <button class="btn">Đăng xuất</button>
+                    <button class="btn" @click="log_out">Đăng xuất</button>
                   </div>
                 </div>
               </drop-down>
@@ -98,6 +98,13 @@ export default {
     },
     infoHandle() {
       this.$router.push("/thong-tin-ca-nhan");
+    },
+    log_out() {
+      let isConfirm = confirm("Bạn có muốn đăng xuất ?");
+      if (isConfirm) {
+        localStorage.clear();
+        location.reload();
+      }
     },
   },
 };

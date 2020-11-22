@@ -37,67 +37,43 @@
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
                       v-model="editedItem.name"
-                      label="Người tạo"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.calories"
-                      label="Mã hàng"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.fat"
                       label="Tên hàng"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
-                      v-model="editedItem.carbs"
-                      label="Đơn vị tính"
+                      v-model="editedItem.code"
+                      label="Mã hàng"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
-                      v-model="editedItem.protein"
+                      v-model="editedItem.defineLevel"
                       label="Định mức"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
-                      v-model="editedItem.protein"
+                      v-model="editedItem.estimatedForecastLevel"
                       label="Mức báo dự trù"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
-                      v-model="editedItem.protein"
-                      label="Vị trí"
+                      v-model="editedItem.description"
+                      label="Mô tả"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
-                      v-model="editedItem.protein"
+                      v-model="editedItem.unitId"
+                      label="Đơn vị tính"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-model="editedItem.machineStockId"
                       label="Kho/ Máy"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.protein"
-                      label="Số lượng"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.protein"
-                      label="Đơn giá"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.protein"
-                      label="Thành tiền"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -144,51 +120,40 @@ export default {
       dialogDelete: false,
       headers: [
         {
-          text: "Người tạo",
+          text: "Tên hàng",
           align: "start",
           sortable: false,
           value: "name",
         },
-        { text: "Mã hàng", value: "calories" },
-        { text: "Tên hàng", value: "fat" },
-        { text: "ĐVT", value: "carbs" },
-        { text: "Định mức", value: "protein" },
-        { text: "Mức báo dự trù", value: "mucbao" },
-        { text: "Vị trí", value: "vitri" },
-        { text: "Kho / máy", value: "khomay" },
-        { text: "Số lượng", value: "soluong" },
-        { text: "Đơn giá", value: "dongia" },
-        { text: "Thành tiền", value: "thanhtien" },
+        { text: "Mã hàng", value: "code" },
+        { text: "Định mức", value: "defineLevel" },
+        { text: "Mức báo dự trù", value: "estimatedForecastLevel" },
+        { text: "Mô tả", value: "description" },
+        { text: "ĐVT", value: "unitId" },
+        { text: "Kho / máy", value: "machineStockId" },
         { text: "Hành động", value: "actions", sortable: false },
       ],
       desserts: [],
       editedIndex: -1,
       editedItem: {
         name: "",
-        calories: "",
-        fat: "",
-        carbs: "",
-        protein: "",
-        mucbao: "",
-        vitri: "",
-        khomay: "",
-        soluong: "",
-        dongia: "",
-        thanhtien: "",
+        code: "",
+        defineLevel: "",
+        estimatedForecastLevel: "",
+        description: "",
+        unitId: "",
+        machineStockId: "",
       },
       defaultItem: {
         name: "",
-        calories: "",
-        fat: "",
-        carbs: "",
-        protein: "",
-        mucbao: "",
-        vitri: "",
-        khomay: "",
-        soluong: "",
-        dongia: "",
-        thanhtien: "",
+        code: "",
+        defineLevel: "",
+        estimatedForecastLevel: "",
+        description: "",
+        unitId: "",
+        machineStockId: "",
       },
+      materialList: [],
     };
   },
 
@@ -211,36 +176,21 @@ export default {
     this.initialize();
   },
 
+  mounted() {
+    this.CallAPI(
+      "get",
+      "material/list?page=1&limit=10&order_by=created_at&order_direction=asc",
+      {},
+      (response) => {
+        this.materialList = response.data.data.data;
+        this.desserts = this.materialList;
+      }
+    );
+  },
+
   methods: {
     initialize() {
-      this.desserts = [
-        {
-          name: "Nguyễn Sơn",
-          calories: "MH001",
-          fat: "Nước cất",
-          carbs: "Chai",
-          protein: "Cao cấp",
-          mucbao: "Cấp độ 1",
-          vitri: "Ngoại",
-          khomay: "Kho 1",
-          soluong: "10",
-          dongia: "120.000",
-          thanhtien: "1.200.000",
-        },
-        {
-          name: "Khương Tuyến",
-          calories: "MH002",
-          fat: "Nước mắt",
-          carbs: "Chai",
-          protein: "Cao cấp",
-          mucbao: "Cấp độ 2",
-          vitri: "Ngoại",
-          khomay: "Kho 2",
-          soluong: "11",
-          dongia: "20.000",
-          thanhtien: "210.000",
-        },
-      ];
+      this.desserts = this.materialList;
     },
 
     editItem(item) {
@@ -258,6 +208,18 @@ export default {
     deleteItemConfirm() {
       this.desserts.splice(this.editedIndex, 1);
       this.closeDelete();
+      const data = {
+        name: this.editedItem.name,
+        code: this.editedItem.code,
+        defineLevel: this.editedItem.defineLevel,
+        estimatedForecastLevel: this.editedItem.estimatedForecastLevel,
+        description: this.editedItem.description,
+        unitId: this.editedItem.unitId,
+        machineStockId: this.editedItem.machineStockId,
+      };
+      this.CallAPI("delete", "material/delete/1", data, (response) => {
+        console.log(response);
+      });
     },
 
     close() {
@@ -277,10 +239,26 @@ export default {
     },
 
     save() {
+      const data = {
+        name: this.editedItem.name,
+        code: this.editedItem.code,
+        defineLevel: this.editedItem.defineLevel,
+        estimatedForecastLevel: this.editedItem.estimatedForecastLevel,
+        description: this.editedItem.description,
+        unitId: this.editedItem.unitId,
+        machineStockId: this.editedItem.machineStockId,
+      };
       if (this.editedIndex > -1) {
         Object.assign(this.desserts[this.editedIndex], this.editedItem);
+        this.CallAPI("post", "material/update/1", data, (response) => {
+          console.log(response);
+        });
       } else {
-        this.desserts.push(this.editedItem);
+        this.CallAPI("post", "material/create", data, (response) => {
+          if(response.data.code != -1){
+            this.desserts.push(this.editedItem);
+          }
+        });
       }
       this.close();
     },
