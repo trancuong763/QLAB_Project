@@ -4,7 +4,7 @@
       <v-toolbar flat color="primary" dark>
         <v-toolbar-title>Thông tin cá nhân</v-toolbar-title>
       </v-toolbar>
-      <v-tabs vertical>
+      <v-tabs>
         <v-tab>
           <v-icon left> mdi-account </v-icon>
           Thông tin
@@ -21,24 +21,26 @@
         <v-tab-item>
           <v-card flat>
             <v-card-text>
-              <table>
-                <tr>
-                  <td width="150px">Số điện thoại:</td>
-                  <td>0839575644</td>
-                </tr>
-                <tr>
-                  <td>Email:</td>
-                  <td>nguyensonn124@gmail.com</td>
-                </tr>
-                <tr>
-                  <td>Địa chỉ:</td>
-                  <td>Chưa câp nhật</td>
-                </tr>
-                <tr>
-                  <td>Hạn sử dụng:</td>
-                  <td>03:09:14 13-12-2020</td>
-                </tr>
-              </table>
+              <div class="v-data-table__wrapper">
+                <table>
+                  <tr>
+                    <td width="130px">Số điện thoại:</td>
+                    <td>0839575644</td>
+                  </tr>
+                  <tr>
+                    <td>Email:</td>
+                    <td>nguyensonn124@gmail.com</td>
+                  </tr>
+                  <tr>
+                    <td>Địa chỉ:</td>
+                    <td>Chưa câp nhật</td>
+                  </tr>
+                  <tr>
+                    <td>Hạn sử dụng:</td>
+                    <td>03:09:14 13-12-2020</td>
+                  </tr>
+                </table>
+              </div>
             </v-card-text>
           </v-card>
         </v-tab-item>
@@ -68,26 +70,33 @@
             <v-card-text>
               <div class="form-group">
                 <label for="">Họ tên</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  value="Nguyễn Xuân Sơn"
-                />
+                <input type="text" class="form-control" v-model="name" />
               </div>
               <div class="form-group">
                 <label for="">Số điện thoại</label>
-                <input type="text" class="form-control" value="0839575644" />
+                <input type="text" class="form-control" v-model="phone" />
+              </div>
+              <div class="form-group">
+                <label for="">Email</label>
+                <input type="email" class="form-control" v-model="email" />
               </div>
               <div class="form-group">
                 <label for="">Địa chỉ</label>
-                <input type="text" class="form-control" value="Hà Nội" />
+                <input type="text" class="form-control" v-model="address" />
               </div>
               <div class="form-group">
                 <label for="">Mô tả</label>
-                <ckeditor :editor="editor" v-model="editorData"></ckeditor>
+                <ckeditor :editor="editor" v-model="description"></ckeditor>
               </div>
+              <p v-if="errors" class="alert alert-danger">{{errors}}</p>
               <div class="form-group">
-                <button class="btn" style="padding: 8px 30px">Lưu</button>
+                <button
+                  class="btn"
+                  style="padding: 8px 30px"
+                  @click="updateProfile"
+                >
+                  Lưu
+                </button>
               </div>
             </v-card-text>
           </v-card>
@@ -102,8 +111,55 @@ export default {
   data() {
     return {
       editor: ClassicEditor,
-      editorData: "Quá tuyệt vời",
+      name: "",
+      email: "",
+      phone: "",
+      address: "",
+      description: "",
+      errors: "",
     };
+  },
+  methods: {
+    updateProfile() {
+      this.errors = "";
+      if (!this.name || !this.phone || !this.email) {
+        this.error = "Vui lòng nhập đầy đủ thông tin";
+        return;
+      }
+      if(!this.validEmail(this.email)){
+        this.error = "Email không đúng";
+        return;
+      }
+      if(!this.validPhone(this.phone)){
+        this.error = "Số điện thoại không đúng";
+        return;
+      }
+      const data = {
+        name: this.name,
+        email: this.email,
+        phone: this.phone,
+        roles: "[]",
+      };
+      this.CallAPI(
+        "put",
+        "user/update/2",
+        data,
+        (response) => {
+          this.$toast.success("Cập nhật thành công");
+        },
+        (error) => {
+          this.errors = "Xảy ra lỗi";
+        }
+      );
+    },
+    validEmail(email) {
+      const reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return reg.test(email);
+    },
+    validPhone: function (phone) {
+      const reg = /((09|03|07|08|05)+([0-9]{8})\b)/g;
+      return reg.test(phone);
+    },
   },
 };
 </script>
@@ -133,5 +189,14 @@ export default {
 }
 .ck.ck-toolbar {
   border-color: #666;
+}
+@media (max-width: 480px) {
+  .profile .form-group {
+    margin-left: 10px;
+    width: 95%;
+  }
+  .profile table {
+    margin-left: 10px;
+  }
 }
 </style>

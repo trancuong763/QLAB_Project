@@ -235,10 +235,20 @@ export default {
     btn_register(e) {
       this.errors = [];
       e.preventDefault();
-      if (!this.login.email || !this.login.password) {
-        this.errors.push("Vui lòng nhập đầy đủ thông tin");
-        return;
-      }
+      // if (!this.login.email || !this.login.password) {
+      //   this.errors.push("Vui lòng nhập đầy đủ thông tin");
+      //   return;
+      // }
+      const data = {
+        name: "Nguyễn văn ggggg",
+        email: "test213@gmail.com",
+        phone: "0947883647",
+        password: "123123",
+        roles: "[]",
+      };
+      this.CallAPI("post", "user/create", data, (response) => {
+        alert("success");
+      });
     },
   },
   mounted() {},

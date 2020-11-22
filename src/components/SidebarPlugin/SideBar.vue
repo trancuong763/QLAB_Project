@@ -9,7 +9,7 @@
     <!-- -->
     <div class="sidebar-wrapper" id="style-3">
       <div class="logo">
-        <router-link tag="a" to="/dashboard" class="simple-text">
+        <router-link tag="a" to="/bang-dieu-khien" class="simple-text">
             <div class="logo-img">
                 <img src="http://157.245.203.143/images/icon_new.png" alt="">
             </div>

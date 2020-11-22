@@ -21,10 +21,10 @@ const routes = [
   {
     path: "/",
     component: DashboardLayout,
-    redirect: "/",
+    redirect: "/bang-dieu-khien",
     children: [
       {
-        path: "/",
+        path: "bang-dieu-khien",
         name: "Bảng điều khiển",
         component: Dashboard
       },
