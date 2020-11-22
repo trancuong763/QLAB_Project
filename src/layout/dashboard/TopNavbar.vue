@@ -23,10 +23,12 @@
                   <p>Là thành viên từ 11-11-2020</p>
                   <p>Hạn sử dụng 11-12-2020 08:08:08</p>
                 </div>
-                <button class="btn" @click="infoHandle">Thông tin của bạn</button>
+                <button class="btn" @click="infoHandle">
+                  Thông tin của bạn
+                </button>
                 <div class="function">
                   <button class="btn" @click="infoHandle">Đổi mật khẩu</button>
-                  <button class="btn">Đăng xuất</button>
+                  <button class="btn" @click="log_out">Đăng xuất</button>
                 </div>
               </div>
             </drop-down>
@@ -36,7 +38,11 @@
     </nav>
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><router-link to="/" tag="a" style="cursor: pointer;"><i class="fas fa-home"></i> Trang chủ</router-link></li>
+        <li class="breadcrumb-item">
+          <router-link to="/" tag="a" style="cursor: pointer"
+            ><i class="fas fa-home"></i> Trang chủ</router-link
+          >
+        </li>
         <li class="breadcrumb-item active" aria-current="page">
           {{ routeName }}
         </li>
@@ -73,16 +79,24 @@ export default {
     hideSidebar() {
       this.$sidebar.displaySidebar(false);
     },
-    infoHandle(){
-      this.$router.push("/thong-tin-ca-nhan")
-    }
+    infoHandle() {
+      this.$router.push("/thong-tin-ca-nhan");
+    },
+    log_out() {
+      let isConfirm = confirm("Bạn có muốn đăng xuất ?");
+      if (isConfirm) {
+        localStorage.clear();
+        location.reload();
+        this.$router.push("/login");
+      }
+    },
   },
 };
 </script>
 <style>
 .header .navbar {
   background-color: #3c8dbc;
-  border-bottom: 1px solid #DDDDDD;
+  border-bottom: 1px solid #dddddd;
 }
 .header .navbar a {
   color: #fff;
@@ -110,7 +124,7 @@ export default {
 .header .account {
   width: 100%;
   background: #fff;
-  border: 1px solid #DDDDDD;
+  border: 1px solid #dddddd;
   cursor: default;
 }
 .header .account .info {
@@ -128,7 +142,7 @@ export default {
   margin: 0;
   font-size: 17px;
 }
-.header .dropdown-menu{
+.header .dropdown-menu {
   width: 280px;
   left: -100px;
 }
@@ -148,10 +162,10 @@ export default {
   background: #e7e7e7;
   border: 1px solid #999;
 }
-.header .account .btn{
+.header .account .btn {
   line-height: 0;
 }
-.header .account .function{
+.header .account .function {
   height: 54px;
   width: 100%;
   background: #f9f9f9;

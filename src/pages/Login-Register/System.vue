@@ -231,6 +231,24 @@ export default {
         this.errors.push("Vui lòng nhập đầy đủ thông tin");
         return;
       }
+      if (!this.validEmail(this.login.email)) {
+        this.errors.push("Email chưa đúng định dạng!");
+        return;
+      }
+      this.$axios
+        .post(this.$urlAPI + "user/login", {
+          email: this.login.email,
+          password: this.login.password,
+        })
+        .then((response) => {
+          if (response.data.code == -1) {
+            this.errors.push("Tài khoản hoặc mật khẩu chưa chính xác!");
+            return;
+          }
+          localStorage.setItem("token", response.data.data.token);
+          location.reload();
+        });
+      this.errors = [];
     },
     btn_register(e) {
       this.errors = [];
@@ -239,6 +257,14 @@ export default {
         this.errors.push("Vui lòng nhập đầy đủ thông tin");
         return;
       }
+      if (!this.validEmail(this.login.email)) {
+        this.errors.push("Email chưa đúng định dạng!");
+        return;
+      }
+    },
+    validEmail: function (email) {
+      var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(email);
     },
   },
   mounted() {},

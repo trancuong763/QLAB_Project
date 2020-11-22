@@ -1,18 +1,3 @@
-/*!
-
- =========================================================
- * Vue Paper Dashboard - v2.0.0
- =========================================================
-
- * Product Page: http://www.creative-tim.com/product/paper-dashboard
- * Copyright 2019 Creative Tim (http://www.creative-tim.com)
- * Licensed under MIT (https://github.com/creativetimofficial/paper-dashboard/blob/master/LICENSE.md)
-
- =========================================================
-
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
- */
 import Vue from "vue";
 import App from "./App";
 import router from "./router/index";
@@ -23,12 +8,62 @@ import Vuetify from "vuetify";
 import "vuetify/dist/vuetify.min.css";
 import CKEditor from '@ckeditor/ckeditor5-vue';
 import '../src/assets/css/style.css'
-Vue.use( CKEditor );
+import axios from 'axios'
+Vue.prototype.$axios = axios
+Vue.prototype.$header = {
+  headers: {
+    Authorization: localStorage.getItem('token'),
+  },
+};
+Vue.use(CKEditor);
 Vue.use(PaperDashboard);
 Vue.use(Vuetify);
+Vue.prototype.$urlAPI = "http://62f15317a314.ngrok.io/api/";
+Vue.prototype.CallAPI = function (method, url, data, callback, callbackError) {
+  switch (method) {
+    case "get":
+      axios.get(this.$urlAPI + url, this.$header).then((result) => {
+        let statusCode = result.data.statusCode;
+        if (statusCode === 401) {
+          localStorage.clear();
+        }
+        callback(result)
+      })
+      break;
+    case "post":
+      axios.get(this.$urlAPI + url, data, this.$header).then((result) => {
+        let statusCode = result.data.statusCode;
+        if (statusCode === 401) {
+          localStorage.clear();
+        }
+        callback(result)
+      }).catch((error) => callbackError(error))
+      break;
+    case "put":
+      axios.get(this.$urlAPI + url, data, this.$header).then((result) => {
+        let statusCode = result.data.statusCode;
+        if (statusCode === 401) {
+          localStorage.clear();
+        }
+        callback(result)
+      }).catch((error) => callbackError(error))
+      break;
+    case "delete":
+      axios.get(this.$urlAPI + url, data, this.$header).then((result) => {
+        let statusCode = result.data.statusCode;
+        if (statusCode === 401) {
+          localStorage.clear();
+        }
+        callback(result)
+      }).catch((error) => callbackError(error))
+      break;
+  }
+
+}
 new Vue({
   vuetify: new Vuetify(),
   router,
   vuetify: new Vuetify(),
   render: h => h(App)
 }).$mount("#app");
+

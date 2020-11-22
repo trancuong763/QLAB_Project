@@ -17,6 +17,9 @@ import Supplies from "@/pages/Supplies.vue";
 import Supplier from "@/pages/Supplier.vue";
 import Profile from "@/pages/Profile.vue";
 import System from "@/pages/Login-Register/System"
+var isAuthenticated = false;
+if (localStorage.getItem('token')) isAuthenticated = true;
+else isAuthenticated = false;
 const routes = [
   {
     path: "/",
@@ -94,7 +97,11 @@ const routes = [
   {
     path: "/login",
     name: "Đăng nhập",
-    component: System
+    component: System,
+    beforeEnter: (to, from, next) => {
+      if (to.name == 'Đăng nhập' && isAuthenticated) next({ name: 'Bảng điều khiển' })
+      next()
+    },
   },
   { path: "*", component: NotFound }
 ];
