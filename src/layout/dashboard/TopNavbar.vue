@@ -87,7 +87,6 @@ export default {
       if (isConfirm) {
         localStorage.clear();
         location.reload();
-        this.$router.push("/login");
       }
     },
   },
