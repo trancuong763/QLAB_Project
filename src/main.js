@@ -9,17 +9,24 @@ import "vuetify/dist/vuetify.min.css";
 import CKEditor from '@ckeditor/ckeditor5-vue';
 import '../src/assets/css/style.css'
 import axios from 'axios'
+import Toast from "vue-toastification"
+import "vue-toastification/dist/index.css"
+Vue.use(Toast, {
+  transition: "Vue-Toastification__bounce",
+  maxToasts: 20,
+  newestOnTop: true
+});
 Vue.prototype.$axios = axios
 Vue.prototype.$header = {
   headers: {
-    Authorization: localStorage.getItem('token'),
+    "api-token": localStorage.getItem('token'),
   },
 };
 Vue.use(CKEditor);
 Vue.use(PaperDashboard);
 Vue.use(Vuetify);
-Vue.prototype.$urlAPI = "http://62f15317a314.ngrok.io/api/";
-Vue.prototype.CallAPI = function (method, url, data, callback, callbackError) {
+Vue.prototype.$urlAPI = "http://8091338c0726.ngrok.io/api/";
+Vue.prototype.CallAPI = function (method, url, data, callback) {
   switch (method) {
     case "get":
       axios.get(this.$urlAPI + url, this.$header).then((result) => {
@@ -31,31 +38,31 @@ Vue.prototype.CallAPI = function (method, url, data, callback, callbackError) {
       })
       break;
     case "post":
-      axios.get(this.$urlAPI + url, data, this.$header).then((result) => {
+      axios.post(this.$urlAPI + url, data, this.$header).then((result) => {
         let statusCode = result.data.statusCode;
         if (statusCode === 401) {
           localStorage.clear();
         }
         callback(result)
-      }).catch((error) => callbackError(error))
+      })
       break;
     case "put":
-      axios.get(this.$urlAPI + url, data, this.$header).then((result) => {
+      axios.put(this.$urlAPI + url, data, this.$header).then((result) => {
         let statusCode = result.data.statusCode;
         if (statusCode === 401) {
           localStorage.clear();
         }
         callback(result)
-      }).catch((error) => callbackError(error))
+      })
       break;
     case "delete":
-      axios.get(this.$urlAPI + url, data, this.$header).then((result) => {
+      axios.delete(this.$urlAPI + url, this.$header).then((result) => {
         let statusCode = result.data.statusCode;
         if (statusCode === 401) {
           localStorage.clear();
         }
         callback(result)
-      }).catch((error) => callbackError(error))
+      })
       break;
   }
 

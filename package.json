@@ -26,6 +26,7 @@
     "vue-data-table": "^0.1.1",
     "vue-notifyjs": "^0.3.0",
     "vue-router": "^3.0.1",
+    "vue-toastification": "^1.7.8",
     "vuetify": "^2.3.17"
   },
   "devDependencies": {

@@ -246,6 +246,8 @@ export default {
             return;
           }
           localStorage.setItem("token", response.data.data.token);
+          this.login.email = null;
+          this.login.password = null;
           location.reload();
         });
       this.errors = [];
