@@ -22,7 +22,7 @@ Vue.use(Toast, {
   newestOnTop: true
 });
 
-Vue.prototype.$urlAPI = 'http://62f15317a314.ngrok.io/api/'
+Vue.prototype.$urlAPI = 'http://cacbcafcb952.ngrok.io/api/'
 
 Vue.prototype.$config = {
   headers: {
@@ -61,7 +61,7 @@ Vue.prototype.CallAPI = function (method, url, data, callResponse) {
       })
       break;
     case "delete":
-      axios.delete(this.$urlAPI + url, data, this.$config).then((response) => {
+      axios.delete(this.$urlAPI + url, this.$config).then((response) => {
         if (response.data.statusCode === 401) {
           localStorage.clear();
           location.reload();

@@ -100,7 +100,10 @@ const routes = [
     name: "Đăng nhập",
     component: System,
     beforeEnter: (to, from, next) => {
-      if (to.name == 'Đăng nhập' && isAuthenticated) next({ name: 'Bảng điều khiển' })
+      if (to.name == 'Đăng nhập' && isAuthenticated) { 
+        
+        next({ name: 'Bảng điều khiển' })
+      }
       next()
     },
   },

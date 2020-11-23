@@ -3,12 +3,12 @@
     :headers="headers"
     :items="desserts"
     :search="search"
-    sort-by="calories"
+    sort-by="description"
     class="elevation-1"
   >
     <template v-slot:top>
       <v-toolbar flat>
-        <v-toolbar-title>Kho / máy</v-toolbar-title>
+        <v-toolbar-title>Đơn vị</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
         <div style="margin-right: 20px">
@@ -44,7 +44,8 @@
                     <v-textarea
                       name="input-7-1"
                       label="Miêu tả"
-                      v-model="editedItem.calories"
+                      v-model="editedItem.description"
+                      rows="3"
                     ></v-textarea>
                   </v-col>
                 </v-row>
@@ -77,9 +78,9 @@
       <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
       <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
     </template>
-    <template v-slot:no-data>
+    <!-- <template v-slot:no-data>
       <v-btn color="primary" @click="initialize"> Reset </v-btn>
-    </template>
+    </template> -->
   </v-data-table>
 </template>
 <script>
@@ -87,6 +88,7 @@ export default {
   data() {
     return {
       search: "",
+      list: [],
       dialog: false,
       dialogDelete: false,
       headers: [
@@ -95,18 +97,18 @@ export default {
           align: "start",
           value: "name",
         },
-        { text: "Miêu tả", value: "calories", sortable: false },
+        { text: "Miêu tả", value: "description", sortable: false },
         { text: "Hành động", value: "actions", sortable: false },
       ],
       desserts: [],
       editedIndex: -1,
       editedItem: {
         name: "",
-        calories: "",
+        description: "",
       },
       defaultItem: {
         name: "",
-        calories: "",
+        description: "",
       },
     };
   },
@@ -132,44 +134,7 @@ export default {
 
   methods: {
     initialize() {
-      this.desserts = [
-        {
-          name: "Gam",
-          calories: "đơn vị đo cân nặng",
-        },
-        {
-          name: "Kilogram",
-          calories: "đơn vị đo cân nặng",
-        },
-        {
-          name: "Thùng",
-          calories: "đơn vị đo cân nặng",
-        },
-        {
-          name: "Cái",
-          calories: "đơn vị đo cân nặng",
-        },
-        {
-          name: "Lít",
-          calories: "đơn vị đo cân nặng",
-        },
-        {
-          name: "Ml",
-          calories: "đơn vị đo cân nặng",
-        },
-        {
-          name: "Túi",
-          calories: "đơn vị đo cân nặng",
-        },
-        {
-          name: "Chiếc",
-          calories: "đơn vị đo cân nặng",
-        },
-        {
-          name: "Hộp",
-          calories: "đơn vị đo cân nặng",
-        },
-      ];
+      this.desserts = this.list;
     },
 
     editItem(item) {
@@ -185,7 +150,19 @@ export default {
     },
 
     deleteItemConfirm() {
-      this.desserts.splice(this.editedIndex, 1);
+      let id = this.editedIndex;
+      this.CallAPI("delete", "unit/delete/" + id, {}, (response) => {
+        if (response.data.code == -1) {
+          this.$toast.error("Xóa bản ghi không thành công!");
+          return;
+        }
+        if (response.data.code == -100) {
+          this.$toast.error("Không có quyền xóa bản ghi!");
+          return;
+        }
+        this.$toast.success("Xóa bản ghi thành công!");
+        this.desserts.splice(this.editedIndex, 1);
+      });
       this.closeDelete();
     },
 
@@ -207,12 +184,65 @@ export default {
 
     save() {
       if (this.editedIndex > -1) {
+        let data = {
+          name: this.editedItem.name,
+          description: this.editedItem.description,
+        };
+        let id = this.editedItem.id;
+        if (!data.name || !data.description) {
+          this.$toast.error("Vui lòng nhập đầy đủ thông tin!");
+          return;
+        }
+        this.CallAPI("put", "unit/update/" + id, data, (response) => {
+          console.log(response.data);
+          if (response.data.code == -1) {
+            this.$toast.error("Cập nhật không thành công!");
+            return;
+          }
+          if (response.data.code == -100) {
+            this.$toast.error("Không có quyền sửa bản ghi!");
+            return;
+          }
+          this.$toast.success("Cập nhật thành công!");
+        });
         Object.assign(this.desserts[this.editedIndex], this.editedItem);
       } else {
+        let data = {
+          name: this.editedItem.name,
+          description: this.editedItem.description,
+        };
+        if (!data.name || !data.description) {
+          this.$toast.error("Vui lòng nhập đầy đủ thông tin!");
+          return;
+        }
+        this.CallAPI("post", "unit/create", data, (response) => {
+          console.log(response.data);
+          if (response.data.code == -1) {
+            this.$toast.error("Thêm bản ghi không thành công!");
+            return;
+          }
+          if (response.data.code == -100) {
+            this.$toast.error("Không có quyền thêm bản ghi!");
+            return;
+          }
+          this.$toast.success("Thêm bản ghi thành công!");
+        });
         this.desserts.push(this.editedItem);
       }
       this.close();
     },
+  },
+  mounted() {
+    this.CallAPI("get", "unit/list", {}, (response) => {
+      let list = response.data.data.data;
+      for (let item of list) {
+        this.list.push({
+          id: item.id,
+          name: item.name,
+          description: item.description,
+        });
+      }
+    });
   },
 };
 </script>

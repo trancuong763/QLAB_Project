@@ -245,9 +245,10 @@ export default {
           }
           localStorage.setItem("token", response.data.data.token);
           localStorage.setItem("id", response.data.data.user.id);
+          this.login.email = null;
+          this.login.password = null;
           location.reload();
         });
-      this.errors = [];
     },
     btn_register(e) {
       this.errors = [];

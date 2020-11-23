@@ -30,10 +30,10 @@
               <li class="nav-item">
                 <a href="#"> Liên hệ </a>
               </li>
-              <drop-down class="nav-item" title="Nguyễn Xuân Sơn">
+              <drop-down class="nav-item" :title="name">
                 <div class="account">
                   <div class="info">
-                    <h4>Nguyễn Xuân Sơn</h4>
+                    <h4>{{ name }}</h4>
                     <p>Là thành viên từ 11-11-2020</p>
                     <p>Hạn sử dụng 11-12-2020 08:08:08</p>
                   </div>
@@ -78,7 +78,15 @@ export default {
   data() {
     return {
       activeNotifications: false,
+      id: localStorage.getItem("id"),
+      name: "",
     };
+  },
+  mounted(){
+    this.CallAPI("get", "user/detail/" + this.id, {}, (response) => {
+      const profile = response.data.data;
+      this.name = profile.name;
+    });
   },
   methods: {
     capitalizeFirstLetter(string) {

@@ -65,6 +65,7 @@
                     ></v-text-field>
                   </v-col>
                 </v-row>
+                <p v-if="errors" class="alert alert-danger">{{ errors }}</p>
               </v-container>
             </v-card-text>
 
@@ -77,14 +78,10 @@
         </v-dialog>
         <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card>
-            <v-card-title class="headline"
-              >Chắc chắn xóa?</v-card-title
-            >
+            <v-card-title class="headline">Chắc chắn xóa?</v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete"
-                >Hủy</v-btn
-              >
+              <v-btn color="blue darken-1" text @click="closeDelete">Hủy</v-btn>
               <v-btn color="blue darken-1" text @click="deleteItemConfirm"
                 >OK</v-btn
               >
@@ -98,9 +95,9 @@
       <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
       <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
     </template>
-    <template v-slot:no-data>
+    <!-- <template v-slot:no-data>
       <v-btn color="primary" @click="initialize"> Reset </v-btn>
-    </template>
+    </template> -->
   </v-data-table>
 </template>
 <script>
@@ -143,9 +140,10 @@ export default {
         roles: "",
       },
       memberList: [],
+      errors: "",
     };
   },
-  mounted(){
+  mounted() {
     this.CallAPI(
       "get",
       "user/list?page=2&limit=1&order_by=created_at&order_direction=asc",
@@ -193,8 +191,20 @@ export default {
     },
 
     deleteItemConfirm() {
-      this.desserts.splice(this.editedIndex, 1);
       this.closeDelete();
+      this.CallAPI(
+        "delete",
+        "user/delete/" + this.desserts[this.editedIndex].id,
+        {},
+        (response) => {
+          if (response.data.code == -1) {
+            this.$toast.error("Xóa không thành công");
+            return;
+          }
+          this.$toast.success("Xóa thành công");
+          this.desserts.splice(this.editedIndex, 1);
+        }
+      );
     },
 
     close() {
@@ -215,11 +225,77 @@ export default {
 
     save() {
       if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
+        this.errors = "";
+        if (!this.name || !this.phone || !this.email) {
+          this.errors = "Vui lòng nhập đầy đủ thông tin";
+          return;
+        }
+        if (!this.validEmail(this.email)) {
+          this.errors = "Email không đúng";
+          return;
+        }
+        if (!this.validPhone(this.phone)) {
+          this.errors = "Số điện thoại không đúng";
+          return;
+        }
+        this.CallAPI(
+          "put",
+          "user/update/" + this.desserts[this.editedIndex].id,
+          {
+            name: this.editedItem.name,
+            email: this.editedItem.email,
+            phone: this.editedItem.phone,
+            roles: "[]",
+          },
+          (response) => {
+            if (response.data.code == -1) {
+              this.$toast.error("Sửa không thành công");
+              return;
+            }
+            Object.assign(this.desserts[this.editedIndex], this.editedItem);
+            this.close();
+            this.$toast.success("Sửa thành công");
+          }
+        );
       } else {
-        this.desserts.push(this.editedItem);
+        this.errors = "";
+        if (!this.name || !this.phone || !this.email) {
+          this.errors = "Vui lòng nhập đầy đủ thông tin";
+          return;
+        }
+        if (!this.validEmail(this.email)) {
+          this.errors = "Email không đúng";
+          return;
+        }
+        if (!this.validPhone(this.phone)) {
+          this.errors = "Số điện thoại không đúng";
+          return;
+        }
+        const data = {
+          name: this.editedItem.name,
+          email: this.editedItem.email,
+          phone: this.editedItem.phone,
+          password: "123456",
+          roles: "[]",
+        };
+        this.CallAPI("post", "user/create", data, (response) => {
+          if (response.data.code == -1) {
+            this.errors = "Đã xảy ra lỗi";
+            return;
+          }
+          this.$toast.success("Thêm thành công");
+          this.desserts.push(this.editedItem);
+        });
       }
       this.close();
+    },
+    validEmail(email) {
+      const reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return reg.test(email);
+    },
+    validPhone: function (phone) {
+      const reg = /((09|03|07|08|05)+([0-9]{8})\b)/g;
+      return reg.test(phone);
     },
   },
 };

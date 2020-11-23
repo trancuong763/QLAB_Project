@@ -42,8 +42,9 @@
                   </v-col>
                   <v-col cols="12">
                     <v-textarea
-                      v-model="editedItem.calories"
+                      v-model="editedItem.description"
                       label="Mô tả"
+                      rows="3"
                     ></v-textarea>
                   </v-col>
                 </v-row>
@@ -76,9 +77,9 @@
       <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
       <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
     </template>
-    <template v-slot:no-data>
+    <!-- <template v-slot:no-data>
       <v-btn color="primary" @click="initialize"> Reset </v-btn>
-    </template>
+    </template> -->
   </v-data-table>
 </template>
 <script>
@@ -86,6 +87,7 @@ export default {
   data() {
     return {
       search: "",
+      list: [],
       dialog: false,
       dialogDelete: false,
       headers: [
@@ -132,20 +134,7 @@ export default {
 
   methods: {
     initialize() {
-      this.desserts = [
-        {
-          name: "Máy siêu âm",
-          description: "Chức năng đặc biệt siêu âm 3D",
-        },
-        {
-          name: "Máy đo huyết áp",
-          description: "Chức năng đo huyết áp trong 20s",
-        },
-        {
-          name: "Máy đo tim",
-          description: "Đo nhịp tim qua wifi",
-        },
-      ];
+      this.desserts = this.list;
     },
 
     editItem(item) {
@@ -161,7 +150,21 @@ export default {
     },
 
     deleteItemConfirm() {
-      this.desserts.splice(this.editedIndex, 1);
+      
+      let id = this.desserts[this.editedIndex].id;
+      this.CallAPI("delete", "machine-stock/delete/" + id + "?=" + localStorage.getItem("token") , {}, (response)=> {
+        if(response.data.code == -1) {
+          this.$toast.error("Không thể xóa bản ghi!");
+          return ;
+        }
+        if(response.data.code == -100){
+          this.$toast.error("Không có quyền xóa!");
+          return ;
+        }
+        this.desserts.splice(this.editedIndex, 1);
+        this.$toast.success("Xóa bản ghi thành công!");
+      })
+      
       this.closeDelete();
     },
 
@@ -180,15 +183,66 @@ export default {
         this.editedIndex = -1;
       });
     },
-
     save() {
       if (this.editedIndex > -1) {
+        if(!this.editedItem.name || !this.editedItem.description) {
+          this.$toast.error("Vui lòng điền đầy đủ thông tin!");
+          return ;
+        }
+        let data = {
+          name: this.editedItem.name,
+          description: this.editedItem.description
+        }
+        let id = this.editedItem.id;
+        this.CallAPI("put","machine-stock/update/" + id, data, (response)=>
+        {
+          if(response.data.code ==  -1) {
+            this.$toast.error("Cập nhật không thành công!");
+            return ;
+          }
+          if(response.data.code == -100) {
+            this.$toast.error("Không có quyền sửa!");
+            return ;
+          }
+          this.$toast.success("Cập nhật thành công!");
+        } )
         Object.assign(this.desserts[this.editedIndex], this.editedItem);
       } else {
+        if(!this.editedItem.name || !this.editedItem.description) {
+          this.$toast.error("Vui lòng điền đầy đủ thông tin!");
+          return ;
+        }
+        
+        this.CallAPI(
+          "post",
+          "machine-stock/create",
+          this.editedItem
+          ,
+          (response) => {
+            if(response.data.code == -1) {
+              this.$toast.error("Thêm bản ghi không thành công!");
+              return ;
+            }
+            if(response.data.code == -100) {
+              this.$toast.error("Không có quyền thêm!");
+              return ;
+            }
+            this.$toast.success("Thêm bản ghi thành công!");
+          }
+        );
         this.desserts.push(this.editedItem);
       }
       this.close();
     },
+  },
+  mounted() {
+    this.CallAPI("get", "machine-stock/list", {}, (response) => {
+      console.log(response.data);
+      let list = response.data.data.data;
+      for (let item of list) {
+        this.list.push({ id: item.id, name: item.name, description: item.description });
+      }
+    });
   },
 };
 </script>

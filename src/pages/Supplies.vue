@@ -77,6 +77,7 @@
                     ></v-text-field>
                   </v-col>
                 </v-row>
+                <p v-if="errors" class="alert alert-danger">{{ errors }}</p>
               </v-container>
             </v-card-text>
 
@@ -106,9 +107,9 @@
       <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
       <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
     </template>
-    <template v-slot:no-data>
+    <!-- <template v-slot:no-data>
       <v-btn color="primary" @click="initialize"> Reset </v-btn>
-    </template>
+    </template> -->
   </v-data-table>
 </template>
 <script>
@@ -154,6 +155,7 @@ export default {
         machineStockId: "",
       },
       materialList: [],
+      errors: "",
     };
   },
 
@@ -206,20 +208,20 @@ export default {
     },
 
     deleteItemConfirm() {
-      this.desserts.splice(this.editedIndex, 1);
       this.closeDelete();
-      const data = {
-        name: this.editedItem.name,
-        code: this.editedItem.code,
-        defineLevel: this.editedItem.defineLevel,
-        estimatedForecastLevel: this.editedItem.estimatedForecastLevel,
-        description: this.editedItem.description,
-        unitId: this.editedItem.unitId,
-        machineStockId: this.editedItem.machineStockId,
-      };
-      this.CallAPI("delete", "material/delete/1", data, (response) => {
-        console.log(response);
-      });
+      this.CallAPI(
+        "delete",
+        "material/delete/" + this.desserts[this.editedIndex].id,
+        {},
+        (response) => {
+          if (response.data.code == -1) {
+            this.$toast.error("Xóa không thành công");
+            return;
+          }
+          this.$toast.success("Xóa thành công");
+          this.desserts.splice(this.editedIndex, 1);
+        }
+      );
     },
 
     close() {
@@ -239,28 +241,32 @@ export default {
     },
 
     save() {
-      const data = {
-        name: this.editedItem.name,
-        code: this.editedItem.code,
-        defineLevel: this.editedItem.defineLevel,
-        estimatedForecastLevel: this.editedItem.estimatedForecastLevel,
-        description: this.editedItem.description,
-        unitId: this.editedItem.unitId,
-        machineStockId: this.editedItem.machineStockId,
-      };
       if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
-        this.CallAPI("post", "material/update/1", data, (response) => {
-          console.log(response);
-        });
-      } else {
-        this.CallAPI("post", "material/create", data, (response) => {
-          if(response.data.code != -1){
-            this.desserts.push(this.editedItem);
+        this.CallAPI(
+          "put",
+          "material/update/" + this.desserts[this.editedIndex].id,
+          this.editItem,
+          (response) => {
+            if (response.data.code == -1) {
+              this.$toast.error("Sửa không thành công");
+              return;
+            }
+            this.$toast.success("Sửa thành công");
+            Object.assign(this.desserts[this.editedIndex], this.editedItem);
+            this.close();
           }
+        );
+      } else {
+        this.CallAPI("post", "material/create", this.editItem, (response) => {
+          if (response.data.code == -1) {
+            this.$toast.error("Đã xảy ra lỗi");
+            return;
+          }
+          this.$toast.success("Thêm thành công");
+          this.desserts.push(this.editedItem);
+          this.close();
         });
       }
-      this.close();
     },
   },
 };
