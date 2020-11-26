@@ -65,16 +65,27 @@
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field
+                    <v-combobox
                       v-model="editedItem.unitId"
+                      :items="unitIdList"
                       label="Đơn vị tính"
-                    ></v-text-field>
+                    ></v-combobox>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
+                  <v-col cols="12">
+                    <v-combobox
                       v-model="editedItem.machineStockId"
-                      label="Kho/ Máy"
-                    ></v-text-field>
+                      :items="machineList"
+                      label="Kho/Máy"
+                    ></v-combobox>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-combobox
+                      v-model="editedItem.services"
+                      :items="serviceOptions"
+                      label="Dịch vụ"
+                      multiple
+                      chips
+                    ></v-combobox>
                   </v-col>
                 </v-row>
                 <p v-if="errors" class="alert alert-danger">{{ errors }}</p>
@@ -132,6 +143,7 @@ export default {
         { text: "Mô tả", value: "description" },
         { text: "ĐVT", value: "unitId" },
         { text: "Kho / máy", value: "machineStockId" },
+        // { text: "Dịch vụ", value: "services" },
         { text: "Hành động", value: "actions", sortable: false },
       ],
       desserts: [],
@@ -144,6 +156,7 @@ export default {
         description: "",
         unitId: "",
         machineStockId: "",
+        services: [],
       },
       defaultItem: {
         name: "",
@@ -153,9 +166,13 @@ export default {
         description: "",
         unitId: "",
         machineStockId: "",
+        services: [],
       },
       materialList: [],
       errors: "",
+      serviceOptions: [],
+      machineList: [],
+      unitIdList: [],
     };
   },
 
@@ -181,11 +198,36 @@ export default {
   mounted() {
     this.CallAPI(
       "get",
-      "material/list?page=1&limit=10&order_by=created_at&order_direction=asc",
+      "material/list?order_by=created_at&order_direction=asc",
       {},
       (response) => {
         this.materialList = response.data.data.data;
         this.desserts = this.materialList;
+      }
+    );
+    this.CallAPI("get", "service/list?", {}, (response) => {
+      for (let item of response.data.data.data) {
+        this.serviceOptions.push(item["DICHVU_ID"]);
+      }
+    });
+    this.CallAPI(
+      "get",
+      "machine-stock/list?order_by=created_at&order_direction=asc",
+      {},
+      (response) => {
+        for (let item of response.data.data.data) {
+          this.machineList.push(item.id);
+        }
+      }
+    );
+    this.CallAPI(
+      "get",
+      "unit/list?order_by=created_at&order_direction=asc",
+      {},
+      (response) => {
+        for (let item of response.data.data.data) {
+          this.unitIdList.push(item.id);
+        }
       }
     );
   },
@@ -245,7 +287,7 @@ export default {
         this.CallAPI(
           "put",
           "material/update/" + this.desserts[this.editedIndex].id,
-          this.editItem,
+          this.editedItem,
           (response) => {
             if (response.data.code == -1) {
               this.$toast.error("Sửa không thành công");
@@ -257,7 +299,8 @@ export default {
           }
         );
       } else {
-        this.CallAPI("post", "material/create", this.editItem, (response) => {
+        console.log(this.editedItem);
+        this.CallAPI("post", "material/create", this.editedItem, (response) => {
           if (response.data.code == -1) {
             this.$toast.error("Đã xảy ra lỗi");
             return;

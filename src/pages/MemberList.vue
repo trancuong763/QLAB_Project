@@ -36,12 +36,6 @@
                 <v-row>
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field
-                      v-model="editedItem.id"
-                      label="Mã thành viên"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
                       v-model="editedItem.name"
                       label="Họ tên"
                     ></v-text-field>
@@ -56,6 +50,17 @@
                     <v-text-field
                       v-model="editedItem.phone"
                       label="SĐT"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+                      :type="show ? 'text' : 'password'"
+                      name="input-10-2"
+                      label="Mật khẩu"
+                      class="input-group--focused"
+                      @click:append="show = !show"
+                      v-model="editedItem.password"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
@@ -109,12 +114,11 @@ export default {
       dialogDelete: false,
       headers: [
         {
-          text: "Mã thành viên",
+          text: "Họ tên",
           align: "start",
           sortable: false,
-          value: "id",
+          value: "name",
         },
-        { text: "Tên thành viên", value: "name" },
         { text: "Email", value: "email" },
         { text: "Số điện thoại", value: "phone" },
         { text: "Ngày tạo", value: "date" },
@@ -124,29 +128,28 @@ export default {
       desserts: [],
       editedIndex: -1,
       editedItem: {
-        id: "",
         name: "",
         email: "",
         phone: "",
-        date: "",
+        password: "",
         roles: "",
       },
       defaultItem: {
-        id: "",
         name: "",
         email: "",
         phone: "",
-        date: "",
+        password: "",
         roles: "",
       },
       memberList: [],
       errors: "",
+      show: false,
     };
   },
   mounted() {
     this.CallAPI(
       "get",
-      "user/list?page=2&limit=1&order_by=created_at&order_direction=asc",
+      "user/list?order_by=created_at&order_direction=asc",
       {},
       (response) => {
         this.memberList = response.data.data.data;
@@ -226,27 +229,27 @@ export default {
     save() {
       if (this.editedIndex > -1) {
         this.errors = "";
-        if (!this.name || !this.phone || !this.email) {
+        if (
+          !this.editedItem.name ||
+          !this.editedItem.phone ||
+          !this.editedItem.email ||
+          !this.editedItem.password
+        ) {
           this.errors = "Vui lòng nhập đầy đủ thông tin";
           return;
         }
-        if (!this.validEmail(this.email)) {
+        if (!this.validEmail(this.editedItem.email)) {
           this.errors = "Email không đúng";
           return;
         }
-        if (!this.validPhone(this.phone)) {
+        if (!this.validPhone(this.editedItem.phone)) {
           this.errors = "Số điện thoại không đúng";
           return;
         }
         this.CallAPI(
           "put",
           "user/update/" + this.desserts[this.editedIndex].id,
-          {
-            name: this.editedItem.name,
-            email: this.editedItem.email,
-            phone: this.editedItem.phone,
-            roles: "[]",
-          },
+          this.editedItem,
           (response) => {
             if (response.data.code == -1) {
               this.$toast.error("Sửa không thành công");
@@ -259,35 +262,41 @@ export default {
         );
       } else {
         this.errors = "";
-        if (!this.name || !this.phone || !this.email) {
+        console.log(this.editedItem);
+        if (
+          !this.editedItem.name ||
+          !this.editedItem.phone ||
+          !this.editedItem.email
+        ) {
           this.errors = "Vui lòng nhập đầy đủ thông tin";
           return;
         }
-        if (!this.validEmail(this.email)) {
+        if (!this.validEmail(this.editedItem.email)) {
           this.errors = "Email không đúng";
           return;
         }
-        if (!this.validPhone(this.phone)) {
+        if (!this.validPhone(this.editedItem.phone)) {
           this.errors = "Số điện thoại không đúng";
           return;
         }
-        const data = {
-          name: this.editedItem.name,
-          email: this.editedItem.email,
-          phone: this.editedItem.phone,
-          password: "123456",
-          roles: "[]",
-        };
-        this.CallAPI("post", "user/create", data, (response) => {
+        this.CallAPI("post", "user/create", this.editedItem, (response) => {
+          if (response.data.error == "EMAIL_USER_EXIST") {
+            this.errors = "Email đã tồn tại";
+            return;
+          }
+          if (response.data.error == "PASSWORD_WRONG_FORMAT") {
+            this.errors = "Mật khẩu phải có ít nhất 8 ký tự";
+            return;
+          }
           if (response.data.code == -1) {
             this.errors = "Đã xảy ra lỗi";
             return;
           }
           this.$toast.success("Thêm thành công");
           this.desserts.push(this.editedItem);
+          this.close();
         });
       }
-      this.close();
     },
     validEmail(email) {
       const reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

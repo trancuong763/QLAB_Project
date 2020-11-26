@@ -21,15 +21,6 @@
           </button>
           <div class="collapse navbar-collapse">
             <ul class="navbar-nav ml-auto">
-              <li class="nav-item">
-                <a href="#"> Tính năng </a>
-              </li>
-              <li class="nav-item">
-                <a href="#"> Giới Thiệu </a>
-              </li>
-              <li class="nav-item">
-                <a href="#"> Liên hệ </a>
-              </li>
               <drop-down class="nav-item" :title="name">
                 <div class="account">
                   <div class="info">
@@ -48,6 +39,15 @@
                   </div>
                 </div>
               </drop-down>
+              <li class="nav-item">
+                <a href="#"> Tính năng </a>
+              </li>
+              <li class="nav-item">
+                <a href="#"> Giới Thiệu </a>
+              </li>
+              <li class="nav-item">
+                <a href="#"> Liên hệ </a>
+              </li>
             </ul>
           </div>
         </div>
@@ -82,7 +82,7 @@ export default {
       name: "",
     };
   },
-  mounted(){
+  mounted() {
     this.CallAPI("get", "user/detail/" + this.id, {}, (response) => {
       const profile = response.data.data;
       this.name = profile.name;
@@ -196,6 +196,12 @@ export default {
   padding: 0 10px;
   display: flex;
   border-top: 1px solid #eee;
+}
+.navbar-nav > li > .dropdown-menu:after {
+  display: none !important;
+}
+.navbar-nav > li > .dropdown-menu:before {
+  display: none !important;
 }
 @media (min-width: 992px) {
   .header .navbar {
