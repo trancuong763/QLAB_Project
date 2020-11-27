@@ -150,8 +150,7 @@ export default {
     },
 
     deleteItemConfirm() {
-      
-      let id = this.desserts[this.editedIndex].id;
+      let id = this.editedItem.id;
       this.CallAPI("delete", "machine-stock/delete/" + id + "?=" + localStorage.getItem("token") , {}, (response)=> {
         if(response.data.code == -1) {
           this.$toast.error("Không thể xóa bản ghi!");
