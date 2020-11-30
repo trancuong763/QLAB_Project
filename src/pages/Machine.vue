@@ -136,7 +136,15 @@ export default {
     initialize() {
       this.desserts = this.list;
     },
-
+  getList() {
+        this.desserts = [];
+        
+        this.CallAPI("get", "machine-stock/list", {}, (response) => {
+        this.list = response.data.data.data;
+        console.log(this.list);
+        this.desserts = this.list;
+      });
+      },
     editItem(item) {
       this.editedIndex = this.desserts.indexOf(item);
       this.editedItem = Object.assign({}, item);
@@ -150,8 +158,8 @@ export default {
     },
 
     deleteItemConfirm() {
-      let id = this.editedItem.id;
-      this.CallAPI("delete", "machine-stock/delete/" + id + "?=" + localStorage.getItem("token") , {}, (response)=> {
+      let id = this.desserts[this.editedIndex].id;
+      this.CallAPI("delete", "machine-stock/delete/" + id, {}, (response)=> {
         if(response.data.code == -1) {
           this.$toast.error("Không thể xóa bản ghi!");
           return ;
@@ -160,11 +168,12 @@ export default {
           this.$toast.error("Không có quyền xóa!");
           return ;
         }
-        this.desserts.splice(this.editedIndex -1 , 1);
         this.$toast.success("Xóa bản ghi thành công!");
+        this.getList();
+        this.closeDelete();
       })
       
-      this.closeDelete();
+      
     },
 
     close() {
@@ -204,20 +213,21 @@ export default {
             return ;
           }
           this.$toast.success("Cập nhật thành công!");
+          this.getList();
+          this.close();
         } )
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
       } else {
         if(!this.editedItem.name || !this.editedItem.description) {
           this.$toast.error("Vui lòng điền đầy đủ thông tin!");
           return ;
         }
-        
         this.CallAPI(
           "post",
           "machine-stock/create",
           this.editedItem
           ,
           (response) => {
+            console.log(response.data);
             if(response.data.code == -1) {
               this.$toast.error("Thêm bản ghi không thành công!");
               return ;
@@ -227,21 +237,16 @@ export default {
               return ;
             }
             this.$toast.success("Thêm bản ghi thành công!");
+            this.getList();
+            this.close();
           }
         );
-        this.desserts.push(this.editedItem);
       }
-      this.close();
+      
     },
   },
   mounted() {
-    this.CallAPI("get", "machine-stock/list", {}, (response) => {
-      console.log(response.data);
-      let list = response.data.data.data;
-      for (let item of list) {
-        this.list.push({ id: item.id, name: item.name, description: item.description });
-      }
-    });
+   this.getList();
   },
 };
 </script>
