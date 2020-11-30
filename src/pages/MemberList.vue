@@ -34,25 +34,25 @@
             <v-card-text>
               <v-container>
                 <v-row>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="6">
                     <v-text-field
                       v-model="editedItem.name"
                       label="Họ tên"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="6">
                     <v-text-field
                       v-model="editedItem.email"
                       label="Email"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="6">
                     <v-text-field
                       v-model="editedItem.phone"
                       label="SĐT"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="6">
                     <v-text-field
                       :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
                       :type="show ? 'text' : 'password'"
@@ -63,11 +63,15 @@
                       v-model="editedItem.password"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
+                  <v-col cols="12">
+                    <v-combobox
                       v-model="editedItem.roles"
+                      :items="roleList"
                       label="Quyền"
-                    ></v-text-field>
+                      multiple
+                      chips
+                      item-text="title"
+                    ></v-combobox>
                   </v-col>
                 </v-row>
                 <p v-if="errors" class="alert alert-danger">{{ errors }}</p>
@@ -122,7 +126,6 @@ export default {
         { text: "Email", value: "email" },
         { text: "Số điện thoại", value: "phone" },
         { text: "Ngày tạo", value: "date" },
-        { text: "Quyền", value: "roles" },
         { text: "Hành động", value: "actions", sortable: false },
       ],
       desserts: [],
@@ -144,18 +147,18 @@ export default {
       memberList: [],
       errors: "",
       show: false,
+      roleList: [],
     };
   },
   mounted() {
-    this.CallAPI(
-      "get",
-      "user/list?order_by=created_at&order_direction=asc",
-      {},
-      (response) => {
-        this.memberList = response.data.data.data;
-        this.desserts = this.memberList;
+    this.CallAPI("get", "role/full", {}, (response) => {
+      for (let item of response.data.data) {
+        for (let role of item.permissions) {
+          this.roleList.push(role);
+        }
       }
-    );
+    });
+    this.getMemberList();
   },
   computed: {
     formTitle() {
@@ -177,6 +180,18 @@ export default {
   },
 
   methods: {
+    getMemberList() {
+      this.desserts = [];
+      this.CallAPI(
+        "get",
+        "user/list?order_by=created_at&order_direction=asc",
+        {},
+        (response) => {
+          this.memberList = response.data.data.data;
+          this.desserts = this.memberList;
+        }
+      );
+    },
     initialize() {
       this.desserts = this.memberList;
     },
@@ -200,12 +215,16 @@ export default {
         "user/delete/" + this.desserts[this.editedIndex].id,
         {},
         (response) => {
+          if (response.data.error == "UNAUTHORIZED") {
+            this.$toast.error("Không được phép!");
+            return;
+          }
           if (response.data.code == -1) {
             this.$toast.error("Xóa không thành công");
             return;
           }
           this.$toast.success("Xóa thành công");
-          this.desserts.splice(this.editedIndex, 1);
+          this.getMemberList();
         }
       );
     },
@@ -227,73 +246,67 @@ export default {
     },
 
     save() {
+      this.errors = "";
+      if (
+        !this.editedItem.name ||
+        !this.editedItem.phone ||
+        !this.editedItem.email ||
+        !this.editedItem.password
+      ) {
+        this.errors = "Vui lòng nhập đầy đủ thông tin!";
+        return;
+      }
+      if (!this.validEmail(this.editedItem.email)) {
+        this.errors = "Email không hợp lệ!";
+        return;
+      }
+      if (!this.validPhone(this.editedItem.phone)) {
+        this.errors = "Số điện thoại không đúng!";
+        return;
+      }
+      if (this.editedItem.password.length < 8) {
+        this.errors = "Mật khẩu phải có ít nhất 8 ký tự!";
+        return;
+      }
       if (this.editedIndex > -1) {
-        this.errors = "";
-        if (
-          !this.editedItem.name ||
-          !this.editedItem.phone ||
-          !this.editedItem.email ||
-          !this.editedItem.password
-        ) {
-          this.errors = "Vui lòng nhập đầy đủ thông tin";
-          return;
-        }
-        if (!this.validEmail(this.editedItem.email)) {
-          this.errors = "Email không đúng";
-          return;
-        }
-        if (!this.validPhone(this.editedItem.phone)) {
-          this.errors = "Số điện thoại không đúng";
-          return;
-        }
         this.CallAPI(
           "put",
           "user/update/" + this.desserts[this.editedIndex].id,
           this.editedItem,
           (response) => {
-            if (response.data.code == -1) {
-              this.$toast.error("Sửa không thành công");
+            if (response.data.error == "UNAUTHORIZED") {
+              this.$toast.error("Không được phép!");
               return;
             }
-            Object.assign(this.desserts[this.editedIndex], this.editedItem);
-            this.close();
+            if (response.data.error == "EMAIL_USER_EXIST") {
+              this.errors = "Email đã tồn tại";
+              return;
+            }
+            if (response.data.code == -1) {
+              this.$toast.error("Đã xảy ra lỗi: " + response.data.error);
+              return;
+            }
+            this.getMemberList();
             this.$toast.success("Sửa thành công");
+            this.close();
           }
         );
       } else {
-        this.errors = "";
-        console.log(this.editedItem);
-        if (
-          !this.editedItem.name ||
-          !this.editedItem.phone ||
-          !this.editedItem.email
-        ) {
-          this.errors = "Vui lòng nhập đầy đủ thông tin";
-          return;
-        }
-        if (!this.validEmail(this.editedItem.email)) {
-          this.errors = "Email không đúng";
-          return;
-        }
-        if (!this.validPhone(this.editedItem.phone)) {
-          this.errors = "Số điện thoại không đúng";
-          return;
-        }
         this.CallAPI("post", "user/create", this.editedItem, (response) => {
+          if (response.data.error == "UNAUTHORIZED") {
+            this.$toast.error("Không được phép!");
+            return;
+          }
           if (response.data.error == "EMAIL_USER_EXIST") {
             this.errors = "Email đã tồn tại";
             return;
           }
-          if (response.data.error == "PASSWORD_WRONG_FORMAT") {
-            this.errors = "Mật khẩu phải có ít nhất 8 ký tự";
-            return;
-          }
           if (response.data.code == -1) {
-            this.errors = "Đã xảy ra lỗi";
+            this.$toast.error("Đã xảy ra lỗi: " + response.data.error);
             return;
           }
+          this.getMemberList();
           this.$toast.success("Thêm thành công");
-          this.desserts.push(this.editedItem);
           this.close();
         });
       }

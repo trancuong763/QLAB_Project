@@ -25,16 +25,11 @@
                 <div class="account">
                   <div class="info">
                     <h4>{{ name }}</h4>
-                    <p>Là thành viên từ 11-11-2020</p>
-                    <p>Hạn sử dụng 11-12-2020 08:08:08</p>
+                    <!-- <p>Là thành viên từ 11-11-2020</p>
+                    <p>Hạn sử dụng 11-12-2020 08:08:08</p> -->
                   </div>
-                  <button class="btn" @click="infoHandle">
-                    Thông tin của bạn
-                  </button>
                   <div class="function">
-                    <button class="btn" @click="infoHandle">
-                      Đổi mật khẩu
-                    </button>
+                    <button class="btn" @click="infoHandle">Thông tin</button>
                     <button class="btn" @click="log_out">Đăng xuất</button>
                   </div>
                 </div>
@@ -108,11 +103,8 @@ export default {
       this.$router.push("/thong-tin-ca-nhan");
     },
     log_out() {
-      let isConfirm = confirm("Bạn có muốn đăng xuất ?");
-      if (isConfirm) {
-        localStorage.clear();
-        location.reload();
-      }
+      localStorage.clear();
+      location.reload();
     },
   },
 };

@@ -9,10 +9,10 @@
           <v-icon left> mdi-account </v-icon>
           Thông tin
         </v-tab>
-        <v-tab>
+        <!-- <v-tab>
           <v-icon left> mdi-lock </v-icon>
           Mật khẩu
-        </v-tab>
+        </v-tab> -->
         <v-tab>
           <v-icon left> mdi-access-point </v-icon>
           Cập nhật
@@ -48,7 +48,7 @@
             </v-card-text>
           </v-card>
         </v-tab-item>
-        <v-tab-item>
+        <!-- <v-tab-item>
           <v-card flat>
             <v-card-text>
               <div class="form-group">
@@ -68,7 +68,7 @@
               </div>
             </v-card-text>
           </v-card>
-        </v-tab-item>
+        </v-tab-item> -->
         <v-tab-item>
           <v-card flat>
             <v-card-text>
@@ -84,13 +84,25 @@
                 <label for="">Email</label>
                 <input type="email" class="form-control" v-model="email" />
               </div>
-              <!-- <div class="form-group">
-                <label for="">Địa chỉ</label>
-                <input type="text" class="form-control" v-model="address" />
-              </div>
               <div class="form-group">
-                <label for="">Mô tả</label>
-                <ckeditor :editor="editor" v-model="description"></ckeditor>
+                <label for="">Mật khẩu</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  v-model="password"
+                />
+              </div>
+              <!-- <div class="roles">
+                <label for="">Quyền</label>
+                <v-combobox
+                  v-model="roles"
+                  :items="roleList"
+                  item-text="title"
+                  multiple
+                  outlined
+                  dense
+                  disabled
+                ></v-combobox>
               </div> -->
               <p v-if="errors" class="alert alert-danger">{{ errors }}</p>
               <div class="form-group">
@@ -119,11 +131,12 @@ export default {
       name: "",
       email: "",
       phone: "",
+      password: "",
       address: "",
       description: "",
-      roles: [],
       errors: "",
-      allRoles: [],
+      roleList: [],
+      roles: [],
     };
   },
   mounted() {
@@ -132,12 +145,12 @@ export default {
       this.name = profile.name;
       this.phone = profile.phone;
       this.email = profile.email;
+      this.roles = profile.roles;
     });
     this.CallAPI("get", "role/full", {}, (response) => {
-      this.allRoles = response.data.data;
-      for (let item of this.allRoles) {
+      for (let item of response.data.data) {
         for (let role of item.permissions) {
-          this.roles.push(role.key);
+          this.roleList.push(role);
         }
       }
     });
@@ -145,7 +158,7 @@ export default {
   methods: {
     updateProfile() {
       this.errors = "";
-      if (!this.name || !this.phone || !this.email) {
+      if (!this.name || !this.phone || !this.email || !this.password) {
         this.errors = "Vui lòng nhập đầy đủ thông tin";
         return;
       }
@@ -157,16 +170,26 @@ export default {
         this.errors = "Số điện thoại không đúng";
         return;
       }
+      if (this.password.length < 8) {
+        this.errors = "Mật khẩu phải có ít nhất 8 ký tự";
+        return;
+      }
       const data = {
         name: this.name,
         email: this.email,
         phone: this.phone,
-        roles: JSON.stringify(this.roles),
+        password: this.password,
+        roles: this.roles,
       };
+      console.log(data);
       this.CallAPI("put", "user/update/" + this.id, data, (response) => {
-        if(response.data.code == -1){
-          this.errors = "Cập nhật không thành công";
-          return
+        if (response.data.error == "UNAUTHORIZED") {
+          this.$toast.error("Không được phép!");
+          return;
+        }
+        if (response.data.code == -1) {
+          this.$toast.error("Cập không nhật thành công");
+          return;
         }
         this.$toast.success("Cập nhật thành công");
       });
@@ -189,7 +212,7 @@ export default {
 .profile table {
   margin-left: 30px;
 }
-.profile input {
+.profile .form-group input {
   border: 1px solid #666;
 }
 .profile .form-control {
@@ -208,6 +231,17 @@ export default {
 }
 .ck.ck-toolbar {
   border-color: #666;
+}
+.roles {
+  margin-left: 30px;
+  width: 70%;
+}
+.roles input {
+  min-height: 40px;
+}
+.v-text-field--outlined fieldset {
+  border: 1px solid #666 !important;
+  min-height: 46px;
 }
 @media (max-width: 480px) {
   .profile .form-group {

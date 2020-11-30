@@ -34,49 +34,53 @@
             <v-card-text>
               <v-container>
                 <v-row>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="6">
                     <v-text-field
                       v-model="editedItem.name"
                       label="Tên hàng"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="6">
                     <v-text-field
                       v-model="editedItem.code"
                       label="Mã hàng"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="6">
                     <v-text-field
                       v-model="editedItem.defineLevel"
                       label="Định mức"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="6">
                     <v-text-field
                       v-model="editedItem.estimatedForecastLevel"
                       label="Mức báo dự trù"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-model="editedItem.description"
-                      label="Mô tả"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12" sm="6">
                     <v-combobox
-                      v-model="editedItem.unitId"
+                      v-model="editedItem.unit"
                       :items="unitIdList"
                       label="Đơn vị tính"
+                      item-text="name"
+                      item-value="id"
+                    ></v-combobox>
+                  </v-col>
+                  <v-col cols="12" sm="6">
+                    <v-combobox
+                      v-model="editedItem.machineStock"
+                      :items="machineList"
+                      label="Kho/Máy"
+                      item-text="name"
+                      item-value="id"
                     ></v-combobox>
                   </v-col>
                   <v-col cols="12">
-                    <v-combobox
-                      v-model="editedItem.machineStockId"
-                      :items="machineList"
-                      label="Kho/Máy"
-                    ></v-combobox>
+                    <v-textarea
+                      v-model="editedItem.description"
+                      label="Mô tả"
+                    ></v-textarea>
                   </v-col>
                   <v-col cols="12">
                     <v-combobox
@@ -85,6 +89,8 @@
                       label="Dịch vụ"
                       multiple
                       chips
+                      item-text="TENDICHVU"
+                      item-value="DICHVU_ID"
                     ></v-combobox>
                   </v-col>
                 </v-row>
@@ -140,10 +146,8 @@ export default {
         { text: "Mã hàng", value: "code" },
         { text: "Định mức", value: "defineLevel" },
         { text: "Mức báo dự trù", value: "estimatedForecastLevel" },
-        { text: "Mô tả", value: "description" },
-        { text: "ĐVT", value: "unitId" },
-        { text: "Kho / máy", value: "machineStockId" },
-        // { text: "Dịch vụ", value: "services" },
+        { text: "ĐVT", value: "unit.name" },
+        { text: "Kho / máy", value: "machineStock.name" },
         { text: "Hành động", value: "actions", sortable: false },
       ],
       desserts: [],
@@ -154,8 +158,8 @@ export default {
         defineLevel: "",
         estimatedForecastLevel: "",
         description: "",
-        unitId: "",
-        machineStockId: "",
+        unit: null,
+        machineStock: null,
         services: [],
       },
       defaultItem: {
@@ -164,8 +168,8 @@ export default {
         defineLevel: "",
         estimatedForecastLevel: "",
         description: "",
-        unitId: "",
-        machineStockId: "",
+        unit: null,
+        machineStock: null,
         services: [],
       },
       materialList: [],
@@ -196,28 +200,16 @@ export default {
   },
 
   mounted() {
-    this.CallAPI(
-      "get",
-      "material/list?order_by=created_at&order_direction=asc",
-      {},
-      (response) => {
-        this.materialList = response.data.data.data;
-        this.desserts = this.materialList;
-      }
-    );
+    this.getMaterialList();
     this.CallAPI("get", "service/list?", {}, (response) => {
-      for (let item of response.data.data.data) {
-        this.serviceOptions.push(item["DICHVU_ID"]);
-      }
+      this.serviceOptions = response.data.data.data;
     });
     this.CallAPI(
       "get",
       "machine-stock/list?order_by=created_at&order_direction=asc",
       {},
       (response) => {
-        for (let item of response.data.data.data) {
-          this.machineList.push(item.id);
-        }
+        this.machineList = response.data.data.data;
       }
     );
     this.CallAPI(
@@ -225,14 +217,23 @@ export default {
       "unit/list?order_by=created_at&order_direction=asc",
       {},
       (response) => {
-        for (let item of response.data.data.data) {
-          this.unitIdList.push(item.id);
-        }
+        this.unitIdList = response.data.data.data;
       }
     );
   },
 
   methods: {
+    getMaterialList() {
+      this.CallAPI(
+        "get",
+        "material/list?order_by=created_at&order_direction=asc",
+        {},
+        (response) => {
+          this.materialList = response.data.data.data;
+          this.desserts = response.data.data.data;
+        }
+      );
+    },
     initialize() {
       this.desserts = this.materialList;
     },
@@ -256,12 +257,16 @@ export default {
         "material/delete/" + this.desserts[this.editedIndex].id,
         {},
         (response) => {
-          if (response.data.code == -1) {
-            this.$toast.error("Xóa không thành công");
+          if (response.data.error == "UNAUTHORIZED") {
+            this.$toast.error("Không được phép!");
             return;
           }
-          this.$toast.success("Xóa thành công");
-          this.desserts.splice(this.editedIndex, 1);
+          if (response.data.code == -1) {
+            this.$toast.error("Xóa không thành công!");
+            return;
+          }
+          this.$toast.success("Xóa thành công!");
+          this.getMaterialList();
         }
       );
     },
@@ -283,30 +288,69 @@ export default {
     },
 
     save() {
+      this.errors = "";
+      if (
+        !this.editedItem.name ||
+        !this.editedItem.code ||
+        !this.editedItem.defineLevel ||
+        !this.editedItem.estimatedForecastLevel ||
+        !this.editedItem.description ||
+        !this.editedItem.unit ||
+        !this.editedItem.machineStock ||
+        !this.editedItem.services[0]
+      ) {
+        this.errors = "Vui lòng nhập đủ thông tin!";
+        return;
+      }
+      const data = {
+        name: this.editedItem.name,
+        code: this.editedItem.code,
+        defineLevel: this.editedItem.defineLevel,
+        estimatedForecastLevel: this.editedItem.estimatedForecastLevel,
+        description: this.editedItem.description,
+        unitId: this.editedItem.unit.id,
+        machineStockId: this.editedItem.machineStock.id,
+        services: this.editedItem.services,
+      };
       if (this.editedIndex > -1) {
         this.CallAPI(
           "put",
           "material/update/" + this.desserts[this.editedIndex].id,
-          this.editedItem,
+          data,
           (response) => {
-            if (response.data.code == -1) {
-              this.$toast.error("Sửa không thành công");
+            if (response.data.error == "CODE_EXISTED") {
+              this.errors = "Mã hàng đã tồn tại!";
               return;
             }
-            this.$toast.success("Sửa thành công");
-            Object.assign(this.desserts[this.editedIndex], this.editedItem);
+            if (response.data.error == "UNAUTHORIZED") {
+              this.$toast.error("Không được phép!");
+              return;
+            }
+            if (response.data.code == -1) {
+              this.$toast.error("Đã xảy ra lỗi: " + response.data.error);
+              return;
+            }
+            this.$toast.success("Sửa thành công!");
+            this.getMaterialList();
             this.close();
           }
         );
       } else {
-        console.log(this.editedItem);
-        this.CallAPI("post", "material/create", this.editedItem, (response) => {
+        this.CallAPI("post", "material/create", data, (response) => {
+          if (response.data.error == "CODE_EXISTED") {
+            this.errors = "Mã hàng đã tồn tại!";
+            return;
+          }
+          if (response.data.error == "UNAUTHORIZED") {
+            this.$toast.error("Không được phép!");
+            return;
+          }
           if (response.data.code == -1) {
-            this.$toast.error("Đã xảy ra lỗi");
+            this.$toast.error("Đã xảy ra lỗi: " + response.data.error);
             return;
           }
           this.$toast.success("Thêm thành công");
-          this.desserts.push(this.editedItem);
+          this.getMaterialList();
           this.close();
         });
       }
