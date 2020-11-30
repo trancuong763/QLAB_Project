@@ -150,8 +150,10 @@ export default {
     },
 
     deleteItemConfirm() {
-      let id = this.editedIndex;
+      let id = this.editedItem.id;
+      console.log(id);
       this.CallAPI("delete", "unit/delete/" + id, {}, (response) => {
+        console.log(response.data);
         if (response.data.code == -1) {
           this.$toast.error("Xóa bản ghi không thành công!");
           return;
@@ -188,7 +190,9 @@ export default {
           name: this.editedItem.name,
           description: this.editedItem.description,
         };
+        
         let id = this.editedItem.id;
+        console.log(data,id)
         if (!data.name || !data.description) {
           this.$toast.error("Vui lòng nhập đầy đủ thông tin!");
           return;
@@ -235,6 +239,7 @@ export default {
   mounted() {
     this.CallAPI("get", "unit/list", {}, (response) => {
       let list = response.data.data.data;
+      console.log(list);
       for (let item of list) {
         this.list.push({
           id: item.id,
