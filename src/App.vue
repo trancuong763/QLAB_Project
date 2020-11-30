@@ -1,5 +1,5 @@
 <template>
-  <div :class="{'nav-open': $sidebar.showSidebar}" id="app" data-app>
+  <div :class="{ 'nav-open': $sidebar.showSidebar }" id="app" data-app>
     <notifications></notifications>
     <router-view></router-view>
   </div>
@@ -37,16 +37,19 @@ export default {};
     transform: scale(1.2, 0.7);
   }
 }
-.breadcrumb a{
+.breadcrumb a {
   color: #3c8dbc;
   font-weight: 600;
 }
-.breadcrumb{
+.breadcrumb {
   background-color: #fff !important;
   font-weight: 600;
   color: #333;
 }
-.moving-arrow{
+.moving-arrow {
   display: none !important;
+}
+.Vue-Toastification__toast--success {
+  background-color: #3c8dbc !important;
 }
 </style>
