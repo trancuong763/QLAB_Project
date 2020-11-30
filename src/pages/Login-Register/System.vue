@@ -3,19 +3,19 @@
     <v-main>
       <v-container class="fill-height" fluid>
         <v-row align="center" justify="center">
-          <v-col cols="12" sm="8" md="8">
+          <v-col cols="12" sm="8" md="5">
             <v-card class="elevation-12">
               <v-window v-model="step">
                 <v-window-item :value="1">
                   <v-row>
-                    <v-col cols="12" md="8" sm="8">
+                    <v-col cols="12">
                       <v-card-text class="mt-12">
                         <h1
                           class="text-center display-2 teal--text text-accent-3"
                         >
                           Đăng nhập vào hệ thống
                         </h1>
-                        <div class="text-center" mt-4>
+                        <!-- <div class="text-center" mt-4>
                           <v-btn class="mx-2" fab color="black" outlined>
                             <v-icon>fab fa-facebook-f</v-icon>
                           </v-btn>
@@ -25,10 +25,10 @@
                           <v-btn class="mx-2" fab color="black" outlined>
                             <v-icon>fab fa-linkedin-in</v-icon>
                           </v-btn>
-                        </div>
-                        <h4 class="text-center mlt-4">
+                        </div> -->
+                        <!-- <h4 class="text-center mlt-4">
                           Để đăng nhập vào hệ thống bạn cần có một tài khoản
-                        </h4>
+                        </h4> -->
                         <v-form>
                           <v-text-field
                             v-model="login.email"
@@ -50,8 +50,7 @@
                             color="teal accent-3"
                           >
                           </v-text-field>
-                        </v-form>
-                        <div
+                          <div
                           class="alert alert-danger"
                           role="alert"
                           v-for="item in errors"
@@ -59,7 +58,9 @@
                         >
                           {{ item }}
                         </div>
-                        <h4 class="text-center mlt-4">Quên mật khẩu ?</h4>
+                        </v-form>
+                        
+                        <!-- <h4 class="text-center mlt-4">Quên mật khẩu ?</h4> -->
                         <div class="text-center mt-5">
                           <v-btn
                             rounded
@@ -71,11 +72,11 @@
                         </div>
                       </v-card-text>
                     </v-col>
-                    <v-col cols="12" md="4" sm="4" class="teal accent-3">
+                    <!-- <v-col cols="12" md="4" sm="4" class="teal accent-3">
                       <v-card-text class="white--text mt-12">
-                        <h1 class="text-center display-1">Xin chào !</h1>
+                        <h1 class="text-center display-1">Welcome !</h1>
                         <h5 class="text-center">
-                          Nếu chưa có tài khoản, vui lòng đăng ký tại đây
+                          Chào mừng bạn đến với hệ thống quản lý QLAB.
                         </h5>
                       </v-card-text>
                       <div class="text-center">
@@ -87,10 +88,10 @@
                           >Đăng ký</v-btn
                         >
                       </div>
-                    </v-col>
+                    </v-col> -->
                   </v-row>
                 </v-window-item>
-                <v-window-item :value="2">
+                <!-- <v-window-item :value="2">
                   <v-row class="fill-height">
                     <v-col cols="12" md="4" class="teal accent-3">
                       <v-card-text class="white--text mt-12">
@@ -188,7 +189,7 @@
                       </div>
                     </v-col>
                   </v-row>
-                </v-window-item>
+                </v-window-item> -->
               </v-window>
             </v-card>
           </v-col>
@@ -272,4 +273,9 @@ export default {
 </script>
 
 <style>
+  @media(min-width: 1200px) {
+    form {
+      padding: 30px 60px 20px 60px;
+    }
+  }
 </style>
