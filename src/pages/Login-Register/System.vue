@@ -66,7 +66,7 @@
                             rounded
                             color="teal accent-3"
                             dark
-                            @click="btn_login"
+                            @click.prevent="btn_login"
                             >Đăng Nhập</v-btn
                           >
                         </div>
