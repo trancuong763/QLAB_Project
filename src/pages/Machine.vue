@@ -160,7 +160,7 @@ export default {
           this.$toast.error("Không có quyền xóa!");
           return ;
         }
-        this.desserts.splice(this.editedIndex, 1);
+        this.desserts.splice(this.editedIndex -1 , 1);
         this.$toast.success("Xóa bản ghi thành công!");
       })
       

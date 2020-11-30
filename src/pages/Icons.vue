@@ -163,7 +163,7 @@ export default {
           return;
         }
         this.$toast.success("Xóa bản ghi thành công!");
-        this.desserts.splice(this.editedIndex, 1);
+        this.desserts.splice(this.editedIndex - 1, 1);
       });
       this.closeDelete();
     },
