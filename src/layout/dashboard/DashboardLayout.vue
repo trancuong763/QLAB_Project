@@ -17,11 +17,11 @@
         <sidebar-link to="/don-vi"
           ><i class="fas fa-gem"></i>Đơn vị</sidebar-link
         >
-         <sidebar-link to="/yeu-cau-xet-nghiem"
-          ><i class="fas fa-user-check"></i>Yêu cầu xét nghiệm</sidebar-link
-        >
-        <sidebar-link to="/nha-cung-cap"
+        <!-- <sidebar-link to="/nha-cung-cap"
           ><i class="fas fa-building"></i>Nhà cung cấp</sidebar-link
+        > -->
+        <sidebar-link to="/yeu-cau-xet-nghiem"
+          ><i class="fas fa-user-check"></i>Yêu cầu xét nghiệm</sidebar-link
         >
         <sidebar-link to="/hoa-chat-nhap-kho"
           ><i class="fas fa-sign-in-alt"></i>Hóa chất nhập kho</sidebar-link
