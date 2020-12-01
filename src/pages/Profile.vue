@@ -158,6 +158,7 @@ export default {
   methods: {
     updateProfile() {
       this.errors = "";
+      this.email = this.email.trim();
       if (!this.name || !this.phone || !this.email || !this.password) {
         this.errors = "Vui lòng nhập đầy đủ thông tin";
         return;

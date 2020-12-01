@@ -247,6 +247,7 @@ export default {
 
     save() {
       this.errors = "";
+      this.editedItem.email = this.editedItem.email.trim();
       if (
         !this.editedItem.name ||
         !this.editedItem.phone ||

@@ -35,7 +35,7 @@ Vue.prototype.CallAPI = function (method, url, data, callResponse) {
     case "post":
       axios.post(this.$urlAPI + url, data, this.$config).then((response) => {
         if (response.data.statusCode === 401) {
-          localStorage.clear();
+          sessionStorage.clear();
           location.reload();
         }
         callResponse(response)
@@ -45,7 +45,7 @@ Vue.prototype.CallAPI = function (method, url, data, callResponse) {
       axios.get(this.$urlAPI + url, this.$config)
         .then((response) => {
           if (response.data.statusCode === 401) {
-            localStorage.clear();
+            sessionStorage.clear();
             location.reload();
           }
           callResponse(response)
@@ -54,7 +54,7 @@ Vue.prototype.CallAPI = function (method, url, data, callResponse) {
     case "put":
       axios.put(this.$urlAPI + url, data, this.$config).then((response) => {
         if (response.data.statusCode === 401) {
-          localStorage.clear();
+          sessionStorage.clear();
           location.reload();
         }
         callResponse(response)
@@ -63,7 +63,7 @@ Vue.prototype.CallAPI = function (method, url, data, callResponse) {
     case "delete":
       axios.delete(this.$urlAPI + url, this.$config).then((response) => {
         if (response.data.statusCode === 401) {
-          localStorage.clear();
+          sessionStorage.clear();
           location.reload();
         }
         callResponse(response)

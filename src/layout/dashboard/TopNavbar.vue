@@ -21,7 +21,11 @@
           </button>
           <div class="collapse navbar-collapse">
             <ul class="navbar-nav ml-auto">
-              <drop-down class="nav-item" :title="name">
+              <drop-down
+                class="nav-item"
+                :title="name"
+                style="margin-right: 100px"
+              >
                 <div class="account">
                   <div class="info">
                     <h4>{{ name }}</h4>
@@ -34,7 +38,7 @@
                   </div>
                 </div>
               </drop-down>
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <a href="#"> Tính năng </a>
               </li>
               <li class="nav-item">
@@ -42,7 +46,7 @@
               </li>
               <li class="nav-item">
                 <a href="#"> Liên hệ </a>
-              </li>
+              </li> -->
             </ul>
           </div>
         </div>
@@ -79,6 +83,10 @@ export default {
   },
   mounted() {
     this.CallAPI("get", "user/detail/" + this.id, {}, (response) => {
+      if (!response.data.data) {
+        localStorage.clear();
+        window.reload();
+      }
       const profile = response.data.data;
       this.name = profile.name;
     });

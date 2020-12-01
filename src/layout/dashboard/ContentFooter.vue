@@ -9,9 +9,9 @@
         </ul>
       </nav>
       <div class="copyright d-flex flex-wrap">
-        &copy; Coded with
+        &copy; Copyright
         <i class="fa fa-heart heart"></i> by
-        <a href="https://www.facebook.com/khuongtuyen.08" target="_blank"> &nbsp; KingDomTeam.</a>
+        <a href="#" target="_blank"> &nbsp; KingDomTeam.</a>
       </div>
     </div>
   </footer>
