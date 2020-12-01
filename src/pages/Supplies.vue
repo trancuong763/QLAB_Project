@@ -50,12 +50,14 @@
                     <v-text-field
                       v-model="editedItem.defineLevel"
                       label="Định mức"
+                      type="number"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6">
                     <v-text-field
                       v-model="editedItem.estimatedForecastLevel"
                       label="Mức báo dự trù"
+                      type="number"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6">
