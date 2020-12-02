@@ -44,6 +44,7 @@
         </div>
       </div>
       <div class="col-md-3">
+        <label for="">&nbsp;</label><br>
         <div class="btn btn-light looking" @click="show_list">
           <span v-if="!isSearching"
             >Tìm kiếm
@@ -52,7 +53,11 @@
               class="v-icon notranslate mdi mdi-magnify theme--light"
             ></i
           ></span>
-          <span v-if="isSearching">Đang tìm...</span>
+          <span v-if="isSearching">
+            <div  class="spinner-border text-secondary" role="status">
+  <span class="sr-only">Đang tìm...</span>
+</div>
+          </span>
         </div>
       </div>
     </div>

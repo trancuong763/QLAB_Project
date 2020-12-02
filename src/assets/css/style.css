@@ -9,12 +9,9 @@
 	background: none!important;
 }
 .looking {
-
 	color:#6c757d !important;
 	background-color: #fffcf5;
 	border: none!important;
-	padding: 6px 17px;
-    margin-top: 29px;
 }
 .looking:hover {
 	background-color: #f8f9fa;
@@ -24,4 +21,14 @@
 }
 #start_date__dialog_ .btn:focus , #end_date__dialog_ .btn:focus {
 	color: #000!important;
+}
+.spinner-border {
+	width: 16px;
+	height: 16px;
+}
+.looking * {
+	font-size: 12px!important;
+}
+.mdi-magnify::before {
+	font-size: 20px!important;
 }
