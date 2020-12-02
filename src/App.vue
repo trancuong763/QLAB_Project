@@ -6,7 +6,31 @@
 </template>
 
 <script>
-export default {};
+export default {
+  created() {
+    this.$vuetify.lang.locales = {
+      en: {
+        dataIterator: {
+          noResultsText: "Không tìm thấy bản ghi phù hợp",
+        },
+        dataTable: {
+          itemsPerPageText: "Số hàng: ",
+          ariaLabel: {
+            sortNone: "",
+            activateAscending: "",
+          },
+        },
+        noDataText: "Không có bản ghi nào",
+        dataFooter: {
+          pageText: "{0}-{1} trong {2}",
+          itemsPerPageAll: "Tất cả",
+          prevPage: "Trước",
+          nextPage: "Tiếp",
+        },
+      },
+    };
+  },
+};
 </script>
 
 <style lang="scss">

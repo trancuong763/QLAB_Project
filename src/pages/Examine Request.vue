@@ -45,10 +45,14 @@
       </div>
       <div class="col-md-3">
         <div class="btn btn-light looking" @click="show_list">
-          <i
-            aria-hidden="true"
-            class="v-icon notranslate mdi mdi-magnify theme--light"
-          ></i>
+          <span v-if="!isSearching"
+            >Tìm kiếm
+            <i
+              aria-hidden="true"
+              class="v-icon notranslate mdi mdi-magnify theme--light"
+            ></i
+          ></span>
+          <span v-if="isSearching">Đang tìm...</span>
         </div>
       </div>
     </div>
@@ -138,6 +142,7 @@ export default {
         { text: "Ngày tạo", value: "NGAYTAO" },
       ],
       food: [],
+      isSearching: false,
     };
   },
   watch: {
@@ -152,20 +157,21 @@ export default {
   },
   methods: {
     getList() {
+      this.isSearching = true;
       this.food = [];
       this.CallAPI(
         "get",
         `request/list?limit=9999999999&startDate=${this.start_date}&endDate=${this.end_date}&serviceGroup=1`,
         {},
         (response) => {
-          
+          this.isSearching = false;
           let error = response.data.error;
           if (error == "START_DATE_NOT_GREATER_THAN_END_DATE") {
-            this.$toast.info("Ngày bắt đầu không thể lớn hơn ngày kết thúc");
+            this.errors.push("Ngày không hợp lệ!");
+            return;
           }
           if (response.data.code === 1) {
             this.list = response.data.data.data;
-            console.log(this.list);
             for (let item of this.list) {
               this.food.push({
                 MAYTE: item.MAYTE,
@@ -187,7 +193,7 @@ export default {
       e.preventDefault();
       this.errors = [];
       if (!this.start_date || !this.end_date) {
-        this.errors.push("Vui lòng nhập đầy đủ thông tin!");
+        this.errors.push("Vui lòng nhập ngày cần tìm!");
         return;
       }
       this.errors = [];
@@ -202,9 +208,9 @@ export default {
         (response) => {
           let error = response.data.error;
           if (error == "START_DATE_NOT_GREATER_THAN_END_DATE") {
-            this.$toast.info("Ngày bắt đầu không thể lớn hơn ngày kết thúc");
+            this.errors.push("Ngày không hợp lệ!");
           }
-          if(response.data.code == 1) {
+          if (response.data.code == 1) {
             window.open(`${response.data.data.path}`, "_self");
           }
         }
@@ -214,14 +220,14 @@ export default {
       e.preventDefault();
       this.errors = [];
       if (!this.start_date || !this.end_date) {
-        this.errors.push("Vui lòng nhập đầy đủ thông tin!");
+        this.errors.push("Vui lòng nhập ngày cần tìm!");
         return;
       }
       this.errors = [];
       this.getList();
     },
     formatDate(date) {
-      return new Date(date).toLocaleDateString('en-GB');
+      return new Date(date).toLocaleDateString("en-GB");
     },
     formatGender(value) {
       if (value == 1) {
