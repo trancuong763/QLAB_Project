@@ -149,15 +149,17 @@ export default {
       this.food = [];
       this.CallAPI(
         "get",
-        `request/list?startDate=${this.start_date}&endDate=${this.end_date}&serviceGroup=2`,
+        `request/list?limit=9999999999&startDate=${this.start_date}&endDate=${this.end_date}&serviceGroup=1`,
         {},
         (response) => {
+          
           let error = response.data.error;
           if (error == "START_DATE_NOT_GREATER_THAN_END_DATE") {
             this.$toast.info("Ngày bắt đầu không thể lớn hơn ngày kết thúc");
           }
           if (response.data.code === 1) {
             this.list = response.data.data.data;
+            console.log(this.list);
             for (let item of this.list) {
               this.food.push({
                 MAYTE: item.MAYTE,
@@ -181,21 +183,24 @@ export default {
         return;
       }
       this.errors = [];
-      var printWindow = window.open("", "", "height=400,width=1200");
-      printWindow.document.write(
-        "<html><head><title>Danh sách yêu cầu xét nghiệm</title><style>"
+      this.CallAPI(
+        "post",
+        "request/export",
+        {
+          startDate: this.start_date,
+          endDate: this.end_date,
+          serviceGroup: 1,
+        },
+        (response) => {
+          let error = response.data.error;
+          if (error == "START_DATE_NOT_GREATER_THAN_END_DATE") {
+            this.$toast.info("Ngày bắt đầu không thể lớn hơn ngày kết thúc");
+          }
+          if(response.data.code == 1) {
+            window.open(`${response.data.data.path}`, "_self");
+          }
+        }
       );
-      printWindow.document.write(
-        "table {border: 1px solid #dee2e6; margin-bottom: 1rem; border-collapse: collapse;} table td, table th {border-bottom-width: 2px;} table th {vertical-align: bottom; border-bottom: 2px solid #dee2e6;} table td, table th {padding: .75rem; border: 1px solid #dee2e6;}"
-      );
-      printWindow.document.write("</style></head><body>");
-      printWindow.document.write(
-        this.$el.querySelector("#export_excel").innerHTML
-      );
-      printWindow.document.write("</body></style>");
-      printWindow.focus();
-      printWindow.print();
-      //   printWindow.close();
     },
     show_list(e) {
       e.preventDefault();
