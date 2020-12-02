@@ -184,12 +184,11 @@ export default {
       this.desserts = [];
       this.CallAPI(
         "get",
-        "user/list?order_by=created_at&order_direction=asc",
+        "user/list?page=1&limit=99999&order_by=created_at&order_direction=asc",
         {},
         (response) => {
           this.memberList = response.data.data.data;
           this.desserts = this.memberList;
-          console.log(this.memberList);
         }
       );
     },
