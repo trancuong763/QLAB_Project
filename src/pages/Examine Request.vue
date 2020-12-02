@@ -93,6 +93,7 @@
           <th>Giới tính</th>
           <th>Ngày sinh</th>
           <th>Địa chỉ thường trú</th>
+          <th>Ngày tạo</th>
         </tr>
         <tr v-for="(item, index) in food" :key="index">
           <td>{{ index + 1 }}</td>
@@ -103,6 +104,7 @@
           <td>{{ formatGender(item.GIOITINH) }}</td>
           <td>{{ formatDate(item.NGAYSINH) }}</td>
           <td>{{ item.DIACHITHUONGTRU }}</td>
+          <td>{{ formatDate(item.NGAYTAO) }}</td>
         </tr>
       </table>
     </div>
@@ -133,6 +135,7 @@ export default {
         { text: "Giới tính", value: "GIOITINH" },
         { text: "Ngày sinh", value: "NGAYSINH" },
         { text: "Địa chỉ thường trú", value: "DIACHITHUONGTRU" },
+        { text: "Ngày tạo", value: "NGAYTAO" },
       ],
       food: [],
     };
@@ -173,6 +176,7 @@ export default {
                 GIOITINH: this.formatGender(item.GIOITINH),
                 NGAYSINH: this.formatDate(item.NGAYSINH),
                 DIACHITHUONGTRU: item.DIACHITHUONGTRU,
+                NGAYTAO: this.formatDate(item.NGAYTAO),
               });
             }
           }
