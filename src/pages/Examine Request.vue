@@ -23,21 +23,23 @@
     <div class="row">
       <div class="col-md-3">
         <div>
-          <label for="start_date">Ngày bắt đầu</label>
+          <label for="start_date">Từ ngày</label>
           <b-form-datepicker
             id="start_date"
             v-model="start_date"
             class="mb-2"
+            label-no-date-selected="Chưa ngày nào được chọn"
           ></b-form-datepicker>
         </div>
       </div>
       <div class="col-md-3">
         <div>
-          <label for="end_date">Ngày kết thúc</label>
+          <label for="end_date">Đến ngày</label>
           <b-form-datepicker
             id="end_date"
             v-model="end_date"
             class="mb-2"
+            label-no-date-selected="Chưa ngày nào được chọn"
           ></b-form-datepicker>
         </div>
       </div>
@@ -213,7 +215,7 @@ export default {
       this.getList();
     },
     formatDate(date) {
-      return new Date(date).toLocaleDateString();
+      return new Date(date).toLocaleDateString('en-GB') ;
     },
     formatGender(value) {
       if (value == 1) {
