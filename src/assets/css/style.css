@@ -7,7 +7,6 @@
 }
 #start_date, #end_date {
 	background: none!important;
-	color: #000!important;
 }
 .looking {
 
@@ -19,6 +18,9 @@
 }
 .looking:hover {
 	background-color: #f8f9fa;
+}
+.bi-calendar-fill{
+	color: #000!important;
 }
 #start_date__dialog_ .btn:focus , #end_date__dialog_ .btn:focus {
 	color: #000!important;
