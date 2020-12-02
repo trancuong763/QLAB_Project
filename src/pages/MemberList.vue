@@ -252,7 +252,8 @@ export default {
         !this.editedItem.name ||
         !this.editedItem.phone ||
         !this.editedItem.email ||
-        !this.editedItem.password
+        !this.editedItem.password ||
+        !this.editedItem.roles[0]
       ) {
         this.errors = "Vui lòng nhập đầy đủ thông tin!";
         return;
