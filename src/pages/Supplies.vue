@@ -203,12 +203,12 @@ export default {
 
   mounted() {
     this.getMaterialList();
-    this.CallAPI("get", "service/list?", {}, (response) => {
+    this.CallAPI("get", "service/list?limit=99999", {}, (response) => {
       this.serviceOptions = response.data.data.data;
     });
     this.CallAPI(
       "get",
-      "machine-stock/list?order_by=created_at&order_direction=asc",
+      "machine-stock/list?page=1&limit=99999&order_by=created_at&order_direction=asc",
       {},
       (response) => {
         this.machineList = response.data.data.data;
@@ -216,7 +216,7 @@ export default {
     );
     this.CallAPI(
       "get",
-      "unit/list?order_by=created_at&order_direction=asc",
+      "unit/list?page=1&limit=99999&order_by=created_at&order_direction=asc",
       {},
       (response) => {
         this.unitIdList = response.data.data.data;
@@ -228,7 +228,7 @@ export default {
     getMaterialList() {
       this.CallAPI(
         "get",
-        "material/list?order_by=created_at&order_direction=asc",
+        "material/list?page=1&limit=99999&order_by=created_at&order_direction=asc",
         {},
         (response) => {
           this.materialList = response.data.data.data;

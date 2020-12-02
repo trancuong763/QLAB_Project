@@ -138,7 +138,7 @@ export default {
     },
     getList() {
       this.desserts = [];
-      this.CallAPI("get", "unit/list", {}, (response) => {
+      this.CallAPI("get", "unit/list?page=1&limit=99999&order_by=created_at&order_direction=asc", {}, (response) => {
       this.list = response.data.data.data;
       this.desserts = this.list;
     });
