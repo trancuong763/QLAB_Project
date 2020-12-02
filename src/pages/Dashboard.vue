@@ -36,7 +36,7 @@
     </div>
     <div class="row">
       <div class="col-md-12">
-        <img src="6e7ad4c6b7a346fd1fb2.jpg" style="width: 100%; margin-top: 20px" />
+        <img src="@/assets/img/hospital.jpg" style="width: 100%; margin-top: 20px" />
       </div>
     </div>
   </div>
