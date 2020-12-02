@@ -189,6 +189,7 @@ export default {
         (response) => {
           this.memberList = response.data.data.data;
           this.desserts = this.memberList;
+          console.log(this.memberList);
         }
       );
     },

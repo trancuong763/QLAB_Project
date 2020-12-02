@@ -20,10 +20,13 @@
         <!-- <sidebar-link to="/nha-cung-cap"
           ><i class="fas fa-building"></i>Nhà cung cấp</sidebar-link
         > -->
-        <sidebar-link to="/hoa-chat-nhap-kho"
-          ><i class="fas fa-sign-in-alt"></i>Hóa chất nhập kho</sidebar-link
+        <sidebar-link to="/yeu-cau-xet-nghiem"
+          ><i class="fas fa-user-check"></i>Yêu cầu xét nghiệm</sidebar-link
         >
-        <sidebar-link to="/hoa-chat-xuat-kho"
+        <!-- <sidebar-link to="/hoa-chat-nhap-kho"
+          ><i class="fas fa-sign-in-alt"></i>Hóa chất nhập kho</sidebar-link
+        > -->
+        <!-- <sidebar-link to="/hoa-chat-xuat-kho"
           ><i class="fas fa-external-link-alt"></i>Hóa chất xuất
           kho</sidebar-link
         >
@@ -36,7 +39,7 @@
         >
         <sidebar-link to="/thong-ke-ton-kho"
           ><i class="fas fa-trash-alt"></i>Thống kê tồn kho</sidebar-link
-        >
+        > -->
       </template>
       <mobile-menu>
         <li class="nav-item">
