@@ -126,9 +126,10 @@ export default {
           sortable: false,
           value: "MAYTE",
         },
+        { text: "Số bệnh án", value: "SOBENHAN" },
+        { text: "Tên bệnh nhân", value: "TENBENHNHAN" },
         { text: "Tên dịch vụ", value: "TENDICHVU" },
         { text: "Nhóm dịch vụ", value: "TENNHOMDICHVU" },
-        { text: "Số bệnh án", value: "SOBENHAN" },
         { text: "Giới tính", value: "GIOITINH" },
         { text: "Ngày sinh", value: "NGAYSINH" },
         { text: "Địa chỉ thường trú", value: "DIACHITHUONGTRU" },
@@ -166,6 +167,7 @@ export default {
               this.food.push({
                 MAYTE: item.MAYTE,
                 TENDICHVU: item.TENDICHVU,
+                TENBENHNHAN: item.TENBENHNHAN,
                 SOBENHAN: item.SOBENHAN,
                 TENNHOMDICHVU: item.TENNHOMDICHVU,
                 GIOITINH: this.formatGender(item.GIOITINH),
@@ -215,7 +217,7 @@ export default {
       this.getList();
     },
     formatDate(date) {
-      return new Date(date).toLocaleDateString('en-GB') ;
+      return new Date(date).toLocaleDateString('en-GB');
     },
     formatGender(value) {
       if (value == 1) {
