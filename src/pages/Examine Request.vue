@@ -1,26 +1,16 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-md-3">
+      <div class="col-md-3 flex space-between">
         <button class="btn btn-success" @click="export_excel">
-          <svg
-            width="1em"
-            height="1em"
-            viewBox="0 0 16 16"
-            class="bi bi-file-earmark-excel-fill"
-            fill="currentColor"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M2 2a2 2 0 0 1 2-2h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm7.5 1.5v-2l3 3h-2a1 1 0 0 1-1-1zM5.884 6.68a.5.5 0 1 0-.768.64L7.349 10l-2.233 2.68a.5.5 0 0 0 .768.64L8 10.781l2.116 2.54a.5.5 0 0 0 .768-.641L8.651 10l2.233-2.68a.5.5 0 0 0-.768-.64L8 9.219l-2.116-2.54z"
-            />
-          </svg>
-          Xuất Excel
+          <i class="fas fa-file-excel" style="margin-right: 10px;"></i> Xuất Excel
+        </button>
+          <button class="btn btn-success" @click="export_pdf">
+         <i class="fas fa-file-pdf" style="margin-right: 10px;"></i> Xuất PDF
         </button>
       </div>
     </div>
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-md-3">
         <div>
           <label for="start_date">Từ ngày</label>
@@ -44,7 +34,7 @@
         </div>
       </div>
       <div class="col-md-3">
-        <label for="">&nbsp;</label><br>
+        <label for="">&nbsp;</label><br />
         <div class="btn btn-light looking" @click="show_list">
           <span v-if="!isSearching"
             >Tìm kiếm
@@ -54,46 +44,83 @@
             ></i
           ></span>
           <span v-if="isSearching">
-            <div  class="spinner-border text-secondary" role="status">
-  <span class="sr-only">Đang tìm...</span>
-</div>
+            <div class="spinner-border text-secondary" role="status">
+              <span class="sr-only">Đang tìm...</span>
+            </div>
           </span>
         </div>
       </div>
-    </div>
-    <!-- <div class="row">
-      <div class="col-md-4">
-         <div>
+    </div> -->
+    <div class="row">
+      <div class="col-md-3">
+      <div>
     <label for="start_date">Từ ngày</label>
     <b-input-group class="mb-3">
       <b-form-input
         id="start_date"
-        v-model="start_date"
+        v-model="formatted_start"
         type="text"
-        placeholder="DD-MM-YYYY"
-
+        placeholder="Ngày / Tháng / Năm"
         autocomplete="off"
+        v-on:change="formatDateSelected_start(formatted_start)"
       ></b-form-input>
       <b-input-group-append>
         <b-form-datepicker
           v-model="start_date"
           button-only
           aria-controls="start_date"
-          @context="onContext"
+          @context="onContext_start"
         ></b-form-datepicker>
       </b-input-group-append>
     </b-input-group>
-    <p class="mb-1">Value: '{{ start_date}}'</p>
-    <p class="mb-1">Selected: '{{ selected }}'</p>
-    <p>Formatted: '{{ formatted }}'</p>
   </div>
       </div>
-    </div> -->
+       <div class="col-md-3">
+      <div>
+    <label for="end_date_date">Đến ngày</label>
+    <b-input-group class="mb-3">
+      <b-form-input
+        id="end_date"
+        v-model="formatted_end"
+        type="text"
+        placeholder="Ngày / Tháng / Năm"
+        autocomplete="off"
+        v-on:change="formatDateSelected_end(formatted_end)"
+      ></b-form-input>
+      <b-input-group-append>
+        <b-form-datepicker
+          v-model="end_date"
+          button-only
+          aria-controls="end_date"
+          @context="onContext_end"
+        ></b-form-datepicker>
+      </b-input-group-append>
+    </b-input-group>
+  </div>
+      </div>
+       <div class="col-md-3">
+        <label for="">&nbsp;</label><br />
+        <div class="btn btn-light looking" @click="show_list">
+          <span v-if="!isSearching"
+            >Tìm kiếm
+            <i
+              aria-hidden="true"
+              class="v-icon notranslate mdi mdi-magnify theme--light"
+            ></i
+          ></span>
+          <span v-if="isSearching">
+            <div class="spinner-border text-secondary" role="status">
+              <span class="sr-only">Đang tìm...</span>
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
     <div class="row" v-if="errors != []">
       <div class="col-md-6">
         <div
-          class="alert alert-danger"
-          role="alert"
+          class="text-danger"
+          style="margin-bottom: 15px;"
           v-for="item in errors"
           :key="item"
         >
@@ -120,14 +147,16 @@
         no-data-text="Không có dữ liệu"
       ></v-data-table>
     </v-card>
-    <div id="export_excel" style="display: none">
+    <div id="export_pdf" style="display: none">
+      <h3 class="text-center">Từ ngày {{start_date}} đến ngày {{end_date}}</h3>
       <table style="width: 1200px">
         <tr>
           <th>#</th>
           <th>Mã y tế</th>
+          <th>Số bệnh án</th>
+          <th>Tên bệnh nhân</th>
           <th>Tên dịch vụ</th>
           <th>Nhóm dịch vụ</th>
-          <th>Số bệnh án</th>
           <th>Giới tính</th>
           <th>Ngày sinh</th>
           <th>Địa chỉ thường trú</th>
@@ -136,9 +165,10 @@
         <tr v-for="(item, index) in food" :key="index">
           <td>{{ index + 1 }}</td>
           <td>{{ item.MAYTE }}</td>
+          <td>{{ item.SOBENHAN }}</td>
+          <td>{{ item.TENBENHNHAN }}</td>
           <td>{{ item.TENDICHVU }}</td>
           <td>{{ item.TENNHOMDICHVU }}</td>
-          <td>{{ item.SOBENHAN }}</td>
           <td>{{ formatGender(item.GIOITINH) }}</td>
           <td>{{ formatDate(item.NGAYSINH) }}</td>
           <td>{{ item.DIACHITHUONGTRU }}</td>
@@ -156,8 +186,10 @@ export default {
       search: "",
       start_date: "",
       end_date: "",
-      formatted: '',
-      selected: '',
+      formatted_start: "",
+      selected_start: "",
+      formatted_end: "",
+      selected_end: "",
       list: [],
       errors: [],
       isErrors: false,
@@ -191,19 +223,33 @@ export default {
       this.loader = null;
     },
   },
+  computed: {
+  },
   methods: {
-      onContext(ctx) {
-        // The date formatted in the locale, or the `label-no-date-selected` string
-        this.formatted = ctx.selectedFormatted
-        // The following will be an empty string until a valid date is entered
-        this.selected = ctx.selectedYMD
-      },
+    onContext_start(ctx) {
+      if(ctx.selectedDate != null ) {
+        this.formatted_start = new Date(ctx.selectedDate).toLocaleDateString("en-GB");
+        this.selected_start = ctx.selectedYMD;
+      }
+    },
+    formatDateSelected_start(date) {
+      this.start_date = date.split("/").reverse().join("-");
+    },
+     onContext_end(ctx) {
+      if(ctx.selectedDate != null ) {
+        this.formatted_end = new Date(ctx.selectedDate).toLocaleDateString("en-GB");
+        this.selected_end = ctx.selectedYMD;
+      }
+    },
+      formatDateSelected_end(date) {
+      this.end_date = date.split("/").reverse().join("-");
+    },
     getList() {
       this.isSearching = true;
       this.food = [];
       this.CallAPI(
         "get",
-        `request/list?limit=9999999999&startDate=${this.start_date}&endDate=${this.end_date}&serviceGroup=1`,
+        `request/list?limit=9999999999&startDate=${this.selected_start}&endDate=${this.selected_end}&serviceGroup=1`,
         {},
         (response) => {
           this.isSearching = false;
@@ -267,6 +313,26 @@ export default {
       }
       this.errors = [];
       this.getList();
+    },
+    export_pdf(e) {
+       e.preventDefault();
+      this.errors = [];
+      if (!this.start_date || !this.end_date) {
+        this.errors.push("Vui lòng nhập ngày cần tìm!");
+        return;
+      }
+      this.errors = [];
+      var printWindow = window.open("", "", "height=400,width=1200");
+      printWindow.document.write("<html><head><title>Danh sách yêu cầu xét nghiệm</title>");
+      printWindow.document.write(
+        "<style>table,td,th{border: 1px solid #ddd;text-align: left;}table {border-collapse: collapse;width: 100%;}th, td {padding: 15px;}</style>"
+      );
+      printWindow.document.write("</head><body>");
+      printWindow.document.write(this.$el.querySelector("#export_pdf").innerHTML);
+      printWindow.document.write("</body></html>");
+      printWindow.focus();
+      printWindow.print();
+      printWindow.close();
     },
     formatDate(date) {
       return new Date(date).toLocaleDateString("en-GB");
