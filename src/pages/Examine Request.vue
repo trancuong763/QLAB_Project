@@ -67,6 +67,7 @@
       <b-input-group-append>
         <b-form-datepicker
           v-model="start_date"
+          label-no-date-selected="Chưa có ngày nào được chọn"
           button-only
           aria-controls="start_date"
           @context="onContext_start"
@@ -92,6 +93,7 @@
           v-model="end_date"
           button-only
           aria-controls="end_date"
+          label-no-date-selected="Chưa có ngày nào được chọn"
           @context="onContext_end"
         ></b-form-datepicker>
       </b-input-group-append>
