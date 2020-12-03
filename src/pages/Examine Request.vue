@@ -44,6 +44,7 @@
         </div>
       </div>
       <div class="col-md-3">
+        <label for="">&nbsp;</label><br>
         <div class="btn btn-light looking" @click="show_list">
           <span v-if="!isSearching"
             >Tìm kiếm
@@ -52,13 +53,45 @@
               class="v-icon notranslate mdi mdi-magnify theme--light"
             ></i
           ></span>
-          <span v-if="isSearching">Đang tìm...</span>
+          <span v-if="isSearching">
+            <div  class="spinner-border text-secondary" role="status">
+  <span class="sr-only">Đang tìm...</span>
+</div>
+          </span>
         </div>
         <!-- <div class="loading">
           <div class="lds-ring"><div></div><div></div><div></div></div>
         </div> -->
       </div>
     </div>
+    <!-- <div class="row">
+      <div class="col-md-4">
+         <div>
+    <label for="start_date">Từ ngày</label>
+    <b-input-group class="mb-3">
+      <b-form-input
+        id="start_date"
+        v-model="start_date"
+        type="text"
+        placeholder="DD-MM-YYYY"
+
+        autocomplete="off"
+      ></b-form-input>
+      <b-input-group-append>
+        <b-form-datepicker
+          v-model="start_date"
+          button-only
+          aria-controls="start_date"
+          @context="onContext"
+        ></b-form-datepicker>
+      </b-input-group-append>
+    </b-input-group>
+    <p class="mb-1">Value: '{{ start_date}}'</p>
+    <p class="mb-1">Selected: '{{ selected }}'</p>
+    <p>Formatted: '{{ formatted }}'</p>
+  </div>
+      </div>
+    </div> -->
     <div class="row" v-if="errors != []">
       <div class="col-md-6">
         <div
@@ -87,6 +120,7 @@
         :headers="headers"
         :items="food"
         :search="search"
+        no-data-text="Không có dữ liệu"
       ></v-data-table>
     </v-card>
     <div id="export_excel" style="display: none">
@@ -125,6 +159,8 @@ export default {
       search: "",
       start_date: "",
       end_date: "",
+      formatted: '',
+      selected: '',
       list: [],
       errors: [],
       isErrors: false,
@@ -157,6 +193,12 @@ export default {
     },
   },
   methods: {
+      onContext(ctx) {
+        // The date formatted in the locale, or the `label-no-date-selected` string
+        this.formatted = ctx.selectedFormatted
+        // The following will be an empty string until a valid date is entered
+        this.selected = ctx.selectedYMD
+      },
     getList() {
       this.isSearching = true;
       this.food = [];
