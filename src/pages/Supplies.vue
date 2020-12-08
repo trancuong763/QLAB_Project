@@ -21,11 +21,11 @@
           ></v-text-field>
         </div>
         <v-dialog v-model="dialog" max-width="500px">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
+          <!-- <template v-slot:activator="{ on, attrs }">
+            <v-btn color="primary" dark class="mb-2" v-bind="attrs" style="display:" v-on="on">
               Thêm mới
             </v-btn>
-          </template>
+          </template> -->
           <v-card>
             <v-card-title>
               <span class="headline">{{ formTitle }}</span>
@@ -34,7 +34,7 @@
             <v-card-text>
               <v-container>
                 <v-row>
-                  <v-col cols="12" sm="6">
+                  <v-col cols="12" sm="12">
                     <v-text-field
                       v-model="editedItem.name"
                       label="Tên hàng"
@@ -53,13 +53,13 @@
                       type="number"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="6">
+                  <!-- <v-col cols="12" sm="6">
                     <v-text-field
                       v-model="editedItem.estimatedForecastLevel"
                       label="Mức báo dự trù"
                       type="number"
                     ></v-text-field>
-                  </v-col>
+                  </v-col> -->
                   <v-col cols="12" sm="6">
                     <v-combobox
                       v-model="editedItem.unit"
@@ -124,7 +124,7 @@
     </template>
     <template v-slot:[`item.actions`]="{ item }">
       <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-      <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+      <!-- <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon> -->
     </template>
     <!-- <template v-slot:no-data>
       <v-btn color="primary" @click="initialize"> Reset </v-btn>
@@ -147,7 +147,7 @@ export default {
         },
         { text: "Mã hàng", value: "code" },
         { text: "Định mức", value: "defineLevel" },
-        { text: "Mức báo dự trù", value: "estimatedForecastLevel" },
+        // { text: "Mức báo dự trù", value: "estimatedForecastLevel" },
         { text: "ĐVT", value: "unit.name" },
         { text: "Kho / máy", value: "machineStock.name" },
         { text: "Hành động", value: "actions", sortable: false },
