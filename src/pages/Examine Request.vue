@@ -44,19 +44,18 @@
         </div>
       </div>
       <div class="col-md-3">
-        <label for="">&nbsp;</label><br>
+        <label for="">&nbsp;</label><br />
         <div class="btn btn-light looking" @click="show_list">
-          <span v-if="!isSearching"
-            >Tìm kiếm
+          <span v-if="!isSearching">
             <i
               aria-hidden="true"
               class="v-icon notranslate mdi mdi-magnify theme--light"
             ></i
           ></span>
           <span v-if="isSearching">
-            <div  class="spinner-border text-secondary" role="status">
-  <span class="sr-only">Đang tìm...</span>
-</div>
+            <div class="spinner-border text-secondary" role="status">
+              <span class="sr-only">Đang tìm...</span>
+            </div>
           </span>
         </div>
         <!-- <div class="loading">
@@ -159,8 +158,8 @@ export default {
       search: "",
       start_date: "",
       end_date: "",
-      formatted: '',
-      selected: '',
+      formatted: "",
+      selected: "",
       list: [],
       errors: [],
       isErrors: false,
@@ -193,12 +192,12 @@ export default {
     },
   },
   methods: {
-      onContext(ctx) {
-        // The date formatted in the locale, or the `label-no-date-selected` string
-        this.formatted = ctx.selectedFormatted
-        // The following will be an empty string until a valid date is entered
-        this.selected = ctx.selectedYMD
-      },
+    onContext(ctx) {
+      // The date formatted in the locale, or the `label-no-date-selected` string
+      this.formatted = ctx.selectedFormatted;
+      // The following will be an empty string until a valid date is entered
+      this.selected = ctx.selectedYMD;
+    },
     getList() {
       this.isSearching = true;
       this.food = [];
@@ -320,7 +319,7 @@ export default {
     transform: rotate(360deg);
   }
 }
-.loading{
+.loading {
   position: fixed;
   top: 0;
   left: 0;
