@@ -42,7 +42,7 @@
         > -->
       </template>
       <mobile-menu>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <router-link tag="a" class="nav-link" to="">
             <i class="ti-settings"></i>Tính năng
           </router-link>
@@ -56,7 +56,7 @@
           <router-link tag="a" class="nav-link" to="">
             <i class="ti-settings"></i>Liên hệ
           </router-link>
-        </li>
+        </li> -->
         <drop-down
           class="nav-item"
           title="Cài đặt"

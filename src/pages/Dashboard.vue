@@ -2,41 +2,44 @@
   <div>
     <div class="row stats-card">
       <div class="col-md-6 col-xl-3 stats" style="background: #3c8dbc">
-        <h4>1</h4>
-        <span class="title">Tồn kho và dự trù hóa chất</span>
+        <h4>{{ member }}</h4>
+        <span class="title">Danh sách thành viên</span>
         <span class="icon"><i class="fas fa-cubes"></i></span>
-        <router-link tag="span" to="/thong-ke-ton-kho" class="detail"
+        <router-link tag="span" to="/danh-sach-thanh-vien" class="detail"
           >Chi tiết <i class="fa fa-arrow-circle-right"></i
         ></router-link>
       </div>
       <div class="col-md-6 col-xl-3 stats" style="background: #00a65a">
-        <h4>0</h4>
-        <span class="title">Hóa chất đã hết</span>
+        <h4>{{ masterial }}</h4>
+        <span class="title">Vật tư</span>
         <span class="icon"><i class="fas fa-cube"></i></span>
-        <router-link tag="span" to="/vat-tu-hoa-chat" class="detail"
+        <router-link tag="span" to="/vat-tu" class="detail"
           >Chi tiết <i class="fa fa-arrow-circle-right"></i
         ></router-link>
       </div>
       <div class="col-md-6 col-xl-3 stats" style="background: #ff851b">
-        <h4>0</h4>
-        <span class="title">Hóa chất sắp hết hạn</span>
+        <h4>{{ machine }}</h4>
+        <span class="title">Kho máy</span>
         <span class="icon"><i class="fas fa-stopwatch"></i></span>
-        <router-link tag="span" to="/hoa-chat-het-han" class="detail"
+        <router-link tag="span" to="/kho-may" class="detail"
           >Chi tiết <i class="fa fa-arrow-circle-right"></i
         ></router-link>
       </div>
       <div class="col-md-6 col-xl-3 stats" style="background: #dd4b39">
-        <h4>0</h4>
-        <span class="title">Hóa chất đã hết hạn</span>
+        <h4>{{ unit }}</h4>
+        <span class="title">Đơn vị</span>
         <span class="icon"><i class="fas fa-exclamation-triangle"></i></span>
-        <router-link tag="span" to="/hoa-chat-het-han" class="detail"
+        <router-link tag="span" to="/don-vi" class="detail"
           >Chi tiết <i class="fa fa-arrow-circle-right"></i
         ></router-link>
       </div>
     </div>
     <div class="row">
       <div class="col-md-12">
-        <img src="@/assets/img/hospital.jpg" style="width: 100%; margin-top: 20px" />
+        <img
+          src="@/assets/img/hospital.jpg"
+          style="width: 100%; margin-top: 20px"
+        />
       </div>
     </div>
   </div>
@@ -48,7 +51,46 @@ export default {
     StatsCard,
   },
   data() {
-    return {};
+    return {
+      member: "",
+      masterial: "",
+      unit: "",
+      machine: "",
+    };
+  },
+  mounted() {
+    this.CallAPI(
+      "get",
+      "user/list?page=1&limit=99999&order_by=created_at&order_direction=asc",
+      {},
+      (response) => {
+        this.member = response.data.data.total;
+      }
+    );
+    this.CallAPI(
+      "get",
+      `material/list?page=1&limit=99999&order_by=created_at&order_direction=asc`,
+      {},
+      (response) => {
+        this.masterial = response.data.data.total;
+      }
+    );
+    this.CallAPI(
+      "get",
+      "machine-stock/list?page=1&limit=99999&order_by=created_at&order_direction=asc",
+      {},
+      (response) => {
+        this.machine = response.data.data.total;
+      }
+    );
+    this.CallAPI(
+      "get",
+      "unit/list?page=1&limit=99999&order_by=created_at&order_direction=asc",
+      {},
+      (response) => {
+        this.unit = response.data.data.total;
+      }
+    );
   },
 };
 </script>
@@ -94,7 +136,7 @@ export default {
   background: rgba(0, 0, 0, 0.2);
   color: #fff;
 }
-.col-md-12{
+.col-md-12 {
   padding: 0 !important;
 }
 @media (min-width: 1200px) {

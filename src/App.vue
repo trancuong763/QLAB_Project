@@ -17,8 +17,12 @@ export default {
           itemsPerPageText: "Số hàng: ",
           ariaLabel: {
             sortNone: "",
-            activateAscending: "",
+            activateAscending: "Tăng dần",
+            sortAscending: "Tăng dần",
+            activateDescending: "Giảm dần",
+            sortDescending: "Giảm dần",
           },
+          sortBy: "Sắp xếp theo",
         },
         noDataText: "Không có bản ghi nào",
         dataFooter: {

@@ -5,9 +5,6 @@
 	display: flex;
 	align-items: center;
 }
-#start_date, #end_date {
-	background: none!important;
-}
 .looking {
 	color:#6c757d !important;
 	background-color: #fffcf5;
@@ -15,12 +12,6 @@
 }
 .looking:hover {
 	background-color: #f8f9fa;
-}
-.bi-calendar-fill{
-	color: #000!important;
-}
-#start_date__dialog_ .btn:focus , #end_date__dialog_ .btn:focus {
-	color: #000!important;
 }
 .spinner-border {
 	width: 16px;
@@ -31,4 +22,16 @@
 }
 .mdi-magnify::before {
 	font-size: 20px!important;
+}
+.flex {
+	display: flex;
+}
+.space-between {
+	justify-content: space-between;
+}
+.input-group-append .bi-calendar{
+	color: #fff!important;
+}
+.dropdown-menu button:focus {
+	color: #000!important;
 }
