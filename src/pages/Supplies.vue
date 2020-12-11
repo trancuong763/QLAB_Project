@@ -126,7 +126,7 @@
                       label="Mã hàng"
                     ></v-text-field>
                   </v-col> -->
-                    <v-col cols="12" sm="6">
+                    <v-col cols="12" sm="12">
                       <v-text-field
                         v-model="editedItem.defineLevel"
                         label="Định mức"
@@ -140,7 +140,7 @@
                       type="number"
                     ></v-text-field>
                   </v-col> -->
-                    <v-col cols="12" sm="6">
+                    <!-- <v-col cols="12" sm="6">
                       <v-combobox
                         v-model="editedItem.unit"
                         :items="unitIdList"
@@ -148,8 +148,8 @@
                         item-text="name"
                         item-value="id"
                       ></v-combobox>
-                    </v-col>
-                    <v-col cols="12" sm="12">
+                    </v-col> -->
+                    <!-- <v-col cols="12" sm="12">
                       <v-combobox
                         v-model="editedItem.machineStock"
                         :items="machineList"
@@ -157,7 +157,7 @@
                         item-text="name"
                         item-value="id"
                       ></v-combobox>
-                    </v-col>
+                    </v-col> -->
                     <v-col cols="12">
                       <v-textarea
                         v-model="editedItem.description"
@@ -231,9 +231,10 @@ export default {
         { text: "Mã hàng", value: "code" },
         { text: "Định mức", value: "defineLevel" },
         // { text: "Mức báo dự trù", value: "estimatedForecastLevel" },
-        { text: "ĐVT", value: "unit.name" },
-        { text: "Kho / máy", value: "machineStock.name" },
+        { text: "ĐVT", value: "DONVITINH" },
+        // { text: "Kho / máy", value: "machineStock.name" },
         { text: "Số lượng", value: "SOLUONGYEUCAU" },
+        { text: "Ngày tạo", value: "NGAYTAO" },
         { text: "Hành động", value: "actions", sortable: false },
       ],
       desserts: [],
@@ -241,15 +242,15 @@ export default {
       editedItem: {
         defineLevel: "",
         description: "",
-        unit: null,
-        machineStock: null,
+        // unit: null,
+        // machineStock: null,
         services: [],
       },
       defaultItem: {
         defineLevel: "",
         description: "",
-        unit: null,
-        machineStock: null,
+        // unit: null,
+        // machineStock: null,
         services: [],
       },
       materialList: [],
@@ -260,10 +261,10 @@ export default {
       //search for date
       start_date: "",
       end_date: "",
-      formatted_start: "",
-      selected_start: "",
-      formatted_end: "",
-      selected_end: "",
+      formatted_start: new Date().toLocaleDateString(),
+      selected_start: new Date().toLocaleDateString(),
+      formatted_end: new Date().toLocaleDateString(),
+      selected_end: new Date().toLocaleDateString(),
       errorDate: [],
       isSearching: false,
     };
@@ -312,9 +313,6 @@ export default {
   },
 
   methods: {
-    formatDate(date) {
-      return new Date(date).toLocaleDateString();
-    },
     getMaterialList() {
       this.desserts = [];
       this.isSearching = true;
@@ -330,7 +328,19 @@ export default {
             return;
           }
           this.materialList = response.data.data.data;
-          this.desserts = this.materialList;
+          for (let item of this.materialList) {
+            this.desserts.push({
+              DONVITINH: item["DONVITINH"],
+              NGAYTAO: this.formatDate(item["NGAYTAO"]),
+              SOLUONGYEUCAU: item["SOLUONGYEUCAU"],
+              code: item["code"],
+              defineLevel: item["defineLevel"],
+              description: item["description"],
+              id: item["id"],
+              name: item["name"],
+              services: item["services"],
+            });
+          }
         }
       );
     },
@@ -389,15 +399,15 @@ export default {
 
     save() {
       this.errors = "";
-      if (!this.editedItem.unit || !this.editedItem.machineStock) {
-        this.errors = "Vui lòng nhập đủ thông tin!";
-        return;
-      }
+      // if (!this.editedItem.unit || !this.editedItem.machineStock) {
+      //   this.errors = "Vui lòng nhập đủ thông tin!";
+      //   return;
+      // }
       const data = {
         defineLevel: this.editedItem.defineLevel,
         description: this.editedItem.description,
-        unitId: this.editedItem.unit.id,
-        machineStockId: this.editedItem.machineStock.id,
+        // unitId: this.editedItem.unit.id,
+        // machineStockId: this.editedItem.machineStock.id,
         services: this.editedItem.services,
       };
       if (this.editedIndex > -1) {
@@ -460,7 +470,7 @@ export default {
     show_list(e) {
       e.preventDefault();
       this.errorDate = [];
-      if (!this.start_date || !this.end_date) {
+      if (!this.formatted_start || !this.formatted_end) {
         this.errorDate.push("Vui lòng nhập ngày cần tìm!");
         return;
       }
