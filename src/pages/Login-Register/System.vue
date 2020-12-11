@@ -13,7 +13,7 @@
                         <h1
                           class="text-center display-2 teal--text text-accent-3"
                         >
-                          Đăng nhập vào hệ thống
+                          Đăng nhập
                         </h1>
                         <!-- <div class="text-center" mt-4>
                           <v-btn class="mx-2" fab color="black" outlined>
