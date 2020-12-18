@@ -11,7 +11,6 @@
               type="text"
               placeholder="Ngày / Tháng / Năm"
               autocomplete="off"
-              v-on:change="formatDateSelected_start(formatted_start)"
             ></b-form-input>
             <b-input-group-append>
               <b-form-datepicker
@@ -35,7 +34,6 @@
               type="text"
               placeholder="Ngày / Tháng / Năm"
               autocomplete="off"
-              v-on:change="formatDateSelected_end(formatted_end)"
             ></b-form-input>
             <b-input-group-append>
               <b-form-datepicker
@@ -318,15 +316,10 @@ export default {
       this.isSearching = true;
       this.CallAPI(
         "get",
-        `material/list?page=1&limit=99999&startDate=${this.selected_start}&endDate=${this.selected_end}&order_by=created_at&order_direction=asc`,
+        `material/list?page=1&limit=99999&startDate=${this.format(this.selected_start)}&endDate=${this.format(this.selected_end)}&order_by=created_at&order_direction=asc`,
         {},
         (response) => {
           this.isSearching = false;
-          let error = response.data.error;
-          if (error == "START_DATE_NOT_GREATER_THAN_END_DATE") {
-            this.errors.push("Ngày không hợp lệ!");
-            return;
-          }
           this.materialList = response.data.data.data;
           for (let item of this.materialList) {
             this.desserts.push({
@@ -406,8 +399,6 @@ export default {
       const data = {
         defineLevel: this.editedItem.defineLevel,
         description: this.editedItem.description,
-        // unitId: this.editedItem.unit.id,
-        // machineStockId: this.editedItem.machineStock.id,
         services: this.editedItem.services,
       };
       if (this.editedIndex > -1) {
@@ -453,9 +444,6 @@ export default {
         this.selected_start = ctx.selectedYMD;
       }
     },
-    formatDateSelected_start(date) {
-      this.start_date = date.split("/").reverse().join("-");
-    },
     onContext_end(ctx) {
       if (ctx.selectedDate != null) {
         this.formatted_end = new Date(ctx.selectedDate).toLocaleDateString(
@@ -464,12 +452,14 @@ export default {
         this.selected_end = ctx.selectedYMD;
       }
     },
-    formatDateSelected_end(date) {
-      this.end_date = date.split("/").reverse().join("-");
+    format(date) {
+      return date.split("/").reverse().join("-");
     },
     show_list(e) {
       e.preventDefault();
       this.errorDate = [];
+      this.selected_start = this.formatted_start
+      this.selected_end = this.formatted_end
       if (!this.formatted_start || !this.formatted_end) {
         this.errorDate.push("Vui lòng nhập ngày cần tìm!");
         return;

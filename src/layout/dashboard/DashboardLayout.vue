@@ -17,6 +17,9 @@
         <sidebar-link to="/don-vi"
           ><i class="fas fa-gem"></i>Đơn vị</sidebar-link
         >
+        <sidebar-link to="/dinh-muc"
+          ><i class="fas fa-gem"></i>Định mức</sidebar-link
+        >
         <!-- <sidebar-link to="/nha-cung-cap"
           ><i class="fas fa-building"></i>Nhà cung cấp</sidebar-link
         > -->

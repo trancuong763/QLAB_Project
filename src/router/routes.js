@@ -18,6 +18,8 @@ import Supplier from "@/pages/Supplier.vue";
 import Profile from "@/pages/Profile.vue";
 import System from "@/pages/Login-Register/System"
 import ExamineRequest from "@/pages/Examine Request"
+import Quota from "@/pages/Quota"
+
 var isAuthenticated = false;
 if (localStorage.getItem('token')) isAuthenticated = true;
 
@@ -93,11 +95,15 @@ const routes = [
         name: "thông tin cá nhân",
         component: Profile
       },
-      
       {
         path: "yeu-cau-xet-nghiem",
         name: "yêu cầu xét nghiệm",
         component: ExamineRequest
+      },
+      {
+        path: "dinh-muc",
+        name: "định mức",
+        component: Quota
       },
     ]
   },
