@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-md-3">
+      <div class="col-md-4 col-xl-3">
         <div>
           <label for="start_date">Từ ngày</label>
           <b-input-group class="mb-3">
@@ -24,7 +24,7 @@
           </b-input-group>
         </div>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-4 col-xl-3">
         <div>
           <label for="end_date_date">Đến ngày</label>
           <b-input-group class="mb-3">
@@ -47,8 +47,8 @@
           </b-input-group>
         </div>
       </div>
-      <div class="col-md-3">
-        <label for="">&nbsp;</label><br />
+      <div class="col-md-4 col-xl-3 search">
+        <label for="" class="space">&nbsp;</label><br />
         <div class="btn btn-light looking" @click="show_list">
           <span v-if="!isSearching"
             >Tìm kiếm

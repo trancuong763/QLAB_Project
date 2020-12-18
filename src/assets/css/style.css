@@ -35,3 +35,26 @@
 .dropdown-menu button:focus {
 	color: #000!important;
 }
+@media(max-width: 480px) {
+	.v-toolbar__title {
+		display: none;
+	}
+	.v-divider--vertical.v-divider--inset {
+		display: none;
+	}
+	.space {
+		display: none;
+	}
+	.search {
+		display: flex;
+		margin-bottom: 20px;
+	}
+}
+@media(max-width: 1024px) {
+	.printer {
+		display: none;
+	}
+	#start-date {
+		font-size: 12px;
+	}
+}

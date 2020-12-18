@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-md-3 flex space-between">
+      <div class="col-md-4 col-xl-3 flex space-between printer">
         <button class="btn btn-success" @click="export_excel">
           <i class="fas fa-file-excel" style="margin-right: 10px"></i> Xuất
           Excel
@@ -11,51 +11,8 @@
         </button>
       </div>
     </div>
-    <!-- <div class="row">
-      <div class="col-md-3">
-        <div>
-          <label for="start_date">Từ ngày</label>
-          <b-form-datepicker
-            id="start_date"
-            v-model="start_date"
-            class="mb-2"
-            label-no-date-selected="Chưa ngày nào được chọn"
-          ></b-form-datepicker>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div>
-          <label for="end_date">Đến ngày</label>
-          <b-form-datepicker
-            id="end_date"
-            v-model="end_date"
-            class="mb-2"
-            label-no-date-selected="Chưa ngày nào được chọn"
-          ></b-form-datepicker>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <label for="">&nbsp;</label><br />
-        <div class="btn btn-light looking" @click="show_list">
-          <span v-if="!isSearching">
-            <i
-              aria-hidden="true"
-              class="v-icon notranslate mdi mdi-magnify theme--light"
-            ></i
-          ></span>
-          <span v-if="isSearching">
-            <div class="spinner-border text-secondary" role="status">
-              <span class="sr-only">Đang tìm...</span>
-            </div>
-          </span>
-        </div>
-        <div class="loading">
-          <div class="lds-ring"><div></div><div></div><div></div></div>
-        </div>
-      </div>
-    </div> -->
     <div class="row">
-      <div class="col-md-3">
+      <div class="col-md-4 col-xl-3">
         <div>
           <label for="start_date">Từ ngày</label>
           <b-input-group class="mb-3">
@@ -79,7 +36,7 @@
           </b-input-group>
         </div>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-4 col-xl-3">
         <div>
           <label for="end_date_date">Đến ngày</label>
           <b-input-group class="mb-3">
@@ -103,8 +60,8 @@
           </b-input-group>
         </div>
       </div>
-      <div class="col-md-3">
-        <label for="">&nbsp;</label><br />
+      <div class="col-md-4 col-xl-3 search">
+        <label for="" class="space">&nbsp;</label><br />
         <div class="btn btn-light looking" @click="show_list">
           <span v-if="!isSearching"
             >Tìm kiếm
