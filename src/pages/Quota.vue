@@ -41,24 +41,24 @@
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12">
-                    <v-select
+                    <v-autocomplete
                       v-model="editedItem.services"
                       :items="serviceOptions"
                       item-text="TENDICHVU"
                       item-value="DICHVU_ID"
                       label="Dịch vụ"
                       return-object
-                    ></v-select>
+                    ></v-autocomplete>
                   </v-col>
                   <v-col cols="12">
-                    <v-select
+                    <v-autocomplete
                       v-model="editedItem.pharmacies"
                       :items="pharmacyOptions"
                       item-text="TENHANG"
                       item-value="DUOC_ID"
                       label="Dược"
                       return-object
-                    ></v-select>
+                    ></v-autocomplete>
                   </v-col>
                 </v-row>
                 <p v-if="errors" class="alert alert-danger">{{ errors }}</p>
