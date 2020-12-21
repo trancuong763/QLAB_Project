@@ -289,9 +289,14 @@ export default {
 
   mounted() {
     this.getMaterialList();
-    this.CallAPI("get", "service/list?limit=99999", {}, (response) => {
-      this.serviceOptions = response.data.data.data;
-    });
+    this.CallAPI("get", "dinhmuc/list-service?limit=999999", {}, (response) => {
+      let data = response.data.data;
+      for(let i = 0 ; i < data.length ; i++) {
+        for(let item of data[i]) {
+          this.serviceOptions.push(item);
+        }
+      }
+    })
     this.CallAPI(
       "get",
       "machine-stock/list?page=1&limit=99999&order_by=created_at&order_direction=asc",

@@ -162,9 +162,6 @@ export default {
     };
   },
   mounted() {
-    this.CallAPI("get", "service/list?limit=99999", {}, (response) => {
-      this.serviceOptions = response.data.data.data;
-    });
     this.CallAPI("get", "duoc/list?limit=99999", {}, (response) => {
       this.pharmacyOptions = response.data.data;
     });
@@ -174,6 +171,14 @@ export default {
     this.CallAPI("get", "unit/list?", {}, (response) => {
       this.unitOptions = response.data.data.data;
     })
+    this.CallAPI("get", "dinhmuc/list-service?limit=999999", {}, (response) => {
+      let data = response.data.data;
+      for(let i = 0 ; i < data.length ; i++) {
+        for(let item of data[i]) {
+          this.serviceOptions.push(item);
+        }
+      }
+    });
     this.getQuotaList();
   },
   computed: {
