@@ -60,6 +60,26 @@
                       return-object
                     ></v-autocomplete>
                   </v-col>
+                   <v-col cols="12">
+                    <v-autocomplete
+                      v-model="editedItem.machineStock"
+                      :items="machineStockOptions"
+                      item-text="name"
+                      item-value="id"
+                      label="Kho/ Máy"
+                      return-object
+                    ></v-autocomplete>
+                  </v-col>
+                   <v-col cols="12">
+                    <v-autocomplete
+                      v-model="editedItem.unit"
+                      :items="unitOptions"
+                      item-text="name"
+                      item-value="id"
+                      label="Đơn vị"
+                      return-object
+                    ></v-autocomplete>
+                  </v-col>
                 </v-row>
                 <p v-if="errors" class="alert alert-danger">{{ errors }}</p>
               </v-container>
@@ -112,6 +132,8 @@ export default {
         },
         { text: "Dịch vụ", value: "service_name" },
         { text: "Dược", value: "pharmacy_name" },
+        { text: "Kho / Máy", value: "machineName" },
+        { text: "Đơn vị", value: "unitName" },
         { text: "Hành động", value: "actions", sortable: false },
       ],
       desserts: [],
@@ -120,17 +142,23 @@ export default {
         name: "",
         services: "",
         pharmacies: "",
+        machineStock: "",
+        unit: "",
       },
       defaultItem: {
         name: "",
         services: "",
         pharmacies: "",
+        machineStock: "",
+        unit: "",
       },
       quotaList: [],
       errors: "",
       show: false,
       serviceOptions: [],
       pharmacyOptions: [],
+      machineStockOptions: [],
+      unitOptions: [],
     };
   },
   mounted() {
@@ -140,6 +168,12 @@ export default {
     this.CallAPI("get", "duoc/list?limit=99999", {}, (response) => {
       this.pharmacyOptions = response.data.data;
     });
+    this.CallAPI("get", "machine-stock/list?limit=99999", {}, (response) => {
+      this.machineStockOptions = response.data.data.data;
+    });
+    this.CallAPI("get", "unit/list?", {}, (response) => {
+      this.unitOptions = response.data.data.data;
+    })
     this.getQuotaList();
   },
   computed: {
@@ -178,6 +212,10 @@ export default {
               pharmacies: item.DUOC[0],
               service_name: item.DICHVU[0].TENDICHVU,
               pharmacy_name: item.DUOC[0].TENHANG,
+              machineStock: item.Machine_Name,
+              unit: item.Unit_Name,
+              machineName: item.Machine_Name.name,
+              unitName: item.Unit_Name.name,
             });
           }
         }
@@ -242,11 +280,15 @@ export default {
         name: this.editedItem.name,
         DICHVU_ID: this.editedItem.services.DICHVU_ID,
         DUOC_ID: this.editedItem.pharmacies.DUOC_ID,
+        machine_stock_id: this.editedItem.machineStock.id,
+        unit_id: this.editedItem.unit.id,
       };
       if (
         !this.editedItem.name ||
         !this.editedItem.services ||
-        !this.editedItem.pharmacies
+        !this.editedItem.pharmacies ||
+        !this.editedItem.machineStock ||
+        !this.editedItem.unit
       ) {
         this.errors = "Vui lòng nhập đầy đủ thông tin!";
         return;
