@@ -54,7 +54,7 @@
                     <v-autocomplete
                       v-model="editedItem.pharmacies"
                       :items="pharmacyOptions"
-                      item-text="TENHANG"
+                      :item-text="item => item.TENHANG +' - '+ item.MADUOC"
                       item-value="DUOC_ID"
                       label="Dược"
                       return-object
@@ -66,7 +66,7 @@
                       :items="machineStockOptions"
                       item-text="name"
                       item-value="id"
-                      label="Kho/ Máy"
+                      label="Kho/Máy"
                       return-object
                     ></v-autocomplete>
                   </v-col>
