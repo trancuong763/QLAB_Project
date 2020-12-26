@@ -53,7 +53,7 @@ export default {
   data() {
     return {
       member: "",
-      masterial: "",
+      masterial: 0,
       unit: "",
       machine: "",
     };

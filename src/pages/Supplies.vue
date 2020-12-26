@@ -138,7 +138,7 @@
                       type="number"
                     ></v-text-field>
                   </v-col> -->
-                    <!-- <v-col cols="12" sm="6">
+                    <v-col cols="12" sm="12">
                       <v-combobox
                         v-model="editedItem.unit"
                         :items="unitIdList"
@@ -146,7 +146,7 @@
                         item-text="name"
                         item-value="id"
                       ></v-combobox>
-                    </v-col> -->
+                    </v-col>
                     <!-- <v-col cols="12" sm="12">
                       <v-combobox
                         v-model="editedItem.machineStock"
@@ -162,7 +162,7 @@
                         label="Mô tả"
                       ></v-textarea>
                     </v-col>
-                    <v-col cols="12">
+                    <!-- <v-col cols="12">
                       <v-combobox
                         v-model="editedItem.services"
                         :items="serviceOptions"
@@ -172,7 +172,7 @@
                         item-text="TENDICHVU"
                         item-value="DICHVU_ID"
                       ></v-combobox>
-                    </v-col>
+                    </v-col> -->
                   </v-row>
                   <p v-if="errors" class="alert alert-danger">{{ errors }}</p>
                 </v-container>
@@ -229,7 +229,7 @@ export default {
         { text: "Mã hàng", value: "code" },
         { text: "Định mức", value: "defineLevel" },
         // { text: "Mức báo dự trù", value: "estimatedForecastLevel" },
-        { text: "ĐVT", value: "DONVITINH" },
+        { text: "ĐVT", value: "unit_name" },
         // { text: "Kho / máy", value: "machineStock.name" },
         { text: "Số lượng", value: "SOLUONGYEUCAU" },
         { text: "Ngày tạo", value: "NGAYTAO" },
@@ -240,16 +240,14 @@ export default {
       editedItem: {
         defineLevel: "",
         description: "",
-        // unit: null,
+        unit: null,
         // machineStock: null,
-        services: [],
       },
       defaultItem: {
         defineLevel: "",
         description: "",
-        // unit: null,
+        unit: null,
         // machineStock: null,
-        services: [],
       },
       materialList: [],
       errors: "",
@@ -328,7 +326,7 @@ export default {
           this.materialList = response.data.data.data;
           for (let item of this.materialList) {
             this.desserts.push({
-              DONVITINH: item["DONVITINH"],
+              unit: item.unit,
               NGAYTAO: this.formatDate(item["NGAYTAO"]),
               SOLUONGYEUCAU: item["SOLUONGYEUCAU"],
               code: item["code"],
@@ -337,6 +335,7 @@ export default {
               id: item["id"],
               name: item["name"],
               services: item["services"],
+              unit_name: item.unit.name,
             });
           }
         }
@@ -404,7 +403,7 @@ export default {
       const data = {
         defineLevel: this.editedItem.defineLevel,
         description: this.editedItem.description,
-        services: this.editedItem.services,
+        unitId: this.editedItem.unit.id,
       };
       if (this.editedIndex > -1) {
         this.CallAPI(
