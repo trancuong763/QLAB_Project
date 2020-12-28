@@ -325,6 +325,7 @@ export default {
 
   methods: {
     getMaterialList() {
+      this.desserts = [];
       this.isSearching = true;
       if (
         this.options.itemsPerPage != 5 &&
