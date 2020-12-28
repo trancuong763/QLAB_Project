@@ -12,6 +12,7 @@ export default {
       en: {
         dataIterator: {
           noResultsText: "Không tìm thấy bản ghi phù hợp",
+          loadingText: "Loading..."
         },
         dataTable: {
           itemsPerPageText: "Số hàng: ",

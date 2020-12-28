@@ -81,7 +81,7 @@
       :headers="headers"
       :items="desserts"
       :search="search"
-      sort-by="calories"
+      :loading="isSearching"
       class="elevation-1"
     >
       <template v-slot:top>
@@ -229,7 +229,8 @@ export default {
         { text: "Mã hàng", value: "code" },
         { text: "Định mức", value: "defineLevel" },
         // { text: "Mức báo dự trù", value: "estimatedForecastLevel" },
-        { text: "ĐVT", value: "unit_name" },
+        { text: "ĐV nhập", value: "DONVITINH" },
+        { text: "ĐV tính", value: "unit_name" },
         // { text: "Kho / máy", value: "machineStock.name" },
         { text: "Số lượng", value: "SOLUONGYEUCAU" },
         { text: "Ngày tạo", value: "NGAYTAO" },
@@ -257,12 +258,12 @@ export default {
       //search for date
       start_date: "",
       end_date: "",
-      formatted_start: new Date().toLocaleDateString(),
-      selected_start: new Date().toLocaleDateString(),
-      formatted_end: new Date().toLocaleDateString(),
-      selected_end: new Date().toLocaleDateString(),
+      formatted_start: "",
+      selected_start: "",
+      formatted_end: "",
+      selected_end: "",
       errorDate: [],
-      isSearching: false,
+      isSearching: true,
     };
   },
 
@@ -286,7 +287,6 @@ export default {
   },
 
   mounted() {
-    this.getMaterialList();
     this.CallAPI("get", "dinhmuc/list-service?limit=999999", {}, (response) => {
       let data = response.data.data;
       for(let i = 0 ; i < data.length ; i++) {
@@ -311,6 +311,30 @@ export default {
         this.unitIdList = response.data.data.data;
       }
     );
+    this.CallAPI(
+        "get",
+        `material/list?page=1&limit=10&order_by=created_at&order_direction=desc`,
+        {},
+        (response) => {
+          this.isSearching = false;
+          this.materialList = response.data.data.data;
+          for (let item of this.materialList) {
+            this.desserts.push({
+              unit: item.unit,
+              DONVITINH: item["DONVITINH"],
+              NGAYTAO: this.formatDate(item["NGAYTAO"]),
+              SOLUONGYEUCAU: item["SOLUONGYEUCAU"],
+              code: item["code"],
+              defineLevel: item["defineLevel"],
+              description: item["description"],
+              id: item["id"],
+              name: item["name"],
+              services: item["services"],
+              unit_name: item.unit.name,
+            });
+          }
+        }
+      );
   },
 
   methods: {
@@ -327,6 +351,7 @@ export default {
           for (let item of this.materialList) {
             this.desserts.push({
               unit: item.unit,
+              DONVITINH: item["DONVITINH"],
               NGAYTAO: this.formatDate(item["NGAYTAO"]),
               SOLUONGYEUCAU: item["SOLUONGYEUCAU"],
               code: item["code"],
