@@ -82,6 +82,8 @@
       :items="desserts"
       :search="search"
       :loading="isSearching"
+      :options.sync="options"
+      :server-items-length="totalDesserts"
       class="elevation-1"
     >
       <template v-slot:top>
@@ -219,6 +221,8 @@ export default {
       search: "",
       dialog: false,
       dialogDelete: false,
+      totalDesserts: 0,
+      options: {},
       headers: [
         {
           text: "Tên hàng",
@@ -226,14 +230,14 @@ export default {
           sortable: false,
           value: "name",
         },
-        { text: "Mã hàng", value: "code" },
-        { text: "Định mức", value: "defineLevel" },
+        { text: "Mã hàng", value: "code", sortable: false, },
+        { text: "Định mức", value: "defineLevel", sortable: false, },
         // { text: "Mức báo dự trù", value: "estimatedForecastLevel" },
-        { text: "ĐV nhập", value: "DONVITINH" },
-        { text: "ĐV tính", value: "unit_name" },
+        { text: "ĐV nhập", value: "DONVITINH", sortable: false, },
+        { text: "ĐV tính", value: "unit_name", sortable: false, },
         // { text: "Kho / máy", value: "machineStock.name" },
-        { text: "Số lượng", value: "SOLUONGYEUCAU" },
-        { text: "Ngày tạo", value: "NGAYTAO" },
+        { text: "Số lượng", value: "SOLUONGYEUCAU", sortable: false, },
+        { text: "Ngày tạo", value: "NGAYTAO", sortable: false, },
         { text: "Hành động", value: "actions", sortable: false },
       ],
       desserts: [],
@@ -280,6 +284,12 @@ export default {
     dialogDelete(val) {
       val || this.closeDelete();
     },
+    options: {
+      handler() {
+        this.getMaterialList();
+      },
+      deep: true,
+    },
   },
 
   created() {
@@ -289,12 +299,12 @@ export default {
   mounted() {
     this.CallAPI("get", "dinhmuc/list-service?limit=999999", {}, (response) => {
       let data = response.data.data;
-      for(let i = 0 ; i < data.length ; i++) {
-        for(let item of data[i]) {
+      for (let i = 0; i < data.length; i++) {
+        for (let item of data[i]) {
           this.serviceOptions.push(item);
         }
       }
-    })
+    });
     this.CallAPI(
       "get",
       "machine-stock/list?page=1&limit=99999&order_by=created_at&order_direction=asc",
@@ -311,60 +321,50 @@ export default {
         this.unitIdList = response.data.data.data;
       }
     );
-    this.CallAPI(
-        "get",
-        `material/list?page=1&limit=10&order_by=created_at&order_direction=desc`,
-        {},
-        (response) => {
-          this.isSearching = false;
-          this.materialList = response.data.data.data;
-          for (let item of this.materialList) {
-            this.desserts.push({
-              unit: item.unit,
-              DONVITINH: item["DONVITINH"],
-              NGAYTAO: this.formatDate(item["NGAYTAO"]),
-              SOLUONGYEUCAU: item["SOLUONGYEUCAU"],
-              code: item["code"],
-              defineLevel: item["defineLevel"],
-              description: item["description"],
-              id: item["id"],
-              name: item["name"],
-              services: item["services"],
-              unit_name: item.unit.name,
-            });
-          }
-        }
-      );
   },
 
   methods: {
     getMaterialList() {
-      this.desserts = [];
       this.isSearching = true;
-      this.CallAPI(
-        "get",
-        `material/list?page=1&limit=99999&startDate=${this.format(this.selected_start)}&endDate=${this.format(this.selected_end)}&order_by=created_at&order_direction=asc`,
-        {},
-        (response) => {
-          this.isSearching = false;
-          this.materialList = response.data.data.data;
-          for (let item of this.materialList) {
-            this.desserts.push({
-              unit: item.unit,
-              DONVITINH: item["DONVITINH"],
-              NGAYTAO: this.formatDate(item["NGAYTAO"]),
-              SOLUONGYEUCAU: item["SOLUONGYEUCAU"],
-              code: item["code"],
-              defineLevel: item["defineLevel"],
-              description: item["description"],
-              id: item["id"],
-              name: item["name"],
-              services: item["services"],
-              unit_name: item.unit.name,
-            });
-          }
+      if (
+        this.options.itemsPerPage != 5 &&
+        this.options.itemsPerPage != 10 &&
+        this.options.itemsPerPage != 15
+      ) {
+        this.options.itemsPerPage = 99999;
+      }
+      let params =
+        "?page=" +
+        this.options.page +
+        "&limit=" +
+        this.options.itemsPerPage +
+        "&startDate=" +
+        this.format(this.selected_start) +
+        "&endDate=" +
+        this.format(this.selected_end) +
+        "&order_by=created_at&order_direction=desc";
+
+      this.CallAPI("get", "material/list" + params, {}, (response) => {
+        this.desserts = [];
+        this.isSearching = false;
+        this.materialList = response.data.data.data;
+        this.totalDesserts = response.data.data.total;
+        for (let item of this.materialList) {
+          this.desserts.push({
+            unit: item.unit,
+            DONVITINH: item["DONVITINH"],
+            NGAYTAO: this.formatDate(item["NGAYTAO"]),
+            SOLUONGYEUCAU: item["SOLUONGYEUCAU"],
+            code: item["code"],
+            defineLevel: item["defineLevel"],
+            description: item["description"],
+            id: item["id"],
+            name: item["name"],
+            services: item["services"],
+            unit_name: item.unit.name,
+          });
         }
-      );
+      });
     },
     initialize() {
       this.desserts = this.materialList;
@@ -487,8 +487,8 @@ export default {
     show_list(e) {
       e.preventDefault();
       this.errorDate = [];
-      this.selected_start = this.formatted_start
-      this.selected_end = this.formatted_end
+      this.selected_start = this.formatted_start;
+      this.selected_end = this.formatted_end;
       if (!this.formatted_start || !this.formatted_end) {
         this.errorDate.push("Vui lòng nhập ngày cần tìm!");
         return;
