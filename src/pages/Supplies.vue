@@ -389,7 +389,6 @@ export default {
         this.isSearching = false;
         this.materialList = response.data.data.data;
         this.totalDesserts = response.data.data.total;
-        console.log(this.materialList);
         for (let item of this.materialList) {
           this.desserts.push({
             unit: item.unit,
@@ -413,12 +412,8 @@ export default {
     },
 
     editItem(item) {
-      console.log(item);
       this.editedIndex = this.desserts.indexOf(item);
-
       this.editedItem = Object.assign({}, item);
-      console.log(this.editedItem);
-      
       this.dialog = true;
     },
 
