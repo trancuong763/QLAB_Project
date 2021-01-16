@@ -101,11 +101,11 @@
             ></v-text-field>
           </div>
           <v-dialog v-model="dialog" max-width="500px">
-            <!-- <template v-slot:activator="{ on, attrs }">
+            <template v-slot:activator="{ on, attrs }">
             <v-btn color="primary" dark class="mb-2" v-bind="attrs" style="display:" v-on="on">
               Thêm mới
             </v-btn>
-          </template> -->
+          </template>
             <v-card>
               <v-card-title>
                 <span class="headline">{{ formTitle }}</span>
@@ -126,13 +126,7 @@
                       label="Mã hàng"
                     ></v-text-field>
                   </v-col> -->
-                    <v-col cols="12" sm="12">
-                      <v-text-field
-                        v-model="editedItem.defineLevel"
-                        label="Định mức"
-                        type="number"
-                      ></v-text-field>
-                    </v-col>
+                    
                     <!-- <v-col cols="12" sm="6">
                     <v-text-field
                       v-model="editedItem.estimatedForecastLevel"
@@ -140,6 +134,17 @@
                       type="number"
                     ></v-text-field>
                   </v-col> -->
+                  
+                  <v-col cols="12" v-if="editedIndex <= -1">
+                    <v-autocomplete
+                      v-model="editedItem.pharmacies"
+                      :items="pharmacyOptions"
+                      :item-text="item => item.TENHANG +' - '+ item.MADUOC"
+                      label="Dược"
+                      return-object
+                    ></v-autocomplete>
+                  </v-col>
+                  
                     <v-col cols="12" sm="12">
                       <v-combobox
                         v-model="editedItem.unit"
@@ -148,6 +153,27 @@
                         item-text="name"
                         item-value="id"
                       ></v-combobox>
+                    </v-col>
+                    <v-col cols="12" sm="12">
+                      <v-text-field
+                        v-model="editedItem.defineLevel"
+                        label="Định mức"
+                        type="number"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="12">
+                      <v-text-field
+                        v-model="editedItem.MADUOCCHUNG"
+                        label="Mã dược chung"
+                        type="text"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="12" v-if="editedIndex <= -1">
+                      <v-text-field
+                        v-model="editedItem.amount"
+                        label="Số lượng yêu cầu"
+                        type="number"
+                      ></v-text-field>
                     </v-col>
                     <!-- <v-col cols="12" sm="12">
                       <v-combobox
@@ -158,12 +184,14 @@
                         item-value="id"
                       ></v-combobox>
                     </v-col> -->
-                    <v-col cols="12">
+
+                    <v-col cols="12" v-if="editedIndex > -1">
                       <v-textarea
                         v-model="editedItem.description"
                         label="Mô tả"
                       ></v-textarea>
                     </v-col>
+
                     <!-- <v-col cols="12">
                       <v-combobox
                         v-model="editedItem.services"
@@ -206,7 +234,7 @@
       </template>
       <template v-slot:[`item.actions`]="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-        <!-- <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon> -->
+        <v-icon small v-if="item.NGAYTAO < '31/12/2020'" @click="deleteItem(item)"> mdi-delete </v-icon>
       </template>
       <!-- <template v-slot:no-data>
       <v-btn color="primary" @click="initialize"> Reset </v-btn>
@@ -231,6 +259,7 @@ export default {
           value: "name",
         },
         { text: "Mã hàng", value: "code", sortable: false, },
+        { text: "Mã dược chung", value: "MADUOCCHUNG", sortable: false },
         { text: "Định mức", value: "defineLevel", sortable: false, },
         // { text: "Mức báo dự trù", value: "estimatedForecastLevel" },
         { text: "ĐV nhập", value: "DONVITINH", sortable: false, },
@@ -244,19 +273,26 @@ export default {
       editedIndex: -1,
       editedItem: {
         defineLevel: "",
+        MADUOCCHUNG: "",
+        pharmacies: "",
         description: "",
+        amount: null,
         unit: null,
         // machineStock: null,
       },
       defaultItem: {
         defineLevel: "",
+        MADUOCCHUNG: "",
         description: "",
+        pharmacies: "",
         unit: null,
+        amount: null,
         // machineStock: null,
       },
       materialList: [],
       errors: "",
       serviceOptions: [],
+      pharmacyOptions: [],
       machineList: [],
       unitIdList: [],
       //search for date
@@ -313,6 +349,9 @@ export default {
         this.machineList = response.data.data.data;
       }
     );
+    this.CallAPI("get", "duoc/list?limit=99999", {}, (response) => {
+      this.pharmacyOptions = response.data.data;
+    });
     this.CallAPI(
       "get",
       "unit/list?page=1&limit=99999&order_by=created_at&order_direction=asc",
@@ -350,10 +389,12 @@ export default {
         this.isSearching = false;
         this.materialList = response.data.data.data;
         this.totalDesserts = response.data.data.total;
+        console.log(this.materialList);
         for (let item of this.materialList) {
           this.desserts.push({
             unit: item.unit,
             DONVITINH: item["DONVITINH"],
+            MADUOCCHUNG: item["MADUOCCHUNG"],
             NGAYTAO: this.formatDate(item["NGAYTAO"]),
             SOLUONGYEUCAU: item["SOLUONGYEUCAU"],
             code: item["code"],
@@ -372,8 +413,12 @@ export default {
     },
 
     editItem(item) {
+      console.log(item);
       this.editedIndex = this.desserts.indexOf(item);
+
       this.editedItem = Object.assign({}, item);
+      console.log(this.editedItem);
+      
       this.dialog = true;
     },
 
@@ -426,12 +471,14 @@ export default {
       //   this.errors = "Vui lòng nhập đủ thông tin!";
       //   return;
       // }
-      const data = {
-        defineLevel: this.editedItem.defineLevel,
-        description: this.editedItem.description,
-        unitId: this.editedItem.unit.id,
-      };
+      
       if (this.editedIndex > -1) {
+        let data = {
+          defineLevel: this.editedItem.defineLevel,
+          description: this.editedItem.description,
+          unitId: this.editedItem.unit.id,
+          MADUOCCHUNG: this.editedItem.MADUOCCHUNG,
+        }
         this.CallAPI(
           "put",
           "material/update/" + this.desserts[this.editedIndex].id,
@@ -451,7 +498,15 @@ export default {
           }
         );
       } else {
-        this.CallAPI("post", "material/create", data, (response) => {
+        let data = {
+          DUOC_ID: this.editedItem.pharmacies.DUOC_ID,
+          MA_DUOC: this.editedItem.pharmacies.MADUOC,
+          MADUOCCHUNG: this.editedItem.MADUOCCHUNG,
+          SOLUONGYEUCAU: this.editedItem.amount,
+          defineLevel: this.editedItem.defineLevel,
+          unitId: this.editedItem.unit.id,
+        }
+        this.CallAPI("post", "material/create-after", data, (response) => {
           if (response.data.error == "UNAUTHORIZED") {
             this.$toast.error("Không được phép!");
             return;

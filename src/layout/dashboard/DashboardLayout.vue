@@ -26,6 +26,9 @@
         <sidebar-link to="/yeu-cau-xet-nghiem"
           ><i class="fas fa-user-check"></i>Yêu cầu xét nghiệm</sidebar-link
         >
+        <sidebar-link to="/ton-kho"
+          ><i class="fas fa-warehouse"></i>Tồn kho</sidebar-link
+        >
         <!-- <sidebar-link to="/hoa-chat-nhap-kho"
           ><i class="fas fa-sign-in-alt"></i>Hóa chất nhập kho</sidebar-link
         > -->

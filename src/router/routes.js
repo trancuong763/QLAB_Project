@@ -19,6 +19,7 @@ import Profile from "@/pages/Profile.vue";
 import System from "@/pages/Login-Register/System"
 import ExamineRequest from "@/pages/Examine Request"
 import Quota from "@/pages/Quota"
+import Inventory from "@/pages/Inventory"
 
 var isAuthenticated = false;
 if (localStorage.getItem('token')) isAuthenticated = true;
@@ -105,6 +106,11 @@ const routes = [
         name: "định mức",
         component: Quota
       },
+      {
+        path: "ton-kho",
+        name: "tồn kho",
+        component: Inventory
+      }
     ]
   },
   {
