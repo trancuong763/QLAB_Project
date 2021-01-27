@@ -26,7 +26,7 @@ Vue.use(Toast, {
   newestOnTop: true
 });
 
-Vue.prototype.$urlAPI = 'http://103.15.50.129:5000/api/'
+Vue.prototype.$urlAPI = 'http://localhost:3000/api/'
 
 Vue.prototype.$config = {
   headers: {
