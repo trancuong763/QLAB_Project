@@ -102,10 +102,17 @@
           </div>
           <v-dialog v-model="dialog" max-width="500px">
             <template v-slot:activator="{ on, attrs }">
-            <v-btn color="primary" dark class="mb-2" v-bind="attrs" style="display:" v-on="on">
-              Thêm mới
-            </v-btn>
-          </template>
+              <v-btn
+                color="primary"
+                dark
+                class="mb-2"
+                v-bind="attrs"
+                style="display: "
+                v-on="on"
+              >
+                Thêm mới
+              </v-btn>
+            </template>
             <v-card>
               <v-card-title>
                 <span class="headline">{{ formTitle }}</span>
@@ -126,7 +133,7 @@
                       label="Mã hàng"
                     ></v-text-field>
                   </v-col> -->
-                    
+
                     <!-- <v-col cols="12" sm="6">
                     <v-text-field
                       v-model="editedItem.estimatedForecastLevel"
@@ -134,17 +141,19 @@
                       type="number"
                     ></v-text-field>
                   </v-col> -->
-                  
-                  <v-col cols="12" v-if="editedIndex <= -1">
-                    <v-autocomplete
-                      v-model="editedItem.pharmacies"
-                      :items="pharmacyOptions"
-                      :item-text="item => item.TENHANG +' - '+ item.MADUOC"
-                      label="Dược"
-                      return-object
-                    ></v-autocomplete>
-                  </v-col>
-                  
+
+                    <v-col cols="12" v-if="editedIndex <= -1">
+                      <v-autocomplete
+                        v-model="editedItem.pharmacies"
+                        :items="pharmacyOptions"
+                        :item-text="
+                          (item) => item.TENHANG + ' - ' + item.MADUOC
+                        "
+                        label="Dược"
+                        return-object
+                      ></v-autocomplete>
+                    </v-col>
+
                     <v-col cols="12" sm="12">
                       <v-combobox
                         v-model="editedItem.unit"
@@ -192,6 +201,16 @@
                       ></v-textarea>
                     </v-col>
 
+                    <v-col cols="12">
+                      <v-combobox
+                        v-model="editedItem.method"
+                        :items="methodOptions"
+                        label="Phương thức"
+                        item-text="name"
+                        item-value="id"
+                      ></v-combobox>
+                    </v-col>
+
                     <!-- <v-col cols="12">
                       <v-combobox
                         v-model="editedItem.services"
@@ -234,7 +253,13 @@
       </template>
       <template v-slot:[`item.actions`]="{ item }">
         <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-        <v-icon small v-if="item.NGAYTAO < '31/12/2020'" @click="deleteItem(item)"> mdi-delete </v-icon>
+        <v-icon
+          small
+          v-if="item.NGAYTAO <= '31/12/2020'"
+          @click="deleteItem(item)"
+        >
+          mdi-delete
+        </v-icon>
       </template>
       <!-- <template v-slot:no-data>
       <v-btn color="primary" @click="initialize"> Reset </v-btn>
@@ -258,15 +283,15 @@ export default {
           sortable: false,
           value: "name",
         },
-        { text: "Mã hàng", value: "code", sortable: false, },
+        { text: "Mã hàng", value: "code", sortable: false },
         { text: "Mã dược chung", value: "MADUOCCHUNG", sortable: false },
-        { text: "Định mức", value: "defineLevel", sortable: false, },
+        { text: "Định mức", value: "defineLevel", sortable: false },
         // { text: "Mức báo dự trù", value: "estimatedForecastLevel" },
-        { text: "ĐV nhập", value: "DONVITINH", sortable: false, },
-        { text: "ĐV tính", value: "unit_name", sortable: false, },
+        { text: "ĐV nhập", value: "DONVITINH", sortable: false },
+        { text: "ĐV tính", value: "unit_name", sortable: false },
         // { text: "Kho / máy", value: "machineStock.name" },
-        { text: "Số lượng", value: "SOLUONGYEUCAU", sortable: false, },
-        { text: "Ngày tạo", value: "NGAYTAO", sortable: false, },
+        { text: "Số lượng", value: "SOLUONGYEUCAU", sortable: false },
+        { text: "Ngày tạo", value: "NGAYTAO", sortable: false },
         { text: "Hành động", value: "actions", sortable: false },
       ],
       desserts: [],
@@ -278,6 +303,8 @@ export default {
         description: "",
         amount: null,
         unit: null,
+        type: "",
+        method: null,
         // machineStock: null,
       },
       defaultItem: {
@@ -287,6 +314,8 @@ export default {
         pharmacies: "",
         unit: null,
         amount: null,
+        type: "",
+        method: null,
         // machineStock: null,
       },
       materialList: [],
@@ -304,6 +333,16 @@ export default {
       selected_end: "",
       errorDate: [],
       isSearching: true,
+      methodOptions: [
+        {
+          id: "dinhmuc",
+          name: "Định mức",
+        },
+        {
+          id: "vattu",
+          name: "Vật tư",
+        },
+      ],
     };
   },
 
@@ -351,6 +390,7 @@ export default {
     );
     this.CallAPI("get", "duoc/list?limit=99999", {}, (response) => {
       this.pharmacyOptions = response.data.data;
+      console.log(this.pharmacyOptions);
     });
     this.CallAPI(
       "get",
@@ -466,14 +506,14 @@ export default {
       //   this.errors = "Vui lòng nhập đủ thông tin!";
       //   return;
       // }
-      
+
       if (this.editedIndex > -1) {
         let data = {
           defineLevel: this.editedItem.defineLevel,
           description: this.editedItem.description,
           unitId: this.editedItem.unit.id,
           MADUOCCHUNG: this.editedItem.MADUOCCHUNG,
-        }
+        };
         this.CallAPI(
           "put",
           "material/update/" + this.desserts[this.editedIndex].id,
@@ -500,7 +540,9 @@ export default {
           SOLUONGYEUCAU: this.editedItem.amount,
           defineLevel: this.editedItem.defineLevel,
           unitId: this.editedItem.unit.id,
-        }
+          method: this.editedItem.method.id,
+          name: this.editedItem.pharmacies.TENHANG 
+        };
         this.CallAPI("post", "material/create-after", data, (response) => {
           if (response.data.error == "UNAUTHORIZED") {
             this.$toast.error("Không được phép!");

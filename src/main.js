@@ -26,7 +26,7 @@ Vue.use(Toast, {
   newestOnTop: true
 });
 
-Vue.prototype.$urlAPI = 'http://103.15.50.129:5000/api/'
+Vue.prototype.$urlAPI = 'http://4759a59aaff7.ngrok.io/api/'
 
 Vue.prototype.$config = {
   headers: {
