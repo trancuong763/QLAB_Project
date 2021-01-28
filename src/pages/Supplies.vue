@@ -390,7 +390,6 @@ export default {
     );
     this.CallAPI("get", "duoc/list?limit=99999", {}, (response) => {
       this.pharmacyOptions = response.data.data;
-      console.log(this.pharmacyOptions);
     });
     this.CallAPI(
       "get",
@@ -429,6 +428,7 @@ export default {
         this.isSearching = false;
         this.materialList = response.data.data.data;
         this.totalDesserts = response.data.data.total;
+        console.log(this.materialList);
         for (let item of this.materialList) {
           this.desserts.push({
             unit: item.unit,
@@ -443,6 +443,7 @@ export default {
             name: item["name"],
             services: item["services"],
             unit_name: item.unit.name,
+            method: item.method.trim() == "vattu"?"Vật tư":"Định mức",
           });
         }
       });
@@ -513,6 +514,7 @@ export default {
           description: this.editedItem.description,
           unitId: this.editedItem.unit.id,
           MADUOCCHUNG: this.editedItem.MADUOCCHUNG,
+          method: this.editedItem.method.id,
         };
         this.CallAPI(
           "put",
