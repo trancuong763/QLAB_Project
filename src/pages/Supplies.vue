@@ -336,11 +336,11 @@ export default {
       methodOptions: [
         {
           id: "dinhmuc",
-          name: "Định mức",
+          name: "2021",
         },
         {
           id: "vattu",
-          name: "Vật tư",
+          name: "2020",
         },
       ],
     };
@@ -443,7 +443,7 @@ export default {
             name: item["name"],
             services: item["services"],
             unit_name: item.unit.name,
-            method: item.method.trim() == "vattu"?"Vật tư":"Định mức",
+            method: item.method.trim() == "vattu"?"2020":"2021",
           });
         }
       });
