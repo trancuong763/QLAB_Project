@@ -291,6 +291,7 @@ export default {
         { text: "ĐV tính", value: "unit_name", sortable: false },
         // { text: "Kho / máy", value: "machineStock.name" },
         { text: "Số lượng", value: "SOLUONGYEUCAU", sortable: false },
+        { text: "Phương thức", value: "method", sortable: false },
         { text: "Ngày tạo", value: "NGAYTAO", sortable: false },
         { text: "Hành động", value: "actions", sortable: false },
       ],
