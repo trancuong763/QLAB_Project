@@ -2,11 +2,11 @@
   <div>
     <div class="row">
       <div class="col-md-4 col-xl-3 flex space-between printer">
-        <button class="btn btn-success" @click="export_excel">
+        <button class="btn btn-success" @click="export_excel" disabled>
           <i class="fas fa-file-excel" style="margin-right: 10px"></i> Xuất
           Excel
         </button>
-        <button class="btn btn-success" @click="export_pdf">
+        <button class="btn btn-success" @click="export_pdf" disabled>
           <i class="fas fa-file-pdf" style="margin-right: 10px"></i> Xuất PDF
         </button>
       </div>
@@ -157,22 +157,6 @@
       <v-btn color="primary" @click="initialize"> Reset </v-btn>
     </template> -->
     </v-data-table>
-    <div id="export_inventory" style="display: none">
-      <table style="width: 1200px">
-        <tr>
-          <th>STT</th>
-          <th>Tên hàng</th>
-          <th>Mã dược</th>
-          <th>Số lượng</th>
-        </tr>
-        <tr v-for="(item, index) in desserts" :key="index">
-          <td>{{ index + 1 }}</td>
-          <td>{{ item.TENHANG }}</td>
-          <td>{{ item.MADUOC }}</td>
-          <td>{{ item.Total }}</td>
-        </tr>
-      </table>
-    </div>
   </div>
 </template>
 <script>
@@ -211,6 +195,7 @@ export default {
       errors: "",
       show: false,
       serviceOptions: [],
+      htmls: "",
     };
   },
   mounted() {
@@ -252,29 +237,81 @@ export default {
         {},
         (response) => {
           this.inventoryList = response.data.data;
-          // for (let item of this.inventoryList) {
-          //   let services = [];
-          //   for (let dv of item.DichVu) {
-          //     for (let sv of this.serviceOptions) {
-          //       if (sv.DICHVU_ID == dv.DICHVU_ID) {
-          //         services.push({
-          //           DICHVU_ID: sv.DICHVU_ID,
-          //           TENDICHVU: sv.TENDICHVU,
-          //           Duocs: dv.Duocs,
-          //           total: dv.total,
-          //         });
-          //         break;
-          //       }
-          //     }
-          //   }
-          //   this.desserts.push({
-          //     TENHANG: item.TENHANG,
-          //     MADUOC: item.MADUOC,
-          //     Total: item.Total,
-          //     services: services,
-          //   });
-          // }
           this.desserts = this.inventoryList;
+          console.log(this.desserts);
+          document.querySelectorAll(".printer button")[0].disabled = false;
+          document.querySelectorAll(".printer button")[1].disabled = false;
+          this.htmls = `
+            <tr>
+              <td colspan="10">SỞ Y TẾ TP ĐÀ NẴNG</td>
+            </tr>
+            <tr>
+              <td colspan="10"><b>BỆNH VIỆN Y HỌC CỔ TRUYỀN</b></td>
+            </tr>
+            <tr>
+              <th colspan="10"><h2>BÁO CÁO XUẤT NHẬP TỒN</h2></th>
+            </tr>
+            <tr>
+              <td colspan="10" style="text-align: center">Từ ngày ..................... đến ngày ..................... </td>
+            </tr>
+            <tr>
+              <td colspan="10" style="text-align: center"><b>Phạm vi: Kho khoa xét nghiệm</b></td>
+            </tr>
+            <tr>
+              <td style="height: 40px"></td>
+            </tr>
+            <tr class="boder">
+                <th>STT</th>
+                <th>Mã hàng</th>
+                <th>Tên thuốc, vật tư, hóa chất</th>
+                <th>Hãng SX</th>
+                <th>Nước SX</th>
+                <th>ĐVTT</th>
+                <th>Hoạt chất</th>
+                <th>Hàm lượng</th>
+                <th>Số quyết định</th>
+                <th>ĐVT</th>
+            </tr>
+        `;
+          for (let [index, item] of this.desserts.entries()) {
+            this.htmls += `
+                <tr class="boder">
+                    <td>${index + 1}</td>
+                    <td>${item.DUOC_ID}</td>
+                    <td>${item.TENHANG}</td>
+                    <td>${
+                      item.detail_duoc.HANGSANXUAT
+                        ? item.detail_duoc.HANGSANXUAT
+                        : ""
+                    }</td>
+                    <td>${
+                      item.detail_duoc.QUOCGIA ? item.detail_duoc.QUOCGIA : ""
+                    }</td>
+                    <td></td>
+                    <td></td>
+                    <td>${
+                      item.detail_duoc.HAMLUONG ? item.detail_duoc.HAMLUONG : ""
+                    }</td>
+                    <td>${
+                      item.detail_duoc.SO_QDTT ? item.detail_duoc.SO_QDTT : ""
+                    }</td>
+                    <td></td>
+                </tr>
+            `;
+          }
+          this.htmls += `
+            <tr>
+              <td colspan="10" style="text-align: right; height: 60px">Ngày ........ tháng ........ năm ........... <td>
+            </tr>
+            <tr><td colspan="10" style="height: 60px"></td></tr>
+            <tr>
+              <td colspan="2" style="text-align: center; font-style: italic; width: 20%"><b>Thủ kho</b><br>(Ký, ghi rõ họ tên)</td>
+              <td colspan="2" style="text-align: center; font-style: italic; width: 20%"><b>Thống kê</b><br>(Ký, ghi rõ họ tên)</td>
+              <td colspan="2" style="text-align: center; font-style: italic; width: 20%"><b>Trưởng khoa dược</b><br>(Ký, ghi rõ họ tên)</td>
+              <td colspan="2" style="text-align: center; font-style: italic; width: 20%"><b>Kế toán trưởng</b><br>(Ký, ghi rõ họ tên)</td>
+              <td colspan="2" style="text-align: center; font-style: italic; width: 20%"><b>Giám đốc</b><br>(Ký, ghi rõ họ tên)</td>
+            </tr>
+          `;
         }
       );
     },
@@ -409,54 +446,59 @@ export default {
     },
     export_excel(e) {
       e.preventDefault();
-      this.errors = [];
-      this.CallAPI(
-        "get",
-        "request/export-ton-kho", {},
-        (response) => {
-          window.open(`${response.data.data.path}`, "_self");
-        }
-      );
+      var uri = "data:application/vnd.ms-excel;base64,";
+      var template =
+        '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>';
+      var base64 = function (s) {
+        return window.btoa(unescape(encodeURIComponent(s)));
+      };
+
+      var format = function (s, c) {
+        return s.replace(/{(\w+)}/g, function (m, p) {
+          return c[p];
+        });
+      };
+
+      var ctx = {
+        worksheet: "Worksheet",
+        table: this.htmls,
+      };
+
+      var link = document.createElement("a");
+      link.download = "Báo cáo tồn kho.xls";
+      link.href = uri + base64(format(template, ctx));
+      link.click();
     },
     export_pdf(e) {
       e.preventDefault();
-      // console.log();
-      // var printWindow = window.open("", "", "height=400,width=1200");
-      // printWindow.document.write(
-      //   "<html><head><title>Danh sách tồn kho</title>"
-      // );
-      // printWindow.document.write(
-      //   "<style>table,td,th{border: 1px solid #ddd;text-align: left;}table {border-collapse: collapse;width: 100%;}th, td {padding: 15px;}</style>"
-      // );
-      // printWindow.document.write("</head><body>");
-      // printWindow.document.write(
-      //   document.querySelector("#export_inventory").innerHTML
-      // );
-      // printWindow.document.write("</body></html>");
-      // printWindow.document.close()
-      // printWindow.print();
-      var sTable = document.getElementById('export_inventory').innerHTML;
+      let style = `
+          <style>
+            table {
+              width: 100%;
+              font: 14px Calibri;
+            }
+            .boder th, .boder td {
+              border: solid 1px #999; 
+              padding: 2px 3px;
+            }          
+          </style>
+        `;
 
-        var style = "<style>";
-        style = style + "table {width: 100%;font: 17px Calibri;}";
-        style = style + "table, th, td {border: solid 1px #DDD; border-collapse: collapse;";
-        style = style + "padding: 2px 3px;text-align: center;}";
-        style = style + "</style>";
+      var win = window.open("", "", "height=800,width=1400");
 
-        // CREATE A WINDOW OBJECT.
-        var win = window.open('', '', 'height=800,width=1400');
+      win.document.write("<html><head>");
+      win.document.write("<title>Danh sách tồn kho</title>");
+      win.document.write(style);
+      win.document.write("</head>");
+      win.document.write("<body>");
 
-        win.document.write('<html><head>');
-        win.document.write('<title>Profile</title>');   // <title> FOR PDF HEADER.
-        win.document.write(style);          // ADD STYLE INSIDE THE HEAD TAG.
-        win.document.write('</head>');
-        win.document.write('<body>');
-        win.document.write(sTable);         // THE TABLE CONTENTS INSIDE THE BODY TAG.
-        win.document.write('</body></html>');
+      let table = `<table cellspacing="0">${this.htmls}</table>`;
+      win.document.write(table);
+      win.document.write("</body></html>");
 
-        win.document.close(); 	// CLOSE THE CURRENT WINDOW.
+      win.document.close();
 
-        win.print();    // PRINT THE CONTENTS.
+      win.print();
     },
   },
 };
