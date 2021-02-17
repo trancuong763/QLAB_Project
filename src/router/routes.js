@@ -20,6 +20,7 @@ import System from "@/pages/Login-Register/System"
 import ExamineRequest from "@/pages/Examine Request"
 import Quota from "@/pages/Quota"
 import Inventory from "@/pages/Inventory"
+import SubMachine from "@/pages/Sub Machine"
 
 var isAuthenticated = false;
 if (localStorage.getItem('token')) isAuthenticated = true;
@@ -80,6 +81,11 @@ const routes = [
         path: "kho-may",
         name: "kho máy",
         component: Machine
+      },
+      {
+        path: "may",
+        name: "máy",
+        component: SubMachine
       },
       {
         path: "vat-tu",

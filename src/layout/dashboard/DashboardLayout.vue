@@ -11,9 +11,19 @@
         <sidebar-link to="/vat-tu"
           ><i class="fas fa-layer-group"></i>Vật tư</sidebar-link
         >
-        <sidebar-link to="/kho-may"
-          ><i class="fa fa-home"></i>Kho / máy</sidebar-link
-        >
+        <v-list-group :value="true">
+          <template v-slot:activator>
+            <sidebar-link to="/kho-may"
+              ><i class="fa fa-home"></i>Kho / máy</sidebar-link
+            >
+          </template>
+          <v-list-item link>
+            <sidebar-link to="/may"
+              ><i class="fas fa-plus" style="margin-left: 20px"></i>
+              Máy</sidebar-link
+            >
+          </v-list-item>
+        </v-list-group>
         <sidebar-link to="/don-vi"
           ><i class="fas fa-gem"></i>Đơn vị</sidebar-link
         >
@@ -94,6 +104,12 @@
 .wrapper .sidebar .nav i {
   font-size: 14px !important;
   line-height: 20px !important;
+}
+.v-list-item {
+  padding: 0 !important;
+}
+.v-list-item--link:before {
+  background: none !important;
 }
 </style>
 <script>
