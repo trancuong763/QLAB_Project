@@ -27,6 +27,7 @@ Vue.use(Toast, {
 });
 
 
+
 Vue.prototype.$urlAPI = 'http://9f091c41c830.ngrok.io/api/'
 
 

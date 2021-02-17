@@ -1,3 +1,4 @@
 module.exports = {
-  lintOnSave: false
+  lintOnSave: false,
+  outputDir : 'D:/LIS/qlapgithub/src/views/client'
 };
