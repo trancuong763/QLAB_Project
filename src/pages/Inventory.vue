@@ -243,19 +243,19 @@ export default {
           document.querySelectorAll(".printer button")[1].disabled = false;
           this.htmls = `
             <tr>
-              <td colspan="10">SỞ Y TẾ TP ĐÀ NẴNG</td>
+              <td colspan="8">SỞ Y TẾ TP ĐÀ NẴNG</td>
             </tr>
             <tr>
-              <td colspan="10"><b>BỆNH VIỆN Y HỌC CỔ TRUYỀN</b></td>
+              <td colspan="8"><b>BỆNH VIỆN Y HỌC CỔ TRUYỀN</b></td>
             </tr>
             <tr>
-              <th colspan="10"><h2>BÁO CÁO XUẤT NHẬP TỒN</h2></th>
+              <th colspan="8"><h2>BÁO CÁO XUẤT NHẬP TỒN</h2></th>
             </tr>
             <tr>
-              <td colspan="10" style="text-align: center">Từ ngày ..................... đến ngày ..................... </td>
+              <td colspan="8" style="text-align: center">Từ ngày ..................... đến ngày ..................... </td>
             </tr>
             <tr>
-              <td colspan="10" style="text-align: center"><b>Phạm vi: Kho khoa xét nghiệm</b></td>
+              <td colspan="8" style="text-align: center"><b>Phạm vi: Kho khoa xét nghiệm</b></td>
             </tr>
             <tr>
               <td style="height: 40px"></td>
@@ -266,17 +266,17 @@ export default {
                 <th>Tên thuốc, vật tư, hóa chất</th>
                 <th>Hãng SX</th>
                 <th>Nước SX</th>
-                <th>ĐVTT</th>
-                <th>Hoạt chất</th>
                 <th>Hàm lượng</th>
                 <th>Số quyết định</th>
                 <th>ĐVT</th>
             </tr>
         `;
+          // <th>ĐVTT</th>
+          // <th>Hoạt chất</th>
           for (let [index, item] of this.desserts.entries()) {
             this.htmls += `
                 <tr class="boder">
-                    <td>${index + 1}</td>
+                    <td style="text-align: center">${index + 1}</td>
                     <td>${item.DUOC_ID}</td>
                     <td>${item.TENHANG}</td>
                     <td>${
@@ -287,27 +287,31 @@ export default {
                     <td>${
                       item.detail_duoc.QUOCGIA ? item.detail_duoc.QUOCGIA : ""
                     }</td>
-                    <td></td>
-                    <td></td>
                     <td>${
                       item.detail_duoc.HAMLUONG ? item.detail_duoc.HAMLUONG : ""
                     }</td>
                     <td>${
                       item.detail_duoc.SO_QDTT ? item.detail_duoc.SO_QDTT : ""
                     }</td>
-                    <td></td>
+                    <td>${
+                      item.dinh_muc
+                        ? item.dinh_muc.unitName
+                          ? item.dinh_muc.unitName
+                          : ""
+                        : ""
+                    }</td>
                 </tr>
             `;
           }
           this.htmls += `
             <tr>
-              <td colspan="10" style="text-align: right; height: 60px">Ngày ........ tháng ........ năm ........... <td>
+              <td colspan="8" style="text-align: right; height: 60px">Ngày ........ tháng ........ năm ........... <td>
             </tr>
-            <tr><td colspan="10" style="height: 60px"></td></tr>
+            <tr><td colspan="8" style="height: 60px"></td></tr>
             <tr>
               <td colspan="2" style="text-align: center; font-style: italic; width: 20%"><b>Thủ kho</b><br>(Ký, ghi rõ họ tên)</td>
-              <td colspan="2" style="text-align: center; font-style: italic; width: 20%"><b>Thống kê</b><br>(Ký, ghi rõ họ tên)</td>
-              <td colspan="2" style="text-align: center; font-style: italic; width: 20%"><b>Trưởng khoa dược</b><br>(Ký, ghi rõ họ tên)</td>
+              <td style="text-align: center; font-style: italic; width: 20%"><b>Thống kê</b><br>(Ký, ghi rõ họ tên)</td>
+              <td style="text-align: center; font-style: italic; width: 20%"><b>Trưởng khoa dược</b><br>(Ký, ghi rõ họ tên)</td>
               <td colspan="2" style="text-align: center; font-style: italic; width: 20%"><b>Kế toán trưởng</b><br>(Ký, ghi rõ họ tên)</td>
               <td colspan="2" style="text-align: center; font-style: italic; width: 20%"><b>Giám đốc</b><br>(Ký, ghi rõ họ tên)</td>
             </tr>
@@ -465,7 +469,10 @@ export default {
       };
 
       var link = document.createElement("a");
-      link.download = "Báo cáo tồn kho.xls";
+      link.download =
+        "Báo cáo tồn kho ngày " +
+        new Date().toLocaleDateString("en-GB") +
+        ".xls";
       link.href = uri + base64(format(template, ctx));
       link.click();
     },
@@ -487,7 +494,11 @@ export default {
       var win = window.open("", "", "height=800,width=1400");
 
       win.document.write("<html><head>");
-      win.document.write("<title>Danh sách tồn kho</title>");
+      win.document.write(
+        `<title>Báo cáo tồn kho ngày ${new Date().toLocaleDateString(
+          "en-GB"
+        )}</title>`
+      );
       win.document.write(style);
       win.document.write("</head>");
       win.document.write("<body>");
