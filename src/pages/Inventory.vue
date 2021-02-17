@@ -174,6 +174,11 @@ export default {
           value: "TENHANG",
         },
         { text: "Mã dược", value: "MADUOC" },
+        { text: "Hãng SX", value: "HANGSANXUAT" },
+        { text: "Nước SX", value: "QUOCGIA" },
+        { text: "Hàm lượng", value: "HAMLUONG" },
+        { text: "Số QĐTT", value: "SO_QDTT" },
+        { text: "ĐVT", value: "DVT" },
         { text: "SL nhập", value: "Total" },
         { text: "SL đã dùng", value: "Used" },
         { text: "SL tồn", value: "Inventory" },
@@ -239,7 +244,28 @@ export default {
         {},
         (response) => {
           this.inventoryList = response.data.data;
-          this.desserts = this.inventoryList;
+          console.log(this.inventoryList);
+          for (let item of this.inventoryList) {
+            this.desserts.push({
+              DUOC_ID: item.DUOC_ID,
+              DichVu: item.DichVu,
+              Inventory: item.Inventory,
+              MADUOC: item.MADUOC,
+              TENHANG: item.TENHANG,
+              Total: item.Total,
+              Used: item.Used,
+              dinh_muc: item.dinh_muc,
+              HANGSANXUAT: item.detail_duoc.HANGSANXUAT,
+              HAMLUONG: item.detail_duoc.HAMLUONG,
+              QUOCGIA: item.detail_duoc.QUOCGIA,
+              SO_QDTT: item.detail_duoc.SO_QDTT,
+              DVT: item.dinh_muc
+                ? item.dinh_muc.unitName
+                  ? item.dinh_muc.unitName
+                  : ""
+                : "",
+            });
+          }
           document.querySelectorAll(".printer button")[0].disabled = false;
           document.querySelectorAll(".printer button")[1].disabled = false;
           this.htmls = `
