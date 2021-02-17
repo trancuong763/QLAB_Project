@@ -259,6 +259,7 @@ export default {
               HAMLUONG: item.detail_duoc.HAMLUONG,
               QUOCGIA: item.detail_duoc.QUOCGIA,
               SO_QDTT: item.detail_duoc.SO_QDTT,
+              detail_duoc: item.detail_duoc,
               DVT: item.dinh_muc
                 ? item.dinh_muc.unitName
                   ? item.dinh_muc.unitName
