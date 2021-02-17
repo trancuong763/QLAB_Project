@@ -174,7 +174,9 @@ export default {
           value: "TENHANG",
         },
         { text: "Mã dược", value: "MADUOC" },
-        { text: "Số lượng", value: "Total" },
+        { text: "SL nhập", value: "Total" },
+        { text: "SL đã dùng", value: "Used" },
+        { text: "SL tồn", value: "Inventory" },
         { text: "Chi tiết", value: "actions", sortable: false },
       ],
       desserts: [],
@@ -238,24 +240,23 @@ export default {
         (response) => {
           this.inventoryList = response.data.data;
           this.desserts = this.inventoryList;
-          console.log(this.desserts);
           document.querySelectorAll(".printer button")[0].disabled = false;
           document.querySelectorAll(".printer button")[1].disabled = false;
           this.htmls = `
             <tr>
-              <td colspan="8">SỞ Y TẾ TP ĐÀ NẴNG</td>
+              <td colspan="11">SỞ Y TẾ TP ĐÀ NẴNG</td>
             </tr>
             <tr>
-              <td colspan="8"><b>BỆNH VIỆN Y HỌC CỔ TRUYỀN</b></td>
+              <td colspan="11"><b>BỆNH VIỆN Y HỌC CỔ TRUYỀN</b></td>
             </tr>
             <tr>
-              <th colspan="8"><h2>BÁO CÁO XUẤT NHẬP TỒN</h2></th>
+              <th colspan="11"><h2>BÁO CÁO XUẤT NHẬP TỒN</h2></th>
             </tr>
             <tr>
-              <td colspan="8" style="text-align: center">Từ ngày ..................... đến ngày ..................... </td>
+              <td colspan="11" style="text-align: center">Từ ngày ..................... đến ngày ..................... </td>
             </tr>
             <tr>
-              <td colspan="8" style="text-align: center"><b>Phạm vi: Kho khoa xét nghiệm</b></td>
+              <td colspan="11" style="text-align: center"><b>Phạm vi: Kho khoa xét nghiệm</b></td>
             </tr>
             <tr>
               <td style="height: 40px"></td>
@@ -269,6 +270,9 @@ export default {
                 <th>Hàm lượng</th>
                 <th>Số quyết định</th>
                 <th>ĐVT</th>
+                <th>SL nhập</th>
+                <th>SL đã dùng</th>
+                <th>SL tồn</th>
             </tr>
         `;
           // <th>ĐVTT</th>
@@ -300,20 +304,23 @@ export default {
                           : ""
                         : ""
                     }</td>
+                    <td>${item.Total}</td>
+                    <td>${item.Used}</td>
+                    <td>${item.Inventory}</td>
                 </tr>
             `;
           }
           this.htmls += `
             <tr>
-              <td colspan="8" style="text-align: right; height: 60px">Ngày ........ tháng ........ năm ........... <td>
+              <td colspan="11" style="text-align: right; height: 60px">Ngày ........ tháng ........ năm ........... <td>
             </tr>
-            <tr><td colspan="8" style="height: 60px"></td></tr>
+            <tr><td colspan="11" style="height: 60px"></td></tr>
             <tr>
               <td colspan="2" style="text-align: center; font-style: italic; width: 20%"><b>Thủ kho</b><br>(Ký, ghi rõ họ tên)</td>
               <td style="text-align: center; font-style: italic; width: 20%"><b>Thống kê</b><br>(Ký, ghi rõ họ tên)</td>
-              <td style="text-align: center; font-style: italic; width: 20%"><b>Trưởng khoa dược</b><br>(Ký, ghi rõ họ tên)</td>
-              <td colspan="2" style="text-align: center; font-style: italic; width: 20%"><b>Kế toán trưởng</b><br>(Ký, ghi rõ họ tên)</td>
-              <td colspan="2" style="text-align: center; font-style: italic; width: 20%"><b>Giám đốc</b><br>(Ký, ghi rõ họ tên)</td>
+              <td colspan="2" style="text-align: center; font-style: italic; width: 20%"><b>Trưởng khoa dược</b><br>(Ký, ghi rõ họ tên)</td>
+              <td colspan="3" style="text-align: center; font-style: italic; width: 20%"><b>Kế toán trưởng</b><br>(Ký, ghi rõ họ tên)</td>
+              <td colspan="3" style="text-align: center; font-style: italic; width: 20%"><b>Giám đốc</b><br>(Ký, ghi rõ họ tên)</td>
             </tr>
           `;
         }
@@ -486,7 +493,7 @@ export default {
             }
             .boder th, .boder td {
               border: solid 1px #999; 
-              padding: 2px 3px;
+              padding: 2px 5px;
             }          
           </style>
         `;
