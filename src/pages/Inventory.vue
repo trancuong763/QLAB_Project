@@ -1,14 +1,42 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-md-4 col-xl-3 flex space-between printer">
-        <button class="btn btn-success" @click="export_excel" disabled>
+      <div class="col-12 flex printer">
+        <button
+          class="btn btn-success"
+          @click="export_excel"
+          disabled
+          style="height: 47px; width: 150px"
+        >
           <i class="fas fa-file-excel" style="margin-right: 10px"></i> Xuất
           Excel
         </button>
-        <button class="btn btn-success" @click="export_pdf" disabled>
+        <button
+          class="btn btn-success"
+          @click="export_pdf"
+          disabled
+          style="margin-left: 20px; height: 47px; width: 150px"
+        >
           <i class="fas fa-file-pdf" style="margin-right: 10px"></i> Xuất PDF
         </button>
+        <div
+          style="
+            margin-left: 20px;
+            max-width: 300px;
+            position: relative;
+            top: 14px;
+          "
+        >
+          <v-select
+            v-model="supplies"
+            :items="supplieOptions"
+            label="Loại vật tư"
+            item-text="name"
+            item-value="id"
+            solo
+            @change="getList"
+          ></v-select>
+        </div>
       </div>
     </div>
     <v-data-table
@@ -203,6 +231,17 @@ export default {
       show: false,
       serviceOptions: [],
       htmls: "",
+      supplieOptions: [
+        {
+          id: "13",
+          name: "Hóa chất",
+        },
+        {
+          id: "10",
+          name: "Vật tư",
+        },
+      ],
+      supplies: "",
     };
   },
   mounted() {
@@ -236,11 +275,14 @@ export default {
   },
 
   methods: {
+    getList() {
+      this.getInventoryList();
+    },
     getInventoryList() {
       this.desserts = [];
       this.CallAPI(
         "get",
-        "request/export-ton-kho?duoc_id=&dichvu_id=&type=json",
+        `request/export-ton-kho?duoc_id=&dichvu_id=&type=json&method=${this.supplies}`,
         {},
         (response) => {
           this.inventoryList = response.data.data;
@@ -548,3 +590,8 @@ export default {
   },
 };
 </script>
+<style>
+.v-list-item__content {
+  padding: 12px !important;
+}
+</style>
