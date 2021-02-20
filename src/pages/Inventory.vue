@@ -39,41 +39,44 @@
         </div>
       </div>
     </div>
-    <v-data-table
-      :headers="headers"
-      :items="desserts"
-      :search="search"
-      sort-by="calories"
-      class="elevation-1"
-    >
-      <template v-slot:top>
-        <v-toolbar flat>
-          <v-toolbar-title>Tồn kho</v-toolbar-title>
-          <v-divider class="mx-4" inset vertical></v-divider>
-          <v-spacer></v-spacer>
-          <div style="margin-right: 20px">
-            <v-text-field
-              v-model="search"
-              append-icon="mdi-magnify"
-              label="Tìm kiếm"
-              single-line
-              hide-details
-            ></v-text-field>
-          </div>
-          <v-dialog v-model="dialog" max-width="500px">
-            <!-- <template v-slot:activator="{ on, attrs }">
+    <v-app>
+      <v-data-table
+        :headers="headers"
+        :items="desserts"
+        :search="search"
+        sort-by="calories"
+        class="elevation-1"
+        :loading="loading"
+        loading-text="Đang tải..."
+      >
+        <template v-slot:top>
+          <v-toolbar flat>
+            <v-toolbar-title>Tồn kho</v-toolbar-title>
+            <v-divider class="mx-4" inset vertical></v-divider>
+            <v-spacer></v-spacer>
+            <div style="margin-right: 20px">
+              <v-text-field
+                v-model="search"
+                append-icon="mdi-magnify"
+                label="Tìm kiếm"
+                single-line
+                hide-details
+              ></v-text-field>
+            </div>
+            <v-dialog v-model="dialog" max-width="500px">
+              <!-- <template v-slot:activator="{ on, attrs }">
             <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
               Thêm mới
             </v-btn>
           </template> -->
-            <v-card>
-              <v-card-title>
-                <span class="headline">{{ formTitle }}</span>
-              </v-card-title>
+              <v-card>
+                <v-card-title>
+                  <span class="headline">{{ formTitle }}</span>
+                </v-card-title>
 
-              <v-card-text>
-                <v-container>
-                  <!-- <v-row>
+                <v-card-text>
+                  <v-container>
+                    <!-- <v-row>
                   <v-col cols="12">
                     <v-text-field
                       v-model="editedItem.TENHANG"
@@ -104,87 +107,90 @@
                     ></v-combobox>
                   </v-col>
                 </v-row> -->
-                  <!-- <p v-if="errors" class="alert alert-danger">{{ errors }}</p> -->
-                  <v-simple-table height="300px">
-                    <template v-slot:default>
-                      <tbody>
-                        <tr>
-                          <th>Tên hàng</th>
-                          <td>{{ editedItem.TENHANG }}</td>
-                        </tr>
-                        <tr>
-                          <th>Mã dược</th>
-                          <td>{{ editedItem.MADUOC }}</td>
-                        </tr>
-                        <tr>
-                          <th>Số lượng</th>
-                          <td>{{ editedItem.Total }}</td>
-                        </tr>
-                        <tr>
-                          <th>Dịch vụ</th>
-                          <td>
-                            <span
-                              v-for="(item, index) in editedItem.DichVu"
-                              :key="index"
-                            >
-                              {{ item.DICHVU_ID }}
-                            </span>
-                          </td>
-                        </tr>
-                        <tr>
-                          <th>Dược</th>
-                          <td>
-                            <span
-                              v-for="(item, index) in editedItem.DichVu"
-                              :key="index"
-                            >
+                    <!-- <p v-if="errors" class="alert alert-danger">{{ errors }}</p> -->
+                    <v-simple-table height="300px">
+                      <template v-slot:default>
+                        <tbody>
+                          <tr>
+                            <th>Tên hàng</th>
+                            <td>{{ editedItem.TENHANG }}</td>
+                          </tr>
+                          <tr>
+                            <th>Mã dược</th>
+                            <td>{{ editedItem.MADUOC }}</td>
+                          </tr>
+                          <tr>
+                            <th>Số lượng</th>
+                            <td>{{ editedItem.Total }}</td>
+                          </tr>
+                          <tr>
+                            <th>Dịch vụ</th>
+                            <td>
                               <span
-                                v-for="(value, ind) in item.Duocs"
-                                :key="ind"
+                                v-for="(item, index) in editedItem.DichVu"
+                                :key="index"
                               >
-                                {{ value.id }}
+                                {{ item.DICHVU_ID }}
                               </span>
-                            </span>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </template>
-                  </v-simple-table>
-                </v-container>
-              </v-card-text>
+                            </td>
+                          </tr>
+                          <tr>
+                            <th>Dược</th>
+                            <td>
+                              <span
+                                v-for="(item, index) in editedItem.DichVu"
+                                :key="index"
+                              >
+                                <span
+                                  v-for="(value, ind) in item.Duocs"
+                                  :key="ind"
+                                >
+                                  {{ value.id }}
+                                </span>
+                              </span>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </template>
+                    </v-simple-table>
+                  </v-container>
+                </v-card-text>
 
-              <!-- <v-card-actions>
+                <!-- <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="close"> Hủy </v-btn>
               <v-btn color="blue darken-1" text @click="save"> Lưu </v-btn>
             </v-card-actions> -->
-            </v-card>
-          </v-dialog>
-          <v-dialog v-model="dialogDelete" max-width="500px">
-            <v-card>
-              <v-card-title class="headline">Chắc chắn xóa?</v-card-title>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="closeDelete"
-                  >Hủy</v-btn
-                >
-                <v-btn color="blue darken-1" text @click="deleteItemConfirm"
-                  >OK</v-btn
-                >
-                <v-spacer></v-spacer>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </v-toolbar>
-      </template>
-      <template v-slot:[`item.actions`]="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
-        <!-- <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon> -->
-      </template>
-      <!-- <template v-slot:no-data>
+              </v-card>
+            </v-dialog>
+            <v-dialog v-model="dialogDelete" max-width="500px">
+              <v-card>
+                <v-card-title class="headline">Chắc chắn xóa?</v-card-title>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="blue darken-1" text @click="closeDelete"
+                    >Hủy</v-btn
+                  >
+                  <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+                    >OK</v-btn
+                  >
+                  <v-spacer></v-spacer>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </v-toolbar>
+        </template>
+        <template v-slot:[`item.actions`]="{ item }">
+          <v-icon small class="mr-2" @click="editItem(item)">
+            mdi-pencil
+          </v-icon>
+          <!-- <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon> -->
+        </template>
+        <!-- <template v-slot:no-data>
       <v-btn color="primary" @click="initialize"> Reset </v-btn>
     </template> -->
-    </v-data-table>
+      </v-data-table>
+    </v-app>
   </div>
 </template>
 <script>
@@ -242,6 +248,7 @@ export default {
         },
       ],
       supplies: "",
+      loading: false,
     };
   },
   mounted() {
@@ -279,14 +286,17 @@ export default {
       this.getInventoryList();
     },
     getInventoryList() {
+      this.loading = true;
       this.desserts = [];
       this.CallAPI(
         "get",
         `request/export-ton-kho?duoc_id=&dichvu_id=&type=json&method=${this.supplies}`,
         {},
         (response) => {
+          document.querySelectorAll(".printer button")[0].disabled = false;
+          document.querySelectorAll(".printer button")[1].disabled = false;
+          this.loading = false;
           this.inventoryList = response.data.data;
-          console.log(this.inventoryList);
           for (let item of this.inventoryList) {
             this.desserts.push({
               DUOC_ID: item.DUOC_ID,
@@ -297,10 +307,10 @@ export default {
               Total: item.Total,
               Used: item.Used,
               dinh_muc: item.dinh_muc,
-              HANGSANXUAT: item.detail_duoc.HANGSANXUAT,
-              HAMLUONG: item.detail_duoc.HAMLUONG,
-              QUOCGIA: item.detail_duoc.QUOCGIA,
-              SO_QDTT: item.detail_duoc.SO_QDTT,
+              HANGSANXUAT: item.detail_duoc ? item.detail_duoc.HANGSANXUAT : "",
+              HAMLUONG: item.detail_duoc ? item.detail_duoc.HAMLUONG : "",
+              QUOCGIA: item.detail_duoc ? item.detail_duoc.QUOCGIA : "",
+              SO_QDTT: item.detail_duoc ? item.detail_duoc.SO_QDTT : "",
               detail_duoc: item.detail_duoc,
               DVT: item.dinh_muc
                 ? item.dinh_muc.unitName
@@ -309,8 +319,7 @@ export default {
                 : "",
             });
           }
-          document.querySelectorAll(".printer button")[0].disabled = false;
-          document.querySelectorAll(".printer button")[1].disabled = false;
+          
           this.htmls = `
             <tr>
               <td colspan="11">SỞ Y TẾ TP ĐÀ NẴNG</td>
