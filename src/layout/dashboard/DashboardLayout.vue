@@ -33,9 +33,19 @@
         <!-- <sidebar-link to="/nha-cung-cap"
           ><i class="fas fa-building"></i>Nhà cung cấp</sidebar-link
         > -->
-        <sidebar-link to="/yeu-cau-xet-nghiem"
-          ><i class="fas fa-user-check"></i>Yêu cầu xét nghiệm</sidebar-link
-        >
+           <v-list-group :value="true">
+          <template v-slot:activator>
+            <sidebar-link to="/yeu-cau-xet-nghiem"
+              ><i class="fas fa-user-check"></i>YC xét nghiệm</sidebar-link
+            >
+          </template>
+          <v-list-item link>
+            <sidebar-link to="/noi-kiem"
+              ><i class="fas fa-plus" style="margin-left: 20px"></i>
+              Nội kiểm</sidebar-link
+            >
+          </v-list-item>
+        </v-list-group>
         <sidebar-link to="/ton-kho"
           ><i class="fas fa-warehouse"></i>Tồn kho</sidebar-link
         >

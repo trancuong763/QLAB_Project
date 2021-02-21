@@ -203,7 +203,6 @@ export default {
         "request/export-may?type=json",
         {},
         (response) => {
-          console.log(response.data.data);
           this.desserts = response.data.data.ListMay
           document.querySelectorAll(".printer.print button")[0].disabled = false;
           document.querySelectorAll(".printer.print button")[1].disabled = false;
