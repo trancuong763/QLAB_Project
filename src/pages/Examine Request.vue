@@ -217,6 +217,7 @@ export default {
         `request/list?limit=9999999999&startDate=${this.selected_start}&endDate=${this.selected_end}&serviceGroup=1`,
         {},
         (response) => {
+ 
           this.isSearching = false;
           let error = response.data.error;
           if (error == "START_DATE_NOT_GREATER_THAN_END_DATE") {
