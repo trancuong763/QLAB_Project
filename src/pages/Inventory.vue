@@ -319,7 +319,7 @@ export default {
                 : "",
             });
           }
-          
+
           this.htmls = `
             <tr>
               <td colspan="11">SỞ Y TẾ TP ĐÀ NẴNG</td>
@@ -362,18 +362,32 @@ export default {
                     <td>${item.DUOC_ID}</td>
                     <td>${item.TENHANG}</td>
                     <td>${
-                      item.detail_duoc.HANGSANXUAT
+                      item.detail_duoc
                         ? item.detail_duoc.HANGSANXUAT
+                          ? item.detail_duoc.HANGSANXUAT
+                          : ""
                         : ""
                     }</td>
                     <td>${
-                      item.detail_duoc.QUOCGIA ? item.detail_duoc.QUOCGIA : ""
+                      item.detail_duoc
+                        ? item.detail_duoc.QUOCGIA
+                          ? item.detail_duoc.QUOCGIA
+                          : ""
+                        : ""
                     }</td>
                     <td>${
-                      item.detail_duoc.HAMLUONG ? item.detail_duoc.HAMLUONG : ""
+                      item.detail_duoc
+                        ? item.detail_duoc.HAMLUONG
+                          ? item.detail_duoc.HAMLUONG
+                          : ""
+                        : ""
                     }</td>
                     <td>${
-                      item.detail_duoc.SO_QDTT ? item.detail_duoc.SO_QDTT : ""
+                      item.detail_duoc
+                        ? item.detail_duoc.SO_QDTT
+                          ? item.detail_duoc.SO_QDTT
+                          : ""
+                        : ""
                     }</td>
                     <td>${
                       item.dinh_muc
