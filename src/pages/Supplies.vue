@@ -177,6 +177,13 @@
                         type="text"
                       ></v-text-field>
                     </v-col>
+                     <v-col v-if="editedItem.method == 2021" cols="12" sm="12">
+                      <v-text-field
+                        v-model="editedItem.price"
+                        label="Giá"
+                        type="number"
+                      ></v-text-field>
+                    </v-col>
                     <v-col cols="12" sm="12" v-if="editedIndex <= -1">
                       <v-text-field
                         v-model="editedItem.amount"
@@ -305,7 +312,11 @@ export default {
         amount: null,
         unit: null,
         type: "",
-        method: null,
+        method: {
+          id: null,
+          name: null,
+        },
+        price: "",
         // machineStock: null,
       },
       defaultItem: {
@@ -316,7 +327,11 @@ export default {
         unit: null,
         amount: null,
         type: "",
-        method: null,
+        method: {
+          id: null,
+          name: null,
+        },
+        price: "",
         // machineStock: null,
       },
       materialList: [],
@@ -516,6 +531,7 @@ export default {
           unitId: this.editedItem.unit.id,
           MADUOCCHUNG: this.editedItem.MADUOCCHUNG,
           method: this.editedItem.method.id,
+          price: this.editedItem.price,
         };
         this.CallAPI(
           "put",
