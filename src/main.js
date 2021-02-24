@@ -28,7 +28,9 @@ Vue.use(Toast, {
 
 
 
-Vue.prototype.$urlAPI = 'http://7c947e51393c.ngrok.io/api/'
+// Vue.prototype.$urlAPI = 'http://7c947e51393c.ngrok.io/api/'
+
+Vue.prototype.$urlAPI = 'http://127.0.0.1:3000/api/'
 
 
 Vue.prototype.$config = {
