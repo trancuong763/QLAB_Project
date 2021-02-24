@@ -177,6 +177,13 @@
                         type="text"
                       ></v-text-field>
                     </v-col>
+                     <v-col v-if="checkMethod == 2021" cols="12" sm="12">
+                      <v-text-field
+                        v-model="editedItem.price"
+                        label="Giá"
+                        type="number"
+                      ></v-text-field>
+                    </v-col>
                     <v-col cols="12" sm="12" v-if="editedIndex <= -1">
                       <v-text-field
                         v-model="editedItem.amount"
@@ -292,6 +299,7 @@ export default {
         // { text: "Kho / máy", value: "machineStock.name" },
         { text: "Số lượng", value: "SOLUONGYEUCAU", sortable: false },
         { text: "Phương thức", value: "method", sortable: false },
+        { text: "Giá", value: "price", sortable: true},
         { text: "Ngày tạo", value: "NGAYTAO", sortable: false },
         { text: "Hành động", value: "actions", sortable: false },
       ],
@@ -305,7 +313,11 @@ export default {
         amount: null,
         unit: null,
         type: "",
-        method: null,
+        method: {
+          id: null,
+          name: null,
+        },
+        price: "",
         // machineStock: null,
       },
       defaultItem: {
@@ -316,7 +328,11 @@ export default {
         unit: null,
         amount: null,
         type: "",
-        method: null,
+        method: {
+          id: null,
+          name: null,
+        },
+        price: "",
         // machineStock: null,
       },
       materialList: [],
@@ -351,6 +367,14 @@ export default {
     formTitle() {
       return this.editedIndex === -1 ? "Thêm mới" : "Sửa";
     },
+    checkMethod() {
+      if(this.editedItem.method.name !== undefined) {
+        return this.editedItem.method.name;
+      }
+      else {
+        return this.editedItem.method;
+      }
+    }
   },
 
   watch: {
@@ -429,18 +453,18 @@ export default {
         this.isSearching = false;
         this.materialList = response.data.data.data;
         this.totalDesserts = response.data.data.total;
-        console.log(this.materialList);
         for (let item of this.materialList) {
           this.desserts.push({
             unit: item.unit,
             DONVITINH: item["DONVITINH"],
             MADUOCCHUNG: item["MADUOCCHUNG"],
             NGAYTAO: this.formatDate(item["NGAYTAO"]),
-            SOLUONGYEUCAU: item["SOLUONGYEUCAU"],
+            SOLUONGYEUCAU: this.formatNumber(item["SOLUONGYEUCAU"]),
             code: item["code"],
-            defineLevel: item["defineLevel"],
+            defineLevel: this.formatNumber(item["defineLevel"]),
             description: item["description"],
             id: item["id"],
+            price: item["price"] ? this.formatNumber(item["price"]) : "",
             name: item["name"],
             services: item["services"],
             unit_name: item.unit.name,
@@ -516,6 +540,7 @@ export default {
           unitId: this.editedItem.unit.id,
           MADUOCCHUNG: this.editedItem.MADUOCCHUNG,
           method: this.editedItem.method.id,
+          price: this.editedItem.price ? this.editedItem.price : "",
         };
         this.CallAPI(
           "put",
@@ -579,6 +604,9 @@ export default {
     },
     format(date) {
       return date.split("/").reverse().join("-");
+    },
+    formatNumber(number) {
+      return new Intl.NumberFormat().format(number);
     },
     show_list(e) {
       e.preventDefault();

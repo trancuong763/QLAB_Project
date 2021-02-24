@@ -65,7 +65,6 @@
         </div>
       </div>
     </div>
-
     <div class="row">
       <div class="col-md-4 col-xl-3 flex printer">
         <button
@@ -149,18 +148,7 @@ export default {
       ],
       food: [],
       loading: false,
-      data_table: ` <tr>
-          <th>#</th>
-          <th>Mã y tế</th>
-          <th>Số bệnh án</th>
-          <th>Tên bệnh nhân</th>
-          <th>Tên dịch vụ</th>
-          <th>Nhóm dịch vụ</th>
-          <th>Giới tính</th>
-          <th>Ngày sinh</th>
-          <th>Địa chỉ thường trú</th>
-          <th>Ngày tạo</th>
-        </tr>`,
+      htmls: "",
     };
   },
   watch: {
@@ -204,6 +192,7 @@ export default {
         "&endDate=" +
         this.format(this.selected_end) +
         "&serviceGroup=1";
+      console.log(params);
       this.CallAPI("get", "request/list" + params, {}, (response) => {
         let error = response.data.error;
         if (error == "START_DATE_NOT_GREATER_THAN_END_DATE") {
@@ -228,9 +217,23 @@ export default {
               NGAYTAO: this.formatDate(item.NGAYTAO),
             });
           }
+
+          this.htmls = `
+        <tr>
+          <th>#</th>
+          <th>Mã y tế</th>
+          <th>Số bệnh án</th>
+          <th>Tên bệnh nhân</th>
+          <th>Tên dịch vụ</th>
+          <th>Nhóm dịch vụ</th>
+          <th>Giới tính</th>
+          <th>Ngày sinh</th>
+          <th>Địa chỉ thường trú</th>
+          <th>Ngày tạo</th>
+        </tr>`;
           let i = 0;
           for (let item of this.food) {
-            this.data_table += `
+            this.htmls += `
               <tr>
                  <td>${i++}</td>
                 <td>${item.MAYTE}</td>
@@ -245,6 +248,29 @@ export default {
               </tr>
             `;
           }
+          this.htmls += `
+          <tr>
+              <td colspan="10" height: 60px;></td>
+            </tr>
+            <tr>
+              <td colspan="10" style="text-align: right;">Từ ngày...........................Đến ngày.........................</td>
+            </tr>
+             <tr><td colspan="11" style="height: 60px"></td></tr>
+            <tr>
+              <td colspan="2" style="text-align: center; font-style: italic; width: 20%"><b>Thủ kho</b><br>(Ký, ghi rõ họ tên)</td>
+              <td style="text-align: center; font-style: italic; width: 20%"><b>Thống kê</b><br>(Ký, ghi rõ họ tên)</td>
+              <td colspan="2" style="text-align: center; font-style: italic; width: 20%"><b>Trưởng khoa dược</b><br>(Ký, ghi rõ họ tên)</td>
+              <td colspan="3" style="text-align: center; font-style: italic; width: 20%"><b>Kế toán trưởng</b><br>(Ký, ghi rõ họ tên)</td>
+              <td colspan="3" style="text-align: center; font-style: italic; width: 20%"><b>Giám đốc</b><br>(Ký, ghi rõ họ tên)</td>
+            </tr>
+            <tr>
+              <td colspan="2"  style="text-align: center; font-style: italic; width: 20% ; height: 80px;"></td>
+              <td  style="text-align: center; font-style: italic; width: 20%"></td>
+              <td colspan="2"  style="text-align: center; font-style: italic; width: 20%; height: 80px; " ></td>
+              <td colspan="3"  style="text-align: center; font-style: italic; width: 20%; height: 80px; " ></td>
+              <td colspan="3" style="text-align: center; font-style: italic; width: 20%; height: 80px;"></td>
+            </tr>
+          `;
         }
       });
     },
@@ -267,60 +293,81 @@ export default {
     format(date) {
       return date.split("/").reverse().join("-");
     },
-    export_excel(e) {
-      e.preventDefault();
-      e.preventDefault();
-      this.errors = [];
-      this.selected_start = this.formatted_start;
-      this.selected_end = this.formatted_end;
-      if (!this.formatted_start || !this.formatted_end) {
-        this.errors.push("Vui lòng nhập ngày cần tìm!");
-        return;
-      }
-      this.errors = [];
-      this.CallAPI(
-        "post",
-        "request/export",
-        {
-          startDate: this.format(this.selected_start),
-          endDate: this.format(this.selected_end),
-          serviceGroup: 1,
-        },
-        (response) => {
-          let error = response.data.error;
-          if (error == "START_DATE_NOT_GREATER_THAN_END_DATE") {
-            this.errors.push("Ngày không hợp lệ!");
-          }
-          if (response.data.code == 1) {
-            window.open(`${response.data.data.path}`, "_self");
-          }
-        }
-      );
+    export_excel() {
+      this.show_list();
+      let title = ` <tr>
+          <td colspan="10" style="text-align: left;">SỞ Y TẾ TP ĐÀ NẴNG</td>
+        </tr>
+        <tr>
+          <th colspan="10" style="text-align: left;">BỆNH VIỆN Y HỌC CỔ TRUYỀN</th>
+        </tr>
+        <tr>
+          <th colspan="10" style="height: 60px text-align: center;"><h2>BÁO CÁO YÊU CẦU XÉT NGHIỆM</h2></th>
+        </tr>
+        <tr>
+          <td colspan="10" style="text-align: center;">Từ ngày ${
+            this.selected_start ? this.selected_start : "01/01/2021"
+          } Đến ngày ${
+        this.selected_end
+          ? this.selected_start
+          : new Date().toLocaleDateString("en-GB")
+      }</td>
+        </tr>`;
+      var uri = "data:application/vnd.ms-excel;base64,";
+      var template =
+        '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>';
+      var base64 = function (s) {
+        return window.btoa(unescape(encodeURIComponent(s)));
+      };
+      var format = function (s, c) {
+        return s.replace(/{(\w+)}/g, function (m, p) {
+          return c[p];
+        });
+      };
+
+      var ctx = {
+        worksheet: "Worksheet",
+        table: `${title} ${this.htmls}`,
+      };
+      var link = document.createElement("a");
+      link.download =
+        "Báo cáo yêu cầu xét nghiệm ngày " +
+        new Date().toLocaleDateString("en-GB") +
+        ".xls";
+      link.href = uri + base64(format(template, ctx));
+      link.click();
     },
-    show_list(e) {
-      e.preventDefault();
+    show_list() {
       this.errors = [];
       this.selected_start = this.formatted_start;
       this.selected_end = this.formatted_end;
-      if (!this.formatted_start || !this.formatted_end) {
-        this.errors.push("Vui lòng nhập ngày cần tìm!");
-        return;
-      }
-      this.errors = [];
       this.getMaterialList();
     },
-    export_pdf(e) {
-      e.preventDefault();
+    export_pdf() {
       this.errors = [];
-      this.selected_start = this.formatted_start;
-      this.selected_end = this.formatted_end;
-      if (!this.formatted_start || !this.formatted_end) {
-        this.errors.push("Vui lòng nhập ngày cần tìm!");
-        return;
-      }
-      this.errors = [];
+      this.show_list();
+      let title = ` <tr>
+          <td colspan="10" style="text-align: left;">SỞ Y TẾ TP ĐÀ NẴNG</td>
+        </tr>
+        <tr>
+          <th colspan="10" style="text-align: left;">BỆNH VIỆN Y HỌC CỔ TRUYỀN</th>
+        </tr>
+        <tr>
+          <th colspan="10" style="height: 60px text-align: center;"><h2>BÁO CÁO YÊU CẦU XÉT NGHIỆM</h2></th>
+        </tr>
+        <tr>
+          <td colspan="10" style="text-align: center;">Từ ngày ${
+            this.selected_start ? this.selected_start : "01/01/2020"
+          } Đến ngày ${
+        this.selected_end
+          ? this.selected_start
+          : new Date().toLocaleDateString("en-GB")
+      }</td>
+        </tr>`;
       var printWindow = window.open("", "", "height=800,width=1400");
-      printWindow.document.write("<html><head>");
+      printWindow.document.write(
+        "<html><head> <title>Yêu cầu xét nghiệm</title>"
+      );
       printWindow.document.write(
         `<style>
           table,
@@ -342,14 +389,8 @@ export default {
           }
          </style>`
       );
-      printWindow.document.write(
-        `</head><body>`
-      );
-      printWindow.document.write(`
-        <h1 style="text-align: center;">Yêu cầu xét nghiệm</h1>
-        <h4>Từ ngày ${this.selected_start} đến ngày ${this.selected_end}</h4>`
-      );
-      printWindow.document.write(`<table>${this.data_table}</table>`);
+      printWindow.document.write(`</head><body>`);
+      printWindow.document.write(`<table>${title} ${this.htmls}</table>`);
       printWindow.document.write("</body></html>");
       printWindow.document.close();
       printWindow.print();
@@ -360,6 +401,9 @@ export default {
     initialize() {
       this.food = this.list;
     },
+    formatNumber(number) {
+      return new Intl.NumberFormat('de-DE').format(number);
+    }
   },
   mounted() {},
 };

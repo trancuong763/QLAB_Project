@@ -301,11 +301,11 @@ export default {
             this.desserts.push({
               DUOC_ID: item.DUOC_ID,
               DichVu: item.DichVu,
-              Inventory: item.Inventory,
+              Inventory: this.formatNumber(item.Inventory),
               MADUOC: item.MADUOC,
               TENHANG: item.TENHANG,
-              Total: item.Total,
-              Used: item.Used,
+              Total: this.formatNumber(item.Total),
+              Used: this.formatNumber(item.Used),
               dinh_muc: item.dinh_muc,
               HANGSANXUAT: item.detail_duoc ? item.detail_duoc.HANGSANXUAT : "",
               HAMLUONG: item.detail_duoc ? item.detail_duoc.HAMLUONG : "",
@@ -574,6 +574,9 @@ export default {
         ".xls";
       link.href = uri + base64(format(template, ctx));
       link.click();
+    },
+    formatNumber(number) {
+      return new Intl.NumberFormat().format(number);
     },
     export_pdf(e) {
       e.preventDefault();

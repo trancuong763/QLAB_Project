@@ -24,8 +24,12 @@
             >
           </v-list-item>
         </v-list-group>
+
         <sidebar-link to="/don-vi"
           ><i class="fas fa-gem"></i>Đơn vị</sidebar-link
+        >
+        <sidebar-link to="/noi-kiem"
+          ><i class="fas fa-check-square"></i>Nội kiểm</sidebar-link
         >
         <sidebar-link to="/dinh-muc"
           ><i class="fas fa-gem"></i>Định mức</sidebar-link
@@ -33,19 +37,9 @@
         <!-- <sidebar-link to="/nha-cung-cap"
           ><i class="fas fa-building"></i>Nhà cung cấp</sidebar-link
         > -->
-           <v-list-group :value="true">
-          <template v-slot:activator>
-            <sidebar-link to="/yeu-cau-xet-nghiem"
-              ><i class="fas fa-user-check"></i>YC xét nghiệm</sidebar-link
-            >
-          </template>
-          <v-list-item link>
-            <sidebar-link to="/noi-kiem"
-              ><i class="fas fa-plus" style="margin-left: 20px"></i>
-              Nội kiểm</sidebar-link
-            >
-          </v-list-item>
-        </v-list-group>
+        <sidebar-link to="/yeu-cau-xet-nghiem"
+          ><i class="fas fa-user-check"></i>YC xét nghiệm</sidebar-link
+        >
         <sidebar-link to="/ton-kho"
           ><i class="fas fa-warehouse"></i>Tồn kho</sidebar-link
         >
