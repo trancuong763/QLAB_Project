@@ -177,7 +177,7 @@
                         type="text"
                       ></v-text-field>
                     </v-col>
-                     <v-col v-if="editedItem.method == 2021" cols="12" sm="12">
+                     <v-col v-if="checkMethod == 2021" cols="12" sm="12">
                       <v-text-field
                         v-model="editedItem.price"
                         label="Giá"
@@ -367,6 +367,14 @@ export default {
     formTitle() {
       return this.editedIndex === -1 ? "Thêm mới" : "Sửa";
     },
+    checkMethod() {
+      if(this.editedItem.method.name !== undefined) {
+        return this.editedItem.method.name;
+      }
+      else {
+        return this.editedItem.method;
+      }
+    }
   },
 
   watch: {
@@ -445,7 +453,6 @@ export default {
         this.isSearching = false;
         this.materialList = response.data.data.data;
         this.totalDesserts = response.data.data.total;
-        console.log(this.materialList);
         for (let item of this.materialList) {
           this.desserts.push({
             unit: item.unit,
@@ -533,7 +540,7 @@ export default {
           unitId: this.editedItem.unit.id,
           MADUOCCHUNG: this.editedItem.MADUOCCHUNG,
           method: this.editedItem.method.id,
-          price: this.editedItem.price,
+          price: this.editedItem.price ? this.editedItem.price : "",
         };
         this.CallAPI(
           "put",
