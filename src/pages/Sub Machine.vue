@@ -203,7 +203,15 @@ export default {
         "request/export-may?type=json",
         {},
         (response) => {
-          this.desserts = response.data.data.ListMay
+          
+          for(let item of response.data.data.ListMay) {
+            this.desserts.push({
+              machine_stock_name: item.machine_stock_name,
+              DUOC_ID: item.DUOC_ID,
+              Used: this.formatNumber(item.Used),
+              actions: item.actions
+            });
+          }
           document.querySelectorAll(".printer.print button")[0].disabled = false;
           document.querySelectorAll(".printer.print button")[1].disabled = false;
           this.htmls = `
@@ -378,6 +386,9 @@ export default {
           this.close();
         });
       }
+    },
+    formatNumber(number) {
+      return new Intl.NumberFormat().format(number);
     },
     validEmail(email) {
       const reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

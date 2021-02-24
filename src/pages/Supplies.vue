@@ -299,6 +299,7 @@ export default {
         // { text: "Kho / máy", value: "machineStock.name" },
         { text: "Số lượng", value: "SOLUONGYEUCAU", sortable: false },
         { text: "Phương thức", value: "method", sortable: false },
+        { text: "Giá", value: "price", sortable: true},
         { text: "Ngày tạo", value: "NGAYTAO", sortable: false },
         { text: "Hành động", value: "actions", sortable: false },
       ],
@@ -451,11 +452,12 @@ export default {
             DONVITINH: item["DONVITINH"],
             MADUOCCHUNG: item["MADUOCCHUNG"],
             NGAYTAO: this.formatDate(item["NGAYTAO"]),
-            SOLUONGYEUCAU: item["SOLUONGYEUCAU"],
+            SOLUONGYEUCAU: this.formatNumber(item["SOLUONGYEUCAU"]),
             code: item["code"],
-            defineLevel: item["defineLevel"],
+            defineLevel: this.formatNumber(item["defineLevel"]),
             description: item["description"],
             id: item["id"],
+            price: item["price"] ? this.formatNumber(item["price"]) : "",
             name: item["name"],
             services: item["services"],
             unit_name: item.unit.name,
@@ -595,6 +597,9 @@ export default {
     },
     format(date) {
       return date.split("/").reverse().join("-");
+    },
+    formatNumber(number) {
+      return new Intl.NumberFormat().format(number);
     },
     show_list(e) {
       e.preventDefault();

@@ -192,6 +192,7 @@ export default {
         "&endDate=" +
         this.format(this.selected_end) +
         "&serviceGroup=1";
+      console.log(params);
       this.CallAPI("get", "request/list" + params, {}, (response) => {
         let error = response.data.error;
         if (error == "START_DATE_NOT_GREATER_THAN_END_DATE") {
@@ -216,20 +217,8 @@ export default {
               NGAYTAO: this.formatDate(item.NGAYTAO),
             });
           }
-          
+
           this.htmls = `
-        <tr>
-          <td colspan="10" style="text-align: left;">SỞ Y TẾ TP ĐÀ NẴNG</td>
-        </tr>
-        <tr>
-          <th colspan="10" style="text-align: left;">BỆNH VIỆN Y HỌC CỔ TRUYỀN</th>
-        </tr>
-        <tr>
-          <th colspan="10" style="height: 60px text-align: center;"><h2>BÁO CÁO YÊU CẦU XÉT NGHIỆM</h2></th>
-        </tr>
-        <tr>
-          <td colspan="10" style="text-align: center;">Từ ngày ${this.selected_start} Đến ngày ${this.selected_end}</td>
-        </tr>
         <tr>
           <th>#</th>
           <th>Mã y tế</th>
@@ -242,7 +231,6 @@ export default {
           <th>Địa chỉ thường trú</th>
           <th>Ngày tạo</th>
         </tr>`;
-        console.log(this.htmls);
           let i = 0;
           for (let item of this.food) {
             this.htmls += `
@@ -282,7 +270,7 @@ export default {
               <td colspan="3"  style="text-align: center; font-style: italic; width: 20%; height: 80px; " ></td>
               <td colspan="3" style="text-align: center; font-style: italic; width: 20%; height: 80px;"></td>
             </tr>
-          `
+          `;
         }
       });
     },
@@ -307,6 +295,24 @@ export default {
     },
     export_excel() {
       this.show_list();
+      let title = ` <tr>
+          <td colspan="10" style="text-align: left;">SỞ Y TẾ TP ĐÀ NẴNG</td>
+        </tr>
+        <tr>
+          <th colspan="10" style="text-align: left;">BỆNH VIỆN Y HỌC CỔ TRUYỀN</th>
+        </tr>
+        <tr>
+          <th colspan="10" style="height: 60px text-align: center;"><h2>BÁO CÁO YÊU CẦU XÉT NGHIỆM</h2></th>
+        </tr>
+        <tr>
+          <td colspan="10" style="text-align: center;">Từ ngày ${
+            this.selected_start ? this.selected_start : "01/01/2021"
+          } Đến ngày ${
+        this.selected_end
+          ? this.selected_start
+          : new Date().toLocaleDateString("en-GB")
+      }</td>
+        </tr>`;
       var uri = "data:application/vnd.ms-excel;base64,";
       var template =
         '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>';
@@ -321,9 +327,9 @@ export default {
 
       var ctx = {
         worksheet: "Worksheet",
-        table: this.htmls,
+        table: `${title} ${this.htmls}`,
       };
-       var link = document.createElement("a");
+      var link = document.createElement("a");
       link.download =
         "Báo cáo yêu cầu xét nghiệm ngày " +
         new Date().toLocaleDateString("en-GB") +
@@ -340,8 +346,28 @@ export default {
     export_pdf() {
       this.errors = [];
       this.show_list();
+      let title = ` <tr>
+          <td colspan="10" style="text-align: left;">SỞ Y TẾ TP ĐÀ NẴNG</td>
+        </tr>
+        <tr>
+          <th colspan="10" style="text-align: left;">BỆNH VIỆN Y HỌC CỔ TRUYỀN</th>
+        </tr>
+        <tr>
+          <th colspan="10" style="height: 60px text-align: center;"><h2>BÁO CÁO YÊU CẦU XÉT NGHIỆM</h2></th>
+        </tr>
+        <tr>
+          <td colspan="10" style="text-align: center;">Từ ngày ${
+            this.selected_start ? this.selected_start : "01/01/2020"
+          } Đến ngày ${
+        this.selected_end
+          ? this.selected_start
+          : new Date().toLocaleDateString("en-GB")
+      }</td>
+        </tr>`;
       var printWindow = window.open("", "", "height=800,width=1400");
-      printWindow.document.write("<html><head> <title>Yêu cầu xét nghiệm</title>");
+      printWindow.document.write(
+        "<html><head> <title>Yêu cầu xét nghiệm</title>"
+      );
       printWindow.document.write(
         `<style>
           table,
@@ -364,7 +390,7 @@ export default {
          </style>`
       );
       printWindow.document.write(`</head><body>`);
-      printWindow.document.write(`<table>${this.htmls}</table>`);
+      printWindow.document.write(`<table>${title} ${this.htmls}</table>`);
       printWindow.document.write("</body></html>");
       printWindow.document.close();
       printWindow.print();
@@ -375,6 +401,9 @@ export default {
     initialize() {
       this.food = this.list;
     },
+    formatNumber(number) {
+      return new Intl.NumberFormat('de-DE').format(number);
+    }
   },
   mounted() {},
 };
