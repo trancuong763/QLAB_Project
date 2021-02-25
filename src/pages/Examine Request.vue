@@ -148,6 +148,7 @@ export default {
       ],
       food: [],
       loading: false,
+      medthod: "",
       htmls: "",
     };
   },
@@ -192,7 +193,6 @@ export default {
         "&endDate=" +
         this.format(this.selected_end) +
         "&serviceGroup=1";
-      console.log(params);
       this.CallAPI("get", "request/list" + params, {}, (response) => {
         let error = response.data.error;
         if (error == "START_DATE_NOT_GREATER_THAN_END_DATE") {
@@ -294,7 +294,10 @@ export default {
       return date.split("/").reverse().join("-");
     },
     export_excel() {
-      this.show_list();
+      this.method = "export";
+      this.selected_start = this.formatted_start;
+      this.selected_end = this.formatted_end;
+      this.getMaterialList();
       let title = ` <tr>
           <td colspan="10" style="text-align: left;">SỞ Y TẾ TP ĐÀ NẴNG</td>
         </tr>
@@ -345,7 +348,9 @@ export default {
     },
     export_pdf() {
       this.errors = [];
-      this.show_list();
+      this.method = "export";
+      this.selected_start = this.formatted_start;
+      this.selected_end = this.formatted_end;
       let title = ` <tr>
           <td colspan="10" style="text-align: left;">SỞ Y TẾ TP ĐÀ NẴNG</td>
         </tr>

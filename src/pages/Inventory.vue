@@ -216,6 +216,7 @@ export default {
         { text: "SL nhập", value: "Total" },
         { text: "SL đã dùng", value: "Used" },
         { text: "SL tồn", value: "Inventory" },
+        { text: "Tổng giá", value: "TotalPrice"},
         { text: "Chi tiết", value: "actions", sortable: false },
       ],
       desserts: [],
@@ -306,6 +307,7 @@ export default {
               TENHANG: item.TENHANG,
               Total: this.formatNumber(item.Total),
               Used: this.formatNumber(item.Used),
+              TotalPrice: this.formatNumber(item.TotalPrice),
               dinh_muc: item.dinh_muc,
               HANGSANXUAT: item.detail_duoc ? item.detail_duoc.HANGSANXUAT : "",
               HAMLUONG: item.detail_duoc ? item.detail_duoc.HAMLUONG : "",
@@ -322,19 +324,19 @@ export default {
 
           this.htmls = `
             <tr>
-              <td colspan="11">SỞ Y TẾ TP ĐÀ NẴNG</td>
+              <td colspan="12">SỞ Y TẾ TP ĐÀ NẴNG</td>
             </tr>
             <tr>
-              <td colspan="11"><b>BỆNH VIỆN Y HỌC CỔ TRUYỀN</b></td>
+              <td colspan="12"><b>BỆNH VIỆN Y HỌC CỔ TRUYỀN</b></td>
             </tr>
             <tr>
-              <th colspan="11"><h2>BÁO CÁO XUẤT NHẬP TỒN</h2></th>
+              <th colspan="12"><h2>BÁO CÁO XUẤT NHẬP TỒN</h2></th>
             </tr>
             <tr>
-              <td colspan="11" style="text-align: center">Từ ngày ..................... đến ngày ..................... </td>
+              <td colspan="12" style="text-align: center">Từ ngày ..................... đến ngày ..................... </td>
             </tr>
             <tr>
-              <td colspan="11" style="text-align: center"><b>Phạm vi: Kho khoa xét nghiệm</b></td>
+              <td colspan="12" style="text-align: center"><b>Phạm vi: Kho khoa xét nghiệm</b></td>
             </tr>
             <tr>
               <td style="height: 40px"></td>
@@ -351,6 +353,7 @@ export default {
                 <th>SL nhập</th>
                 <th>SL đã dùng</th>
                 <th>SL tồn</th>
+                <th>Tổng giá</th>
             </tr>
         `;
           // <th>ĐVTT</th>
@@ -399,14 +402,15 @@ export default {
                     <td>${item.Total}</td>
                     <td>${item.Used}</td>
                     <td>${item.Inventory}</td>
+                    <td>${item.TotalPrice}</td>
                 </tr>
             `;
           }
           this.htmls += `
             <tr>
-              <td colspan="11" style="text-align: right; height: 60px">Ngày ........ tháng ........ năm ........... <td>
+              <td colspan="12" style="text-align: right; height: 60px">Ngày ........ tháng ........ năm ........... <td>
             </tr>
-            <tr><td colspan="11" style="height: 60px"></td></tr>
+            <tr><td colspan="12" style="height: 60px"></td></tr>
             <tr>
               <td colspan="2" style="text-align: center; font-style: italic; width: 20%"><b>Thủ kho</b><br>(Ký, ghi rõ họ tên)</td>
               <td style="text-align: center; font-style: italic; width: 20%"><b>Thống kê</b><br>(Ký, ghi rõ họ tên)</td>
