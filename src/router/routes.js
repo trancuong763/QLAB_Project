@@ -21,7 +21,7 @@ import ExamineRequest from "@/pages/Examine Request"
 import Quota from "@/pages/Quota"
 import Inventory from "@/pages/Inventory"
 import SubMachine from "@/pages/Sub Machine"
-
+import HIS from "@/pages/HIS"
 var isAuthenticated = false;
 if (localStorage.getItem('token')) isAuthenticated = true;
 
@@ -116,6 +116,11 @@ const routes = [
         path: "ton-kho",
         name: "tồn kho",
         component: Inventory
+      },
+      {
+        path: "phieu-linh",
+        name: "phiếu lĩnh",
+        component: HIS
       }
     ]
   },

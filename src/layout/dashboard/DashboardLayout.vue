@@ -43,6 +43,9 @@
         <sidebar-link to="/ton-kho"
           ><i class="fas fa-warehouse"></i>Tồn kho</sidebar-link
         >
+        <sidebar-link to="/phieu-linh"
+          ><i class="fas fa-clipboard"></i>Phiếu Lĩnh HIS 2021</sidebar-link
+        >
         <!-- <sidebar-link to="/hoa-chat-nhap-kho"
           ><i class="fas fa-sign-in-alt"></i>Hóa chất nhập kho</sidebar-link
         > -->
