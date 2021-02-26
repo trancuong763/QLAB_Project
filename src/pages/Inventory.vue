@@ -342,17 +342,27 @@ export default {
               <td style="height: 40px"></td>
             </tr>
             <tr class="boder">
-                <th>STT</th>
-                <th>Mã hàng</th>
-                <th>Tên thuốc, vật tư, hóa chất</th>
-                <th>Số quyết định</th>
-                <th>ĐVT</th>
-                <th>SL nhập</th>
-                <th>SL đã dùng</th>
-                <th>SL tồn</th>
-                <th>Giá tồn kho</th>
-                <th>Giá đã sử dụng</th>
+                <th rowspan="2">STT</th>
+                <th rowspan="2">Mã hàng</th>
+                <th rowspan="2">Tên thuốc, vật tư, hóa chất</th>
+                <th rowspan="2">Số quyết định</th>
+                <th rowspan="2">ĐVT</th>
+                <th rowspan="2">SL nhập</th>
+                <th rowspan="2">SL đã dùng</th>
+                <th rowspan="2">SL tồn</th>
+                <th colspan="2">Nhập trong kỳ</th>
+                <th colspan="2">Xuất trong kỳ</th>
+                <th colspan="2">Tồn cuối kỳ</th>
             </tr>
+            <tr class="boder">
+                <th>Số lượng</th>
+                <th>Thành tiền</th>
+                <th>Số lượng</th>
+                <th>Thành tiền</th>
+                <th>Số lượng</th>
+                <th>Thành tiền</th>
+            </tr>
+            
         `;
           // <th>ĐVTT</th>
           // <th>Hoạt chất</th>
@@ -379,8 +389,13 @@ export default {
                     <td>${item.Total}</td>
                     <td>${item.Used}</td>
                     <td>${item.Inventory}</td>
-                    <td>${item.InventoryPrice}</td>
+                    <td>${item.Total}</td>
+                    <td>${item.TotalPrice}</td>
+                    <td>${item.Used}</td>
                     <td>${item.UsedPrice}</td>
+                    <td>${item.Inventory}</td>
+                    <td>${item.InventoryPrice}</td>
+                    
                 </tr>
             `;
           }
