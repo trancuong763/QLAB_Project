@@ -208,15 +208,13 @@ export default {
           value: "TENHANG",
         },
         { text: "Mã dược", value: "MADUOC" },
-        { text: "Hãng SX", value: "HANGSANXUAT" },
-        { text: "Nước SX", value: "QUOCGIA" },
-        { text: "Hàm lượng", value: "HAMLUONG" },
         { text: "Số QĐTT", value: "SO_QDTT" },
         { text: "ĐVT", value: "DVT" },
         { text: "SL nhập", value: "Total" },
         { text: "SL đã dùng", value: "Used" },
         { text: "SL tồn", value: "Inventory" },
-        { text: "Tổng giá", value: "TotalPrice"},
+        { text: "Giá tồn kho", value: "InventoryPrice" },
+        { text: "Giá đã sử dụng", value: "UsedPrice" },
         { text: "Chi tiết", value: "actions", sortable: false },
       ],
       desserts: [],
@@ -308,6 +306,8 @@ export default {
               Total: this.formatNumber(item.Total),
               Used: this.formatNumber(item.Used),
               TotalPrice: this.formatNumber(item.TotalPrice),
+              UsedPrice: this.formatNumber(item.UsedPrice),
+              InventoryPrice: this.formatNumber(item.InventoryPrice),
               dinh_muc: item.dinh_muc,
               HANGSANXUAT: item.detail_duoc ? item.detail_duoc.HANGSANXUAT : "",
               HAMLUONG: item.detail_duoc ? item.detail_duoc.HAMLUONG : "",
@@ -345,15 +345,13 @@ export default {
                 <th>STT</th>
                 <th>Mã hàng</th>
                 <th>Tên thuốc, vật tư, hóa chất</th>
-                <th>Hãng SX</th>
-                <th>Nước SX</th>
-                <th>Hàm lượng</th>
                 <th>Số quyết định</th>
                 <th>ĐVT</th>
                 <th>SL nhập</th>
                 <th>SL đã dùng</th>
                 <th>SL tồn</th>
-                <th>Tổng giá</th>
+                <th>Giá tồn kho</th>
+                <th>Giá đã sử dụng</th>
             </tr>
         `;
           // <th>ĐVTT</th>
@@ -364,27 +362,6 @@ export default {
                     <td style="text-align: center">${index + 1}</td>
                     <td>${item.DUOC_ID}</td>
                     <td>${item.TENHANG}</td>
-                    <td>${
-                      item.detail_duoc
-                        ? item.detail_duoc.HANGSANXUAT
-                          ? item.detail_duoc.HANGSANXUAT
-                          : ""
-                        : ""
-                    }</td>
-                    <td>${
-                      item.detail_duoc
-                        ? item.detail_duoc.QUOCGIA
-                          ? item.detail_duoc.QUOCGIA
-                          : ""
-                        : ""
-                    }</td>
-                    <td>${
-                      item.detail_duoc
-                        ? item.detail_duoc.HAMLUONG
-                          ? item.detail_duoc.HAMLUONG
-                          : ""
-                        : ""
-                    }</td>
                     <td>${
                       item.detail_duoc
                         ? item.detail_duoc.SO_QDTT
@@ -402,7 +379,8 @@ export default {
                     <td>${item.Total}</td>
                     <td>${item.Used}</td>
                     <td>${item.Inventory}</td>
-                    <td>${item.TotalPrice}</td>
+                    <td>${item.InventoryPrice}</td>
+                    <td>${item.UsedPrice}</td>
                 </tr>
             `;
           }

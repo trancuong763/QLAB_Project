@@ -150,6 +150,7 @@ export default {
       loading: false,
       medthod: "",
       htmls: "",
+      listExport: [],
     };
   },
   watch: {
@@ -217,6 +218,44 @@ export default {
               NGAYTAO: this.formatDate(item.NGAYTAO),
             });
           }
+        }
+      });
+    },
+    getListExport() {
+       let params =
+        "?page=" +
+        this.options.page +
+        "&limit=" +
+        this.options.itemsPerPage +
+        "&startDate=" +
+        this.format(this.selected_start) +
+        "&endDate=" +
+        this.format(this.selected_end) +
+        "&serviceGroup=1" + "&method=export";
+      this.CallAPI("get", "request/list" + params, {}, (response) => {
+        let error = response.data.error;
+        if (error == "START_DATE_NOT_GREATER_THAN_END_DATE") {
+          this.errors.push("Ngày không hợp lệ!");
+          return;
+        }
+        if (response.data.code === 1) {
+          this.listExport = [];
+          this.loading = false;
+          let list = response.data.data.data;
+          this.totalDesserts = response.data.data.total;
+          for (let item of list) {
+            this.listExport.push({
+              MAYTE: item.MAYTE,
+              TENDICHVU: item.TENDICHVU,
+              TENBENHNHAN: item.TENBENHNHAN,
+              SOBENHAN: item.SOBENHAN,
+              TENNHOMDICHVU: item.TENNHOMDICHVU,
+              GIOITINH: item.GIOITINH == 1 ? "Nam" : "Nữ",
+              NGAYSINH: this.formatDate(item.NGAYSINH),
+              DIACHITHUONGTRU: item.DIACHITHUONGTRU,
+              NGAYTAO: this.formatDate(item.NGAYTAO),
+            });
+          }
 
           this.htmls = `
         <tr>
@@ -231,11 +270,10 @@ export default {
           <th>Địa chỉ thường trú</th>
           <th>Ngày tạo</th>
         </tr>`;
-          let i = 0;
-          for (let item of this.food) {
+          for (let [index, item] of this.listExport.entries()) {
             this.htmls += `
               <tr>
-                 <td>${i++}</td>
+                 <td>${index + 1}</td>
                 <td>${item.MAYTE}</td>
                 <td>${item.SOBENHAN}</td>
                 <td>${item.TENBENHNHAN}</td>
@@ -410,7 +448,9 @@ export default {
       return new Intl.NumberFormat('de-DE').format(number);
     }
   },
-  mounted() {},
+  mounted() {
+    this.getListExport();
+  },
 };
 </script>
 <style>
