@@ -203,6 +203,11 @@ export default {
 .navbar-nav > li > .dropdown-menu:before {
   display: none !important;
 }
+.header .col-md-6.col-2,
+.header .container-fluid.row {
+  padding-right: 0;
+  margin-right: 0;
+}
 @media (min-width: 992px) {
   .header .navbar {
     height: 50px;
