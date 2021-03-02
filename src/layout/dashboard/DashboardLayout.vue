@@ -38,13 +38,16 @@
           ><i class="fas fa-building"></i>Nhà cung cấp</sidebar-link
         > -->
         <sidebar-link to="/yeu-cau-xet-nghiem"
-          ><i class="fas fa-user-check"></i>YC xét nghiệm</sidebar-link
+          ><i class="fas fa-user-check"></i>Yêu cầu xét nghiệm</sidebar-link
         >
         <sidebar-link to="/ton-kho"
           ><i class="fas fa-warehouse"></i>Tồn kho</sidebar-link
         >
         <sidebar-link to="/phieu-linh"
           ><i class="fas fa-clipboard"></i>Phiếu Lĩnh HIS</sidebar-link
+        >
+        <sidebar-link to="/hoa-chat-sap-het"
+          ><i class="fas fa-dumpster-fire"></i>Hóa chất sắp hết</sidebar-link
         >
         <!-- <sidebar-link to="/hoa-chat-nhap-kho"
           ><i class="fas fa-sign-in-alt"></i>Hóa chất nhập kho</sidebar-link

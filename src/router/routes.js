@@ -23,6 +23,7 @@ import Inventory from "@/pages/Inventory"
 import SubMachine from "@/pages/Sub Machine"
 import HIS from "@/pages/HIS"
 import Check from "@/pages/Check"
+import ChemicalsEffete from "@/pages/Chemicals Effete"
 var isAuthenticated = false;
 if (localStorage.getItem('token')) isAuthenticated = true;
 
@@ -127,6 +128,11 @@ const routes = [
         path: "noi-kiem",
         name: "nội kiểm",
         component: Check
+      },
+      {
+        path: "hoa-chat-sap-het",
+        name: "hóa chất sắp hết",
+        component: ChemicalsEffete
       }
     ]
   },

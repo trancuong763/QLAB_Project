@@ -51,7 +51,7 @@
       >
         <template v-slot:top>
           <v-toolbar flat>
-            <v-toolbar-title>Tồn kho</v-toolbar-title>
+            <v-toolbar-title>Hoá chất sắp hết</v-toolbar-title>
             <v-divider class="mx-4" inset vertical></v-divider>
             <v-spacer></v-spacer>
             <div style="margin-right: 20px">
@@ -108,7 +108,7 @@
                   </v-col>
                 </v-row> -->
                     <!-- <p v-if="errors" class="alert alert-danger">{{ errors }}</p> -->
-                    <v-simple-table height="300px">
+                    <v-simple-table height="200px">
                       <template v-slot:default>
                         <tbody>
                           <tr>
@@ -122,33 +122,6 @@
                           <tr>
                             <th>Số lượng</th>
                             <td>{{ editedItem.Total }}</td>
-                          </tr>
-                          <tr>
-                            <th>Dịch vụ</th>
-                            <td>
-                              <span
-                                v-for="(item, index) in editedItem.DichVu"
-                                :key="index"
-                              >
-                                {{ item.DICHVU_ID }}
-                              </span>
-                            </td>
-                          </tr>
-                          <tr>
-                            <th>Dược</th>
-                            <td>
-                              <span
-                                v-for="(item, index) in editedItem.DichVu"
-                                :key="index"
-                              >
-                                <span
-                                  v-for="(value, ind) in item.Duocs"
-                                  :key="ind"
-                                >
-                                  {{ value.id }}
-                                </span>
-                              </span>
-                            </td>
                           </tr>
                         </tbody>
                       </template>
@@ -182,7 +155,7 @@
         </template>
         <template v-slot:[`item.actions`]="{ item }">
           <v-icon small class="mr-2" @click="editItem(item)">
-            mdi-pencil
+            fas fa-eye
           </v-icon>
           <!-- <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon> -->
         </template>
@@ -205,17 +178,17 @@ export default {
           text: "Tên hàng",
           align: "start",
           sortable: false,
-          value: "TENHANG",
+          value: "TENHANG"
         },
         { text: "Mã dược", value: "MADUOC" },
-        { text: "Số QĐTT", value: "SO_QDTT" },
-        { text: "ĐVT", value: "DVT" },
-        { text: "SL nhập", value: "Total" },
-        { text: "SL đã dùng", value: "Used" },
+        // { text: "Số QĐTT", value: "SO_QDTT" },
+        // { text: "ĐVT", value: "DVT" },
+        // { text: "SL nhập", value: "Total" },
+        // { text: "SL đã dùng", value: "Used" },
         { text: "SL tồn", value: "Inventory" },
-        { text: "Giá tồn kho", value: "InventoryPrice" },
-        { text: "Giá đã sử dụng", value: "UsedPrice" },
-        { text: "Chi tiết", value: "actions", sortable: false },
+        // { text: "Giá tồn kho", value: "InventoryPrice" },
+        // { text: "Giá đã sử dụng", value: "UsedPrice" },
+        { text: "Chi tiết", value: "actions", sortable: false }
       ],
       desserts: [],
       editedIndex: -1,
@@ -223,13 +196,13 @@ export default {
         TENHANG: "",
         MADUOC: "",
         Total: "",
-        DichVu: [],
+        DichVu: []
       },
       defaultItem: {
         TENHANG: "",
         MADUOC: "",
         Total: "",
-        DichVu: [],
+        DichVu: []
       },
       inventoryList: [],
       errors: "",
@@ -239,19 +212,19 @@ export default {
       supplieOptions: [
         {
           id: "13",
-          name: "Hóa chất",
+          name: "Hóa chất"
         },
         {
           id: "10",
-          name: "Vật tư",
-        },
+          name: "Vật tư"
+        }
       ],
       supplies: "",
-      loading: false,
+      loading: false
     };
   },
   mounted() {
-    this.CallAPI("get", "dinhmuc/list-service?limit=999999", {}, (response) => {
+    this.CallAPI("get", "dinhmuc/list-service?limit=999999", {}, response => {
       let data = response.data.data;
       for (let i = 0; i < data.length; i++) {
         for (let item of data[i]) {
@@ -264,7 +237,7 @@ export default {
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? "Thêm mới" : "Chi tiết";
-    },
+    }
   },
 
   watch: {
@@ -273,7 +246,7 @@ export default {
     },
     dialogDelete(val) {
       val || this.closeDelete();
-    },
+    }
   },
 
   created() {
@@ -291,123 +264,89 @@ export default {
         "get",
         `request/export-ton-kho?duoc_id=&dichvu_id=&type=json&method=${this.supplies}`,
         {},
-        (response) => {
+        response => {
           document.querySelectorAll(".printer button")[0].disabled = false;
           document.querySelectorAll(".printer button")[1].disabled = false;
           this.loading = false;
           this.inventoryList = response.data.data;
           for (let item of this.inventoryList) {
-            this.desserts.push({
-              DUOC_ID: item.DUOC_ID,
-              DichVu: item.DichVu,
-              Inventory: this.formatNumber(item.Inventory),
-              MADUOC: item.MADUOC,
-              TENHANG: item.TENHANG,
-              Total: this.formatNumber(item.Total),
-              Used: this.formatNumber(item.Used),
-              TotalPrice: this.formatNumber(item.TotalPrice),
-              UsedPrice: this.formatNumber(item.UsedPrice),
-              InventoryPrice: this.formatNumber(item.InventoryPrice),
-              dinh_muc: item.dinh_muc,
-              HANGSANXUAT: item.detail_duoc ? item.detail_duoc.HANGSANXUAT : "",
-              HAMLUONG: item.detail_duoc ? item.detail_duoc.HAMLUONG : "",
-              QUOCGIA: item.detail_duoc ? item.detail_duoc.QUOCGIA : "",
-              SO_QDTT: item.detail_duoc ? item.detail_duoc.SO_QDTT : "",
-              detail_duoc: item.detail_duoc,
-              DVT: item.dinh_muc
-                ? item.dinh_muc.unitName
+            if (item.Inventory <= 200) {
+              this.desserts.push({
+                DUOC_ID: item.DUOC_ID,
+                DichVu: item.DichVu,
+                Inventory: this.formatNumber(item.Inventory),
+                MADUOC: item.MADUOC,
+                TENHANG: item.TENHANG,
+                Total: this.formatNumber(item.Total),
+                Used: this.formatNumber(item.Used),
+                TotalPrice: this.formatNumber(item.TotalPrice),
+                UsedPrice: this.formatNumber(item.UsedPrice),
+                InventoryPrice: this.formatNumber(item.InventoryPrice),
+                dinh_muc: item.dinh_muc,
+                HANGSANXUAT: item.detail_duoc
+                  ? item.detail_duoc.HANGSANXUAT
+                  : "",
+                HAMLUONG: item.detail_duoc ? item.detail_duoc.HAMLUONG : "",
+                QUOCGIA: item.detail_duoc ? item.detail_duoc.QUOCGIA : "",
+                SO_QDTT: item.detail_duoc ? item.detail_duoc.SO_QDTT : "",
+                detail_duoc: item.detail_duoc,
+                DVT: item.dinh_muc
                   ? item.dinh_muc.unitName
+                    ? item.dinh_muc.unitName
+                    : ""
                   : ""
-                : "",
-            });
+              });
+            }
           }
 
           this.htmls = `
             <tr>
-              <td colspan="14">SỞ Y TẾ TP ĐÀ NẴNG</td>
+              <td colspan="12">SỞ Y TẾ TP ĐÀ NẴNG</td>
             </tr>
             <tr>
-              <td colspan="14"><b>BỆNH VIỆN Y HỌC CỔ TRUYỀN</b></td>
+              <td colspan="12"><b>BỆNH VIỆN Y HỌC CỔ TRUYỀN</b></td>
             </tr>
             <tr>
-              <th colspan="14"><h2>BÁO CÁO XUẤT NHẬP TỒN</h2></th>
+              <th colspan="12"><h2>BÁO CÁO HÓA CHẤT SẮP HẾT</h2></th>
             </tr>
             <tr>
-              <td colspan="14" style="text-align: center">Từ ngày ..................... đến ngày ..................... </td>
+              <td colspan="12" style="text-align: center">Từ ngày ..................... đến ngày ..................... </td>
             </tr>
             <tr>
-              <td colspan="14" style="text-align: center"><b>Phạm vi: Kho khoa xét nghiệm</b></td>
+              <td colspan="12" style="text-align: center"><b>Phạm vi: Kho khoa xét nghiệm</b></td>
             </tr>
             <tr>
               <td style="height: 40px"></td>
             </tr>
             <tr class="boder">
-                <th rowspan="2">STT</th>
-                <th rowspan="2">Mã hàng</th>
-                <th rowspan="2">Tên thuốc, vật tư, hóa chất</th>
-                <th rowspan="2">Số quyết định</th>
-                <th rowspan="2">ĐVT</th>
-                <th rowspan="2">SL nhập</th>
-                <th rowspan="2">SL đã dùng</th>
-                <th rowspan="2">SL tồn</th>
-                <th colspan="2">Nhập trong kỳ</th>
-                <th colspan="2">Xuất trong kỳ</th>
-                <th colspan="2">Tồn cuối kỳ</th>
+                <th colspan="3">STT</th>
+                <th colspan="3">Mã dược</th>
+                <th colspan="3">Tên thuốc, vật tư, hóa chất</th>
+                <th colspan="3">SL tồn</th>
             </tr>
-            <tr class="boder">
-                <th>Số lượng</th>
-                <th>Thành tiền</th>
-                <th>Số lượng</th>
-                <th>Thành tiền</th>
-                <th>Số lượng</th>
-                <th>Thành tiền</th>
-            </tr>
-            
         `;
           // <th>ĐVTT</th>
           // <th>Hoạt chất</th>
           for (let [index, item] of this.desserts.entries()) {
             this.htmls += `
                 <tr class="boder">
-                    <td style="text-align: center">${index + 1}</td>
-                    <td>${item.DUOC_ID}</td>
-                    <td>${item.TENHANG}</td>
-                    <td>${
-                      item.detail_duoc
-                        ? item.detail_duoc.SO_QDTT
-                          ? item.detail_duoc.SO_QDTT
-                          : ""
-                        : ""
-                    }</td>
-                    <td>${
-                      item.dinh_muc
-                        ? item.dinh_muc.unitName
-                          ? item.dinh_muc.unitName
-                          : ""
-                        : ""
-                    }</td>
-                    <td>${item.Total}</td>
-                    <td>${item.Used}</td>
-                    <td>${item.Inventory}</td>
-                    <td>${item.Total}</td>
-                    <td>${item.TotalPrice}</td>
-                    <td>${item.Used}</td>
-                    <td>${item.UsedPrice}</td>
-                    <td>${item.Inventory}</td>
-                    <td>${item.InventoryPrice}</td>
+                    <td colspan="3" style="text-align: center">${index + 1}</td>
+                    <td colspan="3">${item.MADUOC}</td>
+                    <td colspan="3">${item.TENHANG}</td>
+                    <td colspan="3" style="text-align: center;">${item.Inventory}</td>
                     
                 </tr>
             `;
           }
           this.htmls += `
             <tr>
-              <td colspan="14" style="text-align: right; height: 60px">Ngày ........ tháng ........ năm ........... <td>
+              <td colspan="12" style="text-align: right; height: 60px">Ngày ........ tháng ........ năm ........... <td>
             </tr>
-            <tr><td colspan="14" style="height: 60px"></td></tr>
+            <tr><td colspan="12" style="height: 60px"></td></tr>
             <tr>
-              <td colspan="3" style="text-align: center; font-style: italic; width: 20%"><b>Thủ kho</b><br>(Ký, ghi rõ họ tên)</td>
+              <td colspan="2" style="text-align: center; font-style: italic; width: 20%"><b>Thủ kho</b><br>(Ký, ghi rõ họ tên)</td>
               <td style="text-align: center; font-style: italic; width: 20%"><b>Thống kê</b><br>(Ký, ghi rõ họ tên)</td>
-              <td colspan="3" style="text-align: center; font-style: italic; width: 20%"><b>Trưởng khoa dược</b><br>(Ký, ghi rõ họ tên)</td>
+              <td colspan="2" style="text-align: center; font-style: italic; width: 20%"><b>Trưởng khoa dược</b><br>(Ký, ghi rõ họ tên)</td>
               <td colspan="3" style="text-align: center; font-style: italic; width: 20%"><b>Kế toán trưởng</b><br>(Ký, ghi rõ họ tên)</td>
               <td colspan="3" style="text-align: center; font-style: italic; width: 20%"><b>Giám đốc</b><br>(Ký, ghi rõ họ tên)</td>
             </tr>
@@ -437,7 +376,7 @@ export default {
         "delete",
         "user/delete/" + this.desserts[this.editedIndex].id,
         {},
-        (response) => {
+        response => {
           if (response.data.error == "UNAUTHORIZED") {
             this.$toast.error("Không được phép!");
             return;
@@ -498,7 +437,7 @@ export default {
           "put",
           "user/update/" + this.desserts[this.editedIndex].id,
           this.editedItem,
-          (response) => {
+          response => {
             if (response.data.error == "UNAUTHORIZED") {
               this.$toast.error("Không được phép!");
               return;
@@ -517,7 +456,7 @@ export default {
           }
         );
       } else {
-        this.CallAPI("post", "user/create", this.editedItem, (response) => {
+        this.CallAPI("post", "user/create", this.editedItem, response => {
           if (response.data.error == "UNAUTHORIZED") {
             this.$toast.error("Không được phép!");
             return;
@@ -540,7 +479,7 @@ export default {
       const reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return reg.test(email);
     },
-    validPhone: function (phone) {
+    validPhone: function(phone) {
       const reg = /((09|03|07|08|05)+([0-9]{8})\b)/g;
       return reg.test(phone);
     },
@@ -549,24 +488,24 @@ export default {
       var uri = "data:application/vnd.ms-excel;base64,";
       var template =
         '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>';
-      var base64 = function (s) {
+      var base64 = function(s) {
         return window.btoa(unescape(encodeURIComponent(s)));
       };
 
-      var format = function (s, c) {
-        return s.replace(/{(\w+)}/g, function (m, p) {
+      var format = function(s, c) {
+        return s.replace(/{(\w+)}/g, function(m, p) {
           return c[p];
         });
       };
 
       var ctx = {
         worksheet: "Worksheet",
-        table: this.htmls,
+        table: this.htmls
       };
 
       var link = document.createElement("a");
       link.download =
-        "Báo cáo tồn kho ngày " +
+        "Báo cáo hóa chất sắp hết " +
         new Date().toLocaleDateString("en-GB") +
         ".xls";
       link.href = uri + base64(format(template, ctx));
@@ -594,7 +533,7 @@ export default {
 
       win.document.write("<html><head>");
       win.document.write(
-        `<title>Báo cáo tồn kho ngày ${new Date().toLocaleDateString(
+        `<title>Báo cáo hóa chấp sắp hết ngày ${new Date().toLocaleDateString(
           "en-GB"
         )}</title>`
       );
@@ -609,8 +548,8 @@ export default {
       win.document.close();
 
       win.print();
-    },
-  },
+    }
+  }
 };
 </script>
 <style>
