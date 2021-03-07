@@ -177,7 +177,7 @@
                         type="text"
                       ></v-text-field>
                     </v-col>
-                     <v-col v-if="checkMethod == 2021" cols="12" sm="12">
+                    <v-col v-if="checkMethod == 2021" cols="12" sm="12">
                       <v-text-field
                         v-model="editedItem.price"
                         label="Giá"
@@ -209,13 +209,13 @@
                     </v-col>
 
                     <v-col cols="12">
-                      <v-combobox
-                        v-model="editedItem.method"
+                      <v-select
+                        v-model="editedItem.methodValue"
                         :items="methodOptions"
                         label="Phương thức"
                         item-text="name"
                         item-value="id"
-                      ></v-combobox>
+                      ></v-select>
                     </v-col>
 
                     <!-- <v-col cols="12">
@@ -299,7 +299,7 @@ export default {
         // { text: "Kho / máy", value: "machineStock.name" },
         { text: "Số lượng", value: "SOLUONGYEUCAU", sortable: false },
         { text: "Phương thức", value: "method", sortable: false },
-        { text: "Giá", value: "price", sortable: true},
+        { text: "Giá", value: "price", sortable: true },
         { text: "Ngày tạo", value: "NGAYTAO", sortable: false },
         { text: "Hành động", value: "actions", sortable: false },
       ],
@@ -313,10 +313,7 @@ export default {
         amount: null,
         unit: null,
         type: "",
-        method: {
-          id: null,
-          name: null,
-        },
+        methodValue: "",
         price: "",
         // machineStock: null,
       },
@@ -328,10 +325,7 @@ export default {
         unit: null,
         amount: null,
         type: "",
-        method: {
-          id: null,
-          name: null,
-        },
+        methodValue: "",
         price: "",
         // machineStock: null,
       },
@@ -359,6 +353,10 @@ export default {
           id: "vattu",
           name: "2020",
         },
+        {
+          id: "muon_hc",
+          name: "Mượn hóa chất",
+        },
       ],
     };
   },
@@ -368,13 +366,12 @@ export default {
       return this.editedIndex === -1 ? "Thêm mới" : "Sửa";
     },
     checkMethod() {
-      if(this.editedItem.method.name !== undefined) {
-        return this.editedItem.method.name;
+      if (this.editedItem.methodValue.name !== undefined) {
+        return this.editedItem.methodValue.name;
+      } else {
+        return this.editedItem.methodValue;
       }
-      else {
-        return this.editedItem.method;
-      }
-    }
+    },
   },
 
   watch: {
@@ -468,7 +465,13 @@ export default {
             name: item["name"],
             services: item["services"],
             unit_name: item.unit.name,
-            method: item.method.trim() == "vattu"?"2020":"2021",
+            method:
+              item.method.trim() == "vattu"
+                ? "2020"
+                : item.method.trim() == "dinhmuc"
+                ? "2021"
+                : "Mượn hóa chất",
+            methodValue: item.method.trim(),
           });
         }
       });
@@ -539,7 +542,7 @@ export default {
           description: this.editedItem.description,
           unitId: this.editedItem.unit.id,
           MADUOCCHUNG: this.editedItem.MADUOCCHUNG,
-          method: this.editedItem.method.id,
+          method: this.editedItem.methodValue,
           price: this.editedItem.price ? this.editedItem.price : "",
         };
         this.CallAPI(
@@ -552,7 +555,7 @@ export default {
               return;
             }
             if (response.data.code == -1) {
-              this.$toast.error("Đã xảy ra lỗi: " + response.data.error);
+              this.$toast.error("Không được phép!");
               return;
             }
             this.$toast.success("Sửa thành công!");
@@ -568,8 +571,8 @@ export default {
           SOLUONGYEUCAU: this.editedItem.amount,
           defineLevel: this.editedItem.defineLevel,
           unitId: this.editedItem.unit.id,
-          method: this.editedItem.method.id,
-          name: this.editedItem.pharmacies.TENHANG 
+          method: this.editedItem.methodValue,
+          name: this.editedItem.pharmacies.TENHANG,
         };
         this.CallAPI("post", "material/create-after", data, (response) => {
           if (response.data.error == "UNAUTHORIZED") {
