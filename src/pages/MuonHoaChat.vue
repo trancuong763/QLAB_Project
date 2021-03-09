@@ -96,6 +96,23 @@
         >
           <i class="fas fa-file-pdf" style="margin-right: 10px"></i> Xuất PDF
         </button>
+        <div
+          style="
+            margin-left: 20px;
+            max-width: 300px;
+            position: relative;
+            top: 14px;
+          "
+        >
+          <v-select
+            v-model="lien"
+            :items="lienList"
+            label="Chọn liên"
+            item-value="text"
+            solo
+            @change="getLien"
+          ></v-select>
+        </div>
       </div>
     </div>
     <v-data-table
@@ -379,6 +396,15 @@ export default {
         },
       ],
       htmls: "",
+      lien: "",
+      lienList: [
+        {
+          text: "Liên 1: Lưu tại kho",
+        },
+        {
+          text: "Liên 2: Lưu tại khoa",
+        },
+      ],
     };
   },
 
@@ -446,6 +472,9 @@ export default {
   },
 
   methods: {
+    getLien(){
+      this.getMaterialList();
+    },
     getMaterialList() {
       this.desserts = [];
       this.isSearching = true;
@@ -499,7 +528,7 @@ export default {
             </tr>
               <td colspan="4"><b>Kho xét nghiệm</b></td>
             <tr>
-              <th colspan="7"><h2>PHIẾU LĨNH DƯỢC</h2></th>
+              <th colspan="7"><h2>PHIẾU MƯỢN DƯỢC</h2></th>
             </tr>
             <tr>
               <td colspan="7" style="text-align: center; font-style: italic;">
@@ -513,7 +542,9 @@ export default {
               } </td>
             </tr>
             <tr>
-              <td colspan="7" style="text-align: center"><b>Liên 1: Lưu tại kho</b></td>
+              <td colspan="7" style="text-align: center"><b>${
+                this.lien ? this.lien : "Liên 1: Lưu tại kho"
+              }</b></td>
             </tr>
             <tr><td colspan="7">Kho xuất: Kho chính vtyt/hóa chất</td></tr>
             <tr>
@@ -551,11 +582,9 @@ export default {
             </tr>
             <tr><td colspan="7" style="height: 60px"></td></tr>
             <tr>
-              <td colspan="2" style="text-align: center; font-style: italic; width: 20%"><b>Thủ kho</b><br>(Ký, ghi rõ họ tên)</td>
-              <td style="text-align: center; font-style: italic; width: 20%"><b>Thống kê</b><br>(Ký, ghi rõ họ tên)</td>
-              <td style="text-align: center; font-style: italic; width: 20%"><b>Trưởng khoa dược</b><br>(Ký, ghi rõ họ tên)</td>
-              <td colspan="2" style="text-align: center; font-style: italic; width: 20%"><b>Kế toán trưởng</b><br>(Ký, ghi rõ họ tên)</td>
-              <td colspan="1" style="text-align: center; font-style: italic; width: 20%"><b>Giám đốc</b><br>(Ký, ghi rõ họ tên)</td>
+              <td colspan="3" style="text-align: center; font-style: italic; width: 33%"><b>Thủ kho</b><br>(Ký, ghi rõ họ tên)</td>
+              <td colspan="2" style="text-align: center; font-style: italic; width: 33%"><b>Trưởng khoa dược</b><br>(Ký, ghi rõ họ tên)</td>
+              <td colspan="2" style="text-align: center; font-style: italic; width: 33%"><b>Khoa mượn dược</b><br>(Ký, ghi rõ họ tên)</td>
             </tr>
           `;
       });
