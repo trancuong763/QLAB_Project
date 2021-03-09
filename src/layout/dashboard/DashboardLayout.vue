@@ -49,6 +49,9 @@
         <sidebar-link to="/hoa-chat-sap-het"
           ><i class="fas fa-dumpster-fire"></i>Hóa chất sắp hết</sidebar-link
         >
+        <sidebar-link to="/muon-hoa-chat"
+          ><i class="fas fa-dumpster-fire"></i>Mượn hóa chất</sidebar-link
+        >
         <!-- <sidebar-link to="/hoa-chat-nhap-kho"
           ><i class="fas fa-sign-in-alt"></i>Hóa chất nhập kho</sidebar-link
         > -->

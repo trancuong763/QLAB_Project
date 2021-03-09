@@ -24,6 +24,8 @@ import SubMachine from "@/pages/Sub Machine"
 import HIS from "@/pages/HIS"
 import Check from "@/pages/Check"
 import ChemicalsEffete from "@/pages/Chemicals Effete"
+import MuonHoaChat from "@/pages/MuonHoaChat"
+
 var isAuthenticated = false;
 if (localStorage.getItem('token')) isAuthenticated = true;
 
@@ -133,6 +135,11 @@ const routes = [
         path: "hoa-chat-sap-het",
         name: "hóa chất sắp hết",
         component: ChemicalsEffete
+      },
+      {
+        path: "muon-hoa-chat",
+        name: "mượn hóa chất",
+        component: MuonHoaChat
       }
     ]
   },
