@@ -48,8 +48,11 @@
         </div>
       </div>
       <div class="col-md-4 col-xl-3 search">
-        <label for="" class="space">&nbsp;</label><br />
-        <div class="btn btn-light looking" @click="show_list">
+        <div
+          class="btn btn-light looking"
+          @click="show_list"
+          style="height: 40px"
+        >
           <span v-if="!isSearching"
             >Tìm kiếm
             <i
@@ -63,6 +66,15 @@
             </div>
           </span>
         </div>
+        <v-select
+          v-model="status"
+          :items="statusList"
+          label="Tìm theo trạng thái"
+          item-text="text"
+          item-value="value"
+          solo
+          @change="findWithStatus"
+        ></v-select>
       </div>
     </div>
     <div class="row" v-if="errorDate[0]">
@@ -295,14 +307,21 @@
         </v-toolbar>
       </template>
       <template v-slot:[`item.actions`]="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
+        <!-- <v-icon small class="mr-2" @click="editItem(item)"> mdi-pencil </v-icon>
         <v-icon
           small
           v-if="item.NGAYTAO <= '31/12/2020'"
           @click="deleteItem(item)"
         >
           mdi-delete
-        </v-icon>
+        </v-icon> -->
+        <v-btn
+          v-if="item.status != 'Đã trả'"
+          @click="traHoaChat(item)"
+          style="text-transform: none"
+          >Trả hóa chất</v-btn
+        >
+        <v-btn v-else style="text-transform: none" disabled>Trả hóa chất</v-btn>
       </template>
       <!-- <template v-slot:no-data>
       <v-btn color="primary" @click="initialize"> Reset </v-btn>
@@ -335,7 +354,7 @@ export default {
         // { text: "Kho / máy", value: "machineStock.name" },
         { text: "SL yêu cầu", value: "SOLUONGYEUCAU", sortable: false },
         { text: "SL phát", value: "SOLUONGYEUCAU", sortable: false },
-        // { text: "Phương thức", value: "method", sortable: false },
+        { text: "Trạng thái", value: "status", sortable: false },
         // { text: "Giá", value: "price", sortable: true },
         // { text: "Ngày tạo", value: "NGAYTAO", sortable: false },
         { text: "Hành động", value: "actions", sortable: false },
@@ -405,6 +424,17 @@ export default {
           text: "Liên 2: Lưu tại khoa",
         },
       ],
+      status: "",
+      statusList: [
+        {
+          text: "Đã trả",
+          value: "unactive",
+        },
+        {
+          text: "Đang mượn",
+          value: "active",
+        },
+      ],
     };
   },
 
@@ -472,7 +502,24 @@ export default {
   },
 
   methods: {
-    getLien(){
+    getLien() {
+      this.getMaterialList();
+    },
+    traHoaChat(item) {
+      console.log(item);
+      this.CallAPI(
+        "post",
+        "material/tra-hoa-chat",
+        { material_id: item.id },
+        (response) => {
+          if (response.data.code != -1) {
+            this.$toast.success("Trả thành công!");
+          }
+        }
+      );
+    },
+    findWithStatus() {
+      console.log(this.status);
       this.getMaterialList();
     },
     getMaterialList() {
@@ -483,7 +530,8 @@ export default {
         this.format(this.selected_start) +
         "&endDate=" +
         this.format(this.selected_end) +
-        "&limit=999999&order_by=created_at&order_direction=desc&method=muon_hc";
+        "&limit=999999&order_by=created_at&order_direction=desc&method=muon_hc&status=" +
+        this.status;
       this.CallAPI("get", "material/list" + params, {}, (response) => {
         document.querySelectorAll(".printer button")[0].disabled = false;
         document.querySelectorAll(".printer button")[1].disabled = false;
@@ -513,6 +561,8 @@ export default {
                 ? "2021"
                 : "Mượn hóa chất",
             methodValue: item.method.trim(),
+            status:
+              item.status.toLowerCase() == "active" ? "Đang mượn" : "Đã trả",
           });
         }
         this.htmls = `
@@ -804,3 +854,20 @@ export default {
   },
 };
 </script>
+<style>
+.search {
+  display: flex;
+  height: 50px;
+  margin-top: 36px;
+  align-items: center;
+}
+.search .v-text-field.v-text-field--solo .v-input__control {
+  height: 40px;
+  min-height: 40px;
+}
+.search .looking {
+  margin-right: 24px;
+  width: 150px;
+  padding: 0.5rem 0;
+}
+</style>
