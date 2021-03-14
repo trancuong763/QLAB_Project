@@ -567,21 +567,21 @@ export default {
         }
         this.htmls = `
             <tr>
-              <td colspan="4" style="text-algin: center"><b>SỞ Y TẾ TP ĐÀ NẴNG</b></td>
+              <td colspan="5" style="text-algin: center"><b>SỞ Y TẾ TP ĐÀ NẴNG</b></td>
               <td colspan="3">Mẫu số: .....................</td>
             </tr>
             <tr>
-              <td colspan="4" style="text-algin: center"><b>BỆNH VIỆN Y HỌC CỔ TRUYỀN</b></td>
+              <td colspan="5" style="text-algin: center"><b>BỆNH VIỆN Y HỌC CỔ TRUYỀN</b></td>
               <td colspan="3">Số phiếu: .....................</td>
             </tr>
             <tr>
             </tr>
               <td colspan="4"><b>Kho xét nghiệm</b></td>
             <tr>
-              <th colspan="7"><h2>PHIẾU MƯỢN DƯỢC</h2></th>
+              <th colspan="8"><h2>PHIẾU MƯỢN DƯỢC</h2></th>
             </tr>
             <tr>
-              <td colspan="7" style="text-align: center; font-style: italic;">
+              <td colspan="8" style="text-align: center; font-style: italic;">
               Từ ngày ${
                 this.formatted_start
                   ? this.formatted_start
@@ -592,11 +592,11 @@ export default {
               } </td>
             </tr>
             <tr>
-              <td colspan="7" style="text-align: center"><b>${
+              <td colspan="8" style="text-align: center"><b>${
                 this.lien ? this.lien : "Liên 1: Lưu tại kho"
               }</b></td>
             </tr>
-            <tr><td colspan="7">Kho xuất: Kho chính vtyt/hóa chất</td></tr>
+            <tr><td colspan="8">Kho xuất: Kho chính vtyt/hóa chất</td></tr>
             <tr>
               <td style="height: 40px"></td>
             </tr>
@@ -607,6 +607,7 @@ export default {
                 <th rowspan="2">Đơn vị tính</th>
                 <th colspan="2">Số lượng</th>
                 <th rowspan="2">Ghi chú</th>
+                <th rowspan="2">Trạng thái</th>
             </tr>
             <tr class="boder">
               <th>Yêu cầu</th>
@@ -623,6 +624,7 @@ export default {
                     <td>${item.SOLUONGYEUCAU}</td>
                     <td>${item.SOLUONGYEUCAU}</td>
                     <td></td>
+                    <td>${item.status}</td>
                 </tr>
             `;
         }
