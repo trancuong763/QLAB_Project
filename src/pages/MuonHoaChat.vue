@@ -514,12 +514,12 @@ export default {
         (response) => {
           if (response.data.code != -1) {
             this.$toast.success("Trả thành công!");
+            this.getMaterialList();
           }
         }
       );
     },
     findWithStatus() {
-      console.log(this.status);
       this.getMaterialList();
     },
     getMaterialList() {
