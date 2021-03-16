@@ -350,7 +350,7 @@ export default {
             this.selected_start ? this.selected_start : "01/01/2021"
           } Đến ngày ${
         this.selected_end
-          ? this.selected_start
+          ? this.selected_end
           : new Date().toLocaleDateString("en-GB")
       }</td>
         </tr>`;
@@ -403,7 +403,7 @@ export default {
             this.selected_start ? this.selected_start : "01/01/2020"
           } Đến ngày ${
         this.selected_end
-          ? this.selected_start
+          ? this.selected_end
           : new Date().toLocaleDateString("en-GB")
       }</td>
         </tr>`;

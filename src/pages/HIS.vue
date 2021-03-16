@@ -178,19 +178,19 @@ export default {
         }
         this.htmls = `
             <tr>
-              <td colspan="12">SỞ Y TẾ TP ĐÀ NẴNG</td>
+              <td colspan="8">SỞ Y TẾ TP ĐÀ NẴNG</td>
             </tr>
             <tr>
-              <td colspan="12"><b>BỆNH VIỆN Y HỌC CỔ TRUYỀN</b></td>
+              <td colspan="8"><b>BỆNH VIỆN Y HỌC CỔ TRUYỀN</b></td>
             </tr>
             <tr>
-              <th colspan="12"><h2>Phiếu lĩnh</h2></th>
+              <th colspan="8"><h2>Phiếu lĩnh</h2></th>
             </tr>
             <tr>
-              <td colspan="12" style="text-align: center">Từ ngày ..................... đến ngày ..................... </td>
+              <td colspan="8" style="text-align: center">Từ ngày ..................... đến ngày ..................... </td>
             </tr>
             <tr>
-              <td colspan="12" style="text-align: center"><b>Phạm vi: Kho khoa xét nghiệm</b></td>
+              <td colspan="8" style="text-align: center"><b>Phạm vi: Kho khoa xét nghiệm</b></td>
             </tr>
             <tr>
               <td style="height: 40px"></td>
@@ -222,15 +222,15 @@ export default {
         }
         this.htmls += `
             <tr>
-              <td colspan="12" style="text-align: right; height: 60px">Ngày ........ tháng ........ năm ........... <td>
+              <td colspan="8" style="text-align: right; height: 60px">Ngày ........ tháng ........ năm ........... <td>
             </tr>
-            <tr><td colspan="12" style="height: 60px"></td></tr>
+            <tr><td colspan="8" style="height: 60px"></td></tr>
             <tr>
               <td colspan="2" style="text-align: center; font-style: italic; width: 20%"><b>Thủ kho</b><br>(Ký, ghi rõ họ tên)</td>
               <td style="text-align: center; font-style: italic; width: 20%"><b>Thống kê</b><br>(Ký, ghi rõ họ tên)</td>
               <td colspan="2" style="text-align: center; font-style: italic; width: 20%"><b>Trưởng khoa dược</b><br>(Ký, ghi rõ họ tên)</td>
-              <td colspan="3" style="text-align: center; font-style: italic; width: 20%"><b>Kế toán trưởng</b><br>(Ký, ghi rõ họ tên)</td>
-              <td colspan="3" style="text-align: center; font-style: italic; width: 20%"><b>Giám đốc</b><br>(Ký, ghi rõ họ tên)</td>
+              <td colspan="2" style="text-align: center; font-style: italic; width: 20%"><b>Kế toán trưởng</b><br>(Ký, ghi rõ họ tên)</td>
+              <td colspan="2" style="text-align: center; font-style: italic; width: 20%"><b>Giám đốc</b><br>(Ký, ghi rõ họ tên)</td>
             </tr>
           `;
       });
