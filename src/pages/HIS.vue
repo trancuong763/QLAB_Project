@@ -280,6 +280,7 @@ export default {
             Inventory: this.formatNumber(item.Inventory),
             CHUNGTUCHITIET_ID: item.CHUNGTUCHITIET_ID,
             MADUOC: item.MADUOC,
+            MADUOCHUNG: item.MADUOCHUNG,
             NGAYTAO: this.formatDate(item.NGAYTAO),
             SOLUONGTONGHOPTHUCTE: this.formatNumber(item.SOLUONGTONGHOPTHUCTE),
             SOLUONGYEUCAU: this.formatNumber(item.SOLUONGYEUCAU),
