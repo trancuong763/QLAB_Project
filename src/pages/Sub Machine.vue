@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-md-4 col-xl-3 flex space-between printer print">
-        <button class="btn btn-success" @click="export_excel" disabled>
+      <div class="col-md-4 col-xl-3 flex printer print">
+        <button class="btn btn-success" @click="export_excel" disabled style="margin-right: 30px;">
           <i class="fas fa-file-excel" style="margin-right: 10px"></i> Xuất
           Excel
         </button>
@@ -20,7 +20,7 @@
     >
       <template v-slot:top>
         <v-toolbar flat>
-          <v-toolbar-title>Tồn kho</v-toolbar-title>
+          <v-toolbar-title>Máy</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
           <div style="margin-right: 20px">
