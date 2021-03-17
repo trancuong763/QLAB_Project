@@ -228,6 +228,7 @@ export default {
     getListHIS() {
       this.loading = true;
       this.desserts = [];
+      let options = {};
       if (
         this.options.itemsPerPage != 5 &&
         this.options.itemsPerPage != 10 &&
@@ -235,11 +236,14 @@ export default {
       ) {
         this.options.itemsPerPage = 99999;
       }
+      console.log(this.options);
+   
       let params =
         "?page=" + this.options.page + "&limit=" + this.options.itemsPerPage;
       this.CallAPI("get", "request/list-phieulinh" + params, {}, (response) => {
         document.querySelectorAll(".printer button")[0].disabled = false;
         document.querySelectorAll(".printer button")[1].disabled = false;
+        this.desserts = [];
         this.loading = false;
         this.HISList = response.data.data.data;
         this.totalDesserts = response.data.data.total;
