@@ -228,7 +228,6 @@ export default {
     getListHIS() {
       this.loading = true;
       this.desserts = [];
-      let options = {};
       if (
         this.options.itemsPerPage != 5 &&
         this.options.itemsPerPage != 10 &&
@@ -236,7 +235,6 @@ export default {
       ) {
         this.options.itemsPerPage = 99999;
       }
-      console.log(this.options);
    
       let params =
         "?page=" + this.options.page + "&limit=" + this.options.itemsPerPage;
