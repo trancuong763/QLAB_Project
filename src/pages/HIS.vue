@@ -235,11 +235,13 @@ export default {
       ) {
         this.options.itemsPerPage = 99999;
       }
+   
       let params =
         "?page=" + this.options.page + "&limit=" + this.options.itemsPerPage;
       this.CallAPI("get", "request/list-phieulinh" + params, {}, (response) => {
         document.querySelectorAll(".printer button")[0].disabled = false;
         document.querySelectorAll(".printer button")[1].disabled = false;
+        this.desserts = [];
         this.loading = false;
         this.HISList = response.data.data.data;
         this.totalDesserts = response.data.data.total;
@@ -280,6 +282,7 @@ export default {
             Inventory: this.formatNumber(item.Inventory),
             CHUNGTUCHITIET_ID: item.CHUNGTUCHITIET_ID,
             MADUOC: item.MADUOC,
+            MADUOCHUNG: item.MADUOCHUNG,
             NGAYTAO: this.formatDate(item.NGAYTAO),
             SOLUONGTONGHOPTHUCTE: this.formatNumber(item.SOLUONGTONGHOPTHUCTE),
             SOLUONGYEUCAU: this.formatNumber(item.SOLUONGYEUCAU),

@@ -296,6 +296,7 @@ export default {
           document.querySelectorAll(".printer button")[1].disabled = false;
           this.loading = false;
           this.inventoryList = response.data.data;
+          this.desserts = [];
           for (let item of this.inventoryList) {
             this.desserts.push({
               DUOC_ID: item.DUOC_ID,
