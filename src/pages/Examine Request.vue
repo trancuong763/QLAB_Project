@@ -200,8 +200,9 @@ export default {
           this.errors.push("Ngày không hợp lệ!");
           return;
         }
+        this.food = [];
         if (response.data.code === 1) {
-          this.food = [];
+          
           this.loading = false;
           this.list = response.data.data.data;
           this.totalDesserts = response.data.data.total;
@@ -222,6 +223,7 @@ export default {
       });
     },
     getListExport() {
+      this.listExport = [];
        let params =
         "?page=" +
         this.options.page +
@@ -238,8 +240,8 @@ export default {
           this.errors.push("Ngày không hợp lệ!");
           return;
         }
-        if (response.data.code === 1) {
-          this.listExport = [];
+        this.listExport = [];
+        if (response.data.code === 1) {  
           this.loading = false;
           let list = response.data.data.data;
           this.totalDesserts = response.data.data.total;
@@ -350,7 +352,7 @@ export default {
             this.selected_start ? this.selected_start : "01/01/2021"
           } Đến ngày ${
         this.selected_end
-          ? this.selected_start
+          ? this.selected_end
           : new Date().toLocaleDateString("en-GB")
       }</td>
         </tr>`;
@@ -403,7 +405,7 @@ export default {
             this.selected_start ? this.selected_start : "01/01/2020"
           } Đến ngày ${
         this.selected_end
-          ? this.selected_start
+          ? this.selected_end
           : new Date().toLocaleDateString("en-GB")
       }</td>
         </tr>`;
