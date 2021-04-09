@@ -347,11 +347,11 @@ export default {
       methodOptions: [
         {
           id: "dinhmuc",
-          name: "2021",
+          name: "Định mức cho hóa chất và vật tư",
         },
         {
           id: "vattu",
-          name: "2020",
+          name: "Tồn 2020",
         },
         {
           id: "muon_hc",
@@ -467,9 +467,9 @@ export default {
             unit_name: item.unit.name,
             method:
               item.method.trim() == "vattu"
-                ? "2020"
+                ? "Tồn 2020"
                 : item.method.trim() == "dinhmuc"
-                ? "2021"
+                ? "Định mức cho hóa chất và vật tư"
                 : "Mượn hóa chất",
             methodValue: item.method.trim(),
           });

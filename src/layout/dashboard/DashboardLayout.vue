@@ -32,7 +32,7 @@
           ><i class="fas fa-check-square"></i>Nội kiểm</sidebar-link
         >
         <sidebar-link to="/dinh-muc"
-          ><i class="fas fa-gem"></i>Định mức</sidebar-link
+          ><i class="fas fa-gem"></i>Định mức xét nghiệm</sidebar-link
         >
         <!-- <sidebar-link to="/nha-cung-cap"
           ><i class="fas fa-building"></i>Nhà cung cấp</sidebar-link
