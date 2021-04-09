@@ -403,11 +403,11 @@ export default {
       methodOptions: [
         {
           id: "dinhmuc",
-          name: "2021",
+          name: "Dung Tích Hóa Chất",
         },
         {
           id: "vattu",
-          name: "2020",
+          name: "Tồn Kho 2020",
         },
         {
           id: "muon_hc",
