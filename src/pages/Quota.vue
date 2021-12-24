@@ -166,17 +166,21 @@ export default {
       this.pharmacyOptions = response.data.data;
     });
     this.CallAPI("get", "machine-stock/list?limit=99999", {}, (response) => {
-      this.machineStockOptions = response.data.data.data;
+      this.machineStockOptions = response.data.data;
     });
     this.CallAPI("get", "unit/list?", {}, (response) => {
-      this.unitOptions = response.data.data.data;
+      this.unitOptions = response.data.data;
     })
     this.CallAPI("get", "dinhmuc/list-service?limit=999999", {}, (response) => {
       let data = response.data.data;
+      // console.log(data);
       for(let i = 0 ; i < data.length ; i++) {
-        for(let item of data[i]) {
-          this.serviceOptions.push(item);
-        }
+        // for(let item in data[i]) {
+        //   console.log(item);
+        //   this.serviceOptions.push(data[i]);
+        // }
+        this.serviceOptions.push(data[i]);
+
       }
     });
     this.getQuotaList();
@@ -208,19 +212,21 @@ export default {
         "dinhmuc/list?page=1&limit=99999&order_by=created_at&order_direction=asc",
         {},
         (response) => {
-          this.quotaList = response.data.data.data;
-          for (let item of this.quotaList) {
+          this.quotaList = response.data.data;
+          for (let item of this.quotaList){
+            console.log(item.Machine_Name[0].name)
+            console.log(item.Unit_Name[0].name)
             this.desserts.push({
               id: item.id,
               name: item.name,
-              services: item.DICHVU[0],
-              pharmacies: item.DUOC[0],
+              services: item.DICHVU,
+              pharmacies: item.DUOC,
               service_name: item.DICHVU[0].TENDICHVU,
               pharmacy_name: item.DUOC[0].TENHANG,
-              machineStock: item.Machine_Name,
-              unit: item.Unit_Name,
-              machineName: item.Machine_Name.name,
-              unitName: item.Unit_Name.name,
+              machineStock: item.Machine_Name[0].name,
+              unit: item.Unit_Name[0].name,
+              machineName: item.Machine_Name[0].name,
+              unitName: item.Unit_Name[0].name,
             });
           }
         }

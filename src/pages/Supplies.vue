@@ -407,7 +407,7 @@ export default {
       "machine-stock/list?page=1&limit=99999&order_by=created_at&order_direction=asc",
       {},
       (response) => {
-        this.machineList = response.data.data.data;
+        this.machineList = response.data.data;
       }
     );
     this.CallAPI("get", "duoc/list?limit=99999", {}, (response) => {
@@ -418,7 +418,7 @@ export default {
       "unit/list?page=1&limit=99999&order_by=created_at&order_direction=asc",
       {},
       (response) => {
-        this.unitIdList = response.data.data.data;
+        this.unitIdList = response.data.data;
       }
     );
   },
@@ -448,11 +448,11 @@ export default {
       this.CallAPI("get", "material/list" + params, {}, (response) => {
         this.desserts = [];
         this.isSearching = false;
-        this.materialList = response.data.data.data;
-        this.totalDesserts = response.data.data.total;
+        this.materialList = response.data.data;
+        this.totalDesserts = response.data.data.length;
         for (let item of this.materialList) {
           this.desserts.push({
-            unit: item.unit,
+            unit: item.unitId,
             DONVITINH: item["DONVITINH"],
             MADUOCCHUNG: item["MADUOCCHUNG"],
             NGAYTAO: this.formatDate(item["NGAYTAO"]),
@@ -464,7 +464,7 @@ export default {
             price: item["price"] ? this.formatNumber(item["price"]) : "",
             name: item["name"],
             services: item["services"],
-            unit_name: item.unit.name,
+            unit_name: item.name,
             method:
               item.method.trim() == "vattu"
                 ? "Tồn 2020"
@@ -473,6 +473,7 @@ export default {
                 : "Mượn hóa chất",
             methodValue: item.method.trim(),
           });
+          console.log(item);
         }
       });
     },

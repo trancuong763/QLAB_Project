@@ -59,7 +59,7 @@
                           {{ item }}
                         </div>
                         </v-form>
-                        
+
                         <!-- <h4 class="text-center mlt-4">Quên mật khẩu ?</h4> -->
                         <div class="text-center mt-5">
                           <v-btn
@@ -244,8 +244,8 @@ export default {
             this.errors.push("Tài khoản hoặc mật khẩu chưa chính xác!");
             return;
           }
-          localStorage.setItem("token", response.data.data.token);
-          localStorage.setItem("id", response.data.data.user.id);
+          localStorage.setItem("token", response.data.data[0].token);
+          localStorage.setItem("id", response.data.data[0].id);
           this.login.email = null;
           this.login.password = null;
           location.reload();

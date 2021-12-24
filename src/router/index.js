@@ -11,8 +11,8 @@ const router = new VueRouter({
   routes, // short for routes: routes
   linkActiveClass: "active"
 });
-router.beforeEach((to, from, next) => {
-  if (to.name != 'Đăng nhập' && !isAuthenticated) next({ name: 'Đăng nhập' })
-  next()
-})
+// router.beforeEach((to, from, next) => {
+//   if (to.name != 'Đăng nhập' && !isAuthenticated) next({ name: 'Đăng nhập' })
+//   next()
+// })
 export default router;

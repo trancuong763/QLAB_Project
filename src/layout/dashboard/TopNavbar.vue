@@ -87,7 +87,8 @@ export default {
         localStorage.clear();
         window.reload();
       }
-      const profile = response.data.data;
+      // const profile = response.data.data;
+      const profile = response.data.data[0];
       this.name = profile.name;
     });
   },
@@ -112,7 +113,8 @@ export default {
     },
     log_out() {
       localStorage.clear();
-      location.reload();
+      // location.reload();
+      this.$router.push("/login");
     },
   },
 };

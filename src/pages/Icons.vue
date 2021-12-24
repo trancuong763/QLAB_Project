@@ -139,7 +139,7 @@ export default {
     getList() {
       this.desserts = [];
       this.CallAPI("get", "unit/list?page=1&limit=99999&order_by=created_at&order_direction=asc", {}, (response) => {
-      this.list = response.data.data.data;
+      this.list = response.data.data;
       this.desserts = this.list;
     });
     },
@@ -157,7 +157,8 @@ export default {
 
     deleteItemConfirm() {
       let id = this.editedItem.id;
-      this.CallAPI("delete", "unit/delete/" + id, {}, (response) => {
+      console.log(id);
+      this.CallAPI("delete", "unit/delete?unitId=" + id, {}, (response) => {
         // console.log(response.data);
         if (response.data.code == -1) {
           this.$toast.error("Xóa bản ghi không thành công!");
@@ -171,6 +172,7 @@ export default {
         this.getList();
         // this.desserts.splice(this.editedIndex, 1);
       });
+
       this.closeDelete();
     },
 
@@ -196,7 +198,7 @@ export default {
           name: this.editedItem.name,
           description: this.editedItem.description,
         };
-        
+
         let id = this.editedItem.id;
         if (!data.name || !data.description) {
           this.$toast.error("Vui lòng nhập đầy đủ thông tin!");
@@ -218,7 +220,6 @@ export default {
         });
         // Object.assign(this.desserts[this.editedIndex], this.editedItem);
       } else {
-        
         let data = {
           name: this.editedItem.name,
           description: this.editedItem.description,
@@ -227,24 +228,33 @@ export default {
           this.$toast.error("Vui lòng nhập đầy đủ thông tin!");
           return;
         }
-        this.CallAPI("post", "unit/create", data, (response) => {
+       this.CallAPI("post", "unit/create", data, (response) => {
+          console.log('12312321')
           // console.log(response.data);
-          if (response.data.code == -1) {
-            this.$toast.error("Thêm bản ghi không thành công!");
-            return;
-          }
-          if (response.data.code == -100) {
-            this.$toast.error("Không có quyền thêm bản ghi!");
-            return;
-          }
-          this.$toast.success("Thêm bản ghi thành công!");
+          // if (response.data.code == -1) {
+          //   this.$toast.error("Thêm bản ghi không thành công!");
+          //   return;
+          // }
+          // if (response.data.code == -100) {
+          //   this.$toast.error("Không có quyền thêm bản ghi!");
+          //   return;
+          // }
+          console.log(response);
+          // if(response.data.statusCode == 200){
+          //   this.$toast.success("Thêm bản ghi thành công!");
+          // }else if(response.data.statusCode == 409){
+          //   this.$toast.error("Tên đơn vị đã tồn tại!");
+          // }else{
+          //   this.$toast.error(response.data.message);
+          //
+          // }
           this.getList();
           // this.desserts.push(this.editedItem);
           this.close();
         });
-        
+
       }
-      
+
     },
   },
   mounted() {

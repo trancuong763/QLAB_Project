@@ -64,7 +64,7 @@ export default {
       "user/list?page=1&limit=99999&order_by=created_at&order_direction=asc",
       {},
       (response) => {
-        this.member = response.data.data.total;
+        this.member = response.data.data.data.length;
       }
     );
     this.CallAPI(
@@ -72,7 +72,8 @@ export default {
       `material/list?page=1&limit=99999&order_by=created_at&order_direction=asc`,
       {},
       (response) => {
-        this.masterial = response.data.data.total;
+        // this.masterial = response.data.data.total;
+        this.masterial = response.data.data.length;
       }
     );
     this.CallAPI(
@@ -80,7 +81,8 @@ export default {
       "machine-stock/list?page=1&limit=99999&order_by=created_at&order_direction=asc",
       {},
       (response) => {
-        this.machine = response.data.data.total;
+        // this.machine = response.data.data.total;
+        this.machine = response.data.data.length;
       }
     );
     this.CallAPI(
@@ -88,7 +90,8 @@ export default {
       "unit/list?page=1&limit=99999&order_by=created_at&order_direction=asc",
       {},
       (response) => {
-        this.unit = response.data.data.total;
+        // this.unit = response.data.data.total;
+        this.unit = response.data.data.length;
       }
     );
   },

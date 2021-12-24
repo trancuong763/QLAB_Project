@@ -139,7 +139,7 @@ export default {
   getList() {
         this.desserts = [];
         this.CallAPI("get", "machine-stock/list?page=1&limit=99999&order_by=created_at&order_direction=asc", {}, (response) => {
-        this.list = response.data.data.data;
+        this.list = response.data.data;
         this.desserts = this.list;
       });
       },

@@ -35,11 +35,11 @@ Vue.use(Toast, {
 // =======
 // Vue.prototype.$urlAPI = 'http://c2baeee09c98.ngrok.io/api/'
 // >>>>>>> fe46e70bc43d51135adb7b254b77f53579427a13
-Vue.prototype.$urlAPI = 'http://192.168.1.90:3000/api/'
+Vue.prototype.$urlAPI = 'https://22a2-2001-ee0-4f0d-4aa0-dc41-a50b-9528-78e6.ngrok.io/'
 
 Vue.prototype.$config = {
   headers: {
-    "api-token": localStorage.getItem("token"),
+    "Authorization":"Bearer "+localStorage.getItem("token"),
   },
 };
 
@@ -87,7 +87,6 @@ Vue.prototype.CallAPI = function (method, url, data, callResponse) {
 new Vue({
   vuetify: new Vuetify(),
   router,
-  vuetify: new Vuetify(),
   render: h => h(App)
 }).$mount("#app");
 

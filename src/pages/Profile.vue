@@ -141,17 +141,21 @@ export default {
   },
   mounted() {
     this.CallAPI("get", "user/detail/" + this.id, {}, (response) => {
-      const profile = response.data.data;
+      const profile = response.data.data[0];
       this.name = profile.name;
       this.phone = profile.phone;
       this.email = profile.email;
       this.roles = profile.roles;
     });
     this.CallAPI("get", "role/full", {}, (response) => {
-      for (let item of response.data.data) {
-        for (let role of item.permissions) {
-          this.roleList.push(role);
-        }
+      // console.log(response.data.data[0]);
+      // for (let item of response.data.data) {
+      //   for (let role of item.permissions) {
+      //     this.roleList.push(role);
+      //   }
+      // }
+      for (let item in response.data.data[0]) {
+          this.roleList.push(item);
       }
     });
   },

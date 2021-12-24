@@ -27,13 +27,21 @@ import ChemicalsEffete from "@/pages/Chemicals Effete"
 import MuonHoaChat from "@/pages/MuonHoaChat"
 
 var isAuthenticated = false;
-if (localStorage.getItem('token')) isAuthenticated = true;
+if (localStorage.getItem('token')){
+  isAuthenticated = true;
+}
 
 const routes = [
   {
     path: "/",
     component: DashboardLayout,
     redirect: "/bang-dieu-khien",
+    beforeEnter: (to, from, next) => {
+      if (!isAuthenticated) {
+        next({ name: 'Đăng nhập' })
+      }
+      next()
+    },
     children: [
       {
         path: "bang-dieu-khien",
