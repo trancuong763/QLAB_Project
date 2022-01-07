@@ -253,10 +253,9 @@ export default {
   mounted() {
     this.CallAPI("get", "dinhmuc/list-service?limit=999999", {}, (response) => {
       let data = response.data.data;
+      console.log(data);
       for (let i = 0; i < data.length; i++) {
-        for (let item of data[i]) {
-          this.serviceOptions.push(item);
-        }
+        this.serviceOptions.push(data[i]);
       }
     });
     this.getInventoryList();
@@ -295,7 +294,7 @@ export default {
           document.querySelectorAll(".printer button")[0].disabled = false;
           document.querySelectorAll(".printer button")[1].disabled = false;
           this.loading = false;
-          this.inventoryList = response.data.data;
+          this.inventoryList = response.data.data.data;
           this.desserts = [];
           for (let item of this.inventoryList) {
             this.desserts.push({

@@ -201,7 +201,7 @@ export default {
           return;
         }
         this.food = [];
-        if (response.data.code === 1) {
+        if (response.data.statusCode === 200) {
           
           this.loading = false;
           this.list = response.data.data.data;
@@ -241,7 +241,7 @@ export default {
           return;
         }
         this.listExport = [];
-        if (response.data.code === 1) {  
+        if (response.data.statusCode === 200) {
           this.loading = false;
           let list = response.data.data.data;
           this.totalDesserts = response.data.data.total;

@@ -227,9 +227,7 @@ export default {
     this.CallAPI("get", "dinhmuc/list-service?limit=999999", {}, response => {
       let data = response.data.data;
       for (let i = 0; i < data.length; i++) {
-        for (let item of data[i]) {
-          this.serviceOptions.push(item);
-        }
+        this.serviceOptions.push(item);
       }
     });
     this.getInventoryList();

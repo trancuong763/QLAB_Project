@@ -575,6 +575,14 @@ export default {
           method: this.editedItem.methodValue,
           name: this.editedItem.pharmacies.TENHANG,
         };
+        // let data = {
+        //     name: this.editedItem.pharmacies.TENHANG,
+        //     MA_DUOC: this.editedItem.pharmacies.MADUOC,
+        //     defineLevel: this.editedItem.defineLevel,
+        //     unitId: this.editedItem.unit.id,
+        //     MADUOCCHUNG: this.editedItem.MADUOCCHUNG,
+        //     DUOC_ID: this.editedItem.pharmacies.DUOC_ID
+        // };
         this.CallAPI("post", "material/create-after", data, (response) => {
           if (response.data.error == "UNAUTHORIZED") {
             this.$toast.error("Không được phép!");
@@ -582,6 +590,9 @@ export default {
           }
           if (response.data.code == -1) {
             this.$toast.error("Đã xảy ra lỗi: " + response.data.error);
+            return;
+          } if (response.data.statusCode == 404) {
+            this.$toast.error("Có lỗi đã xảy ra");
             return;
           }
           this.$toast.success("Thêm thành công");
